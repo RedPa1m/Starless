@@ -2,6 +2,7 @@ package net.redpalm.starless.entity.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -17,6 +18,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
+
 
 public class ObserveEntity extends Monster implements GeoEntity {
 
@@ -73,5 +75,14 @@ public class ObserveEntity extends Monster implements GeoEntity {
             TimeAlive = 0;
         }
         super.tick();
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource != damageSources().genericKill() && pSource != damageSources().fellOutOfWorld()) {
+        return false; }
+        else {
+            return super.hurt(pSource, pAmount);
+        }
     }
 }
