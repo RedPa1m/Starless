@@ -1,13 +1,10 @@
 package net.redpalm.starless.entity.custom;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -16,9 +13,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.redpalm.starless.event.EventHandler;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -70,7 +64,7 @@ public class ObserveEntity extends Monster implements GeoEntity {
     public boolean shouldDropExperience() {
         return false;
     }
-
+    // Set his lifetime to 600 ticks
     @Override
     public void tick() {
         TimeAlive++;
@@ -83,7 +77,7 @@ public class ObserveEntity extends Monster implements GeoEntity {
         }
         super.tick();
     }
-
+    // Make it so he takes no damage unless falls out of the world or /kill applied
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource != damageSources().genericKill() && pSource != damageSources().fellOutOfWorld()) {
