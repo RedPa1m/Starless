@@ -1,4 +1,5 @@
 {
   "block.starless.corrupted_lapis_block": "Corrupted Lapis Block",
-  "item.starless.corrupted_lapis": "Corrupted Lapis"
+  "item.starless.corrupted_lapis": "Corrupted Lapis",
+  "entity.starless.observe": "Observe"
 }
