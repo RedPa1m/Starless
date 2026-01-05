@@ -3,19 +3,15 @@
   "category": "misc",
   "pattern": [
     "###",
-    "#Q#",
+    "###",
     "###"
   ],
   "key": {
     "#": {
-      "item": "minecraft:lapis_block"
-    },
-    "Q": {
-      "item": "no_moon:void_fragments"
+      "item": "minecraft:corrupted_lapis"
     }
   },
   "result": {
-    "count": 8,
     "item": "starless:corrupted_lapis_block"
   }
 }

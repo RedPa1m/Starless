@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "   ",
+    " # ",
+    "   "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:corrupted_lapis_block"
+    }
+  },
+  "result": {
+    "count": 9,
+    "item": "starless:corrupted_lapis"
+  }
+}
