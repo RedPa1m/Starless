@@ -40,7 +40,7 @@ public class WrongedEntity extends Mob implements GeoEntity {
     }
 
     private PlayState predicate(AnimationState<WrongedEntity> wrongedEntityAnimationState) {
-        wrongedEntityAnimationState.getController().setAnimation(RawAnimation.begin().then("wronged_animation", Animation.LoopType.LOOP));
+        wrongedEntityAnimationState.getController().setAnimation(RawAnimation.begin().then("wronged.idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
