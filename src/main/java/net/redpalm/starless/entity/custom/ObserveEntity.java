@@ -74,6 +74,10 @@ public class ObserveEntity extends Monster implements GeoEntity {
         }
         if (level().getNearestPlayer(this, 50D) != null) {
             getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
+
+            if (level().getNearestPlayer(this,4.9D) != null) {
+                this.remove(RemovalReason.KILLED);
+            }
         }
         super.tick();
     }

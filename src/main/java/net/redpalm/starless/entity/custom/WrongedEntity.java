@@ -1,5 +1,6 @@
 package net.redpalm.starless.entity.custom;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -14,7 +15,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 public class WrongedEntity extends Mob implements GeoEntity {
-
+    public static boolean canGiveItem;
     private int TimeAlive = 0;
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
@@ -57,9 +58,15 @@ public class WrongedEntity extends Mob implements GeoEntity {
     @Override
     public void tick() {
         TimeAlive++;
+        if (TimeAlive == 1) {
+            canGiveItem = true;
+        }
         if (TimeAlive == 2400) {
             this.remove(RemovalReason.KILLED);
             TimeAlive = 0;
+            level().getServer().getPlayerList().broadcastSystemMessage
+                    (Component.literal("<Wrong.ed> Goodbye."), false);
+            canGiveItem = true;
         }
         if (level().getNearestPlayer(this, 50D) != null) {
             getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
