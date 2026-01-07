@@ -64,8 +64,10 @@ public class WrongedEntity extends Mob implements GeoEntity {
         if (TimeAlive == 2400) {
             this.remove(RemovalReason.KILLED);
             TimeAlive = 0;
-            level().getServer().getPlayerList().broadcastSystemMessage
-                    (Component.literal("<Wrong.ed> Goodbye."), false);
+            if (!level().isClientSide) {
+                level().getServer().getPlayerList().broadcastSystemMessage
+                        (Component.literal("<Wrong.ed> Goodbye."), false);
+            }
             canGiveItem = true;
         }
         if (level().getNearestPlayer(this, 50D) != null) {
