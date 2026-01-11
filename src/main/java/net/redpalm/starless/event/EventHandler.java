@@ -1,6 +1,7 @@
 package net.redpalm.starless.event;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,18 +29,25 @@ import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 public class EventHandler extends Event {
     static Random random = new Random();
     static int randomIndex;
+    static long lastSpawnWronged = 0;
+    static long lastSpawnObserve = 0;
+    static int clockWronged = 0;
 
     // Attempt to spawn Observe after some amount of ticks with 10% chance
     @SubscribeEvent
     public static void spawnObserve(TickEvent.LevelTickEvent tick) {
         if (tick.phase != TickEvent.Phase.END) return;
+        if (!(tick.level instanceof ServerLevel)) return;
         if (tick.level.isClientSide) return;
         if (tick.level.dimension() != Level.OVERWORLD) return;
 
         int spawnTime = 8000;
         int spawnChance = 10;
 
-        if (tick.level.getDayTime() % spawnTime == 0 && random.nextInt(spawnChance) == 0) {
+        if (tick.level.getDayTime() % spawnTime == 0 && random.nextInt(spawnChance) == 0 &&
+        tick.level.getDayTime() != lastSpawnObserve) {
+
+            lastSpawnObserve = tick.level.getDayTime();
             ObserveEntity entity = ModEntities.OBSERVE.get().create(tick.level);
             if (entity == null) return;
 
@@ -52,18 +61,36 @@ public class EventHandler extends Event {
         }
     }
 
+    // Clock for Wronged
+    @SubscribeEvent
+    public static void clockWronged(TickEvent.LevelTickEvent tick) {
+        if (tick.phase != TickEvent.Phase.END) return;
+        if (!(tick.level instanceof ServerLevel)) return;
+        if (tick.level.isClientSide) return;
+        if (tick.level.dimension() != Level.OVERWORLD) return;
+
+        clockWronged++;
+        if ((tick.level.getDayTime() % 24000) == 0) {
+            clockWronged = 0;
+        }
+    }
+
     // Spawn Wronged at Midnight
     @SubscribeEvent
     public static void spawnWronged(TickEvent.LevelTickEvent tick) {
         if (tick.phase != TickEvent.Phase.END) return;
+        if (!(tick.level instanceof ServerLevel)) return;
         if (tick.level.isClientSide) return;
         if (tick.level.dimension() != Level.OVERWORLD) return;
 
-        int Midnight = 18000;
         int chanceSpawn = 2;
         int chancePhrase = 3;
+        int Midnight = 18000;
 
-        if (tick.level.getDayTime() == Midnight && random.nextInt(chanceSpawn) == 0) {
+        if (((clockWronged % Midnight) == 0 || (tick.level.getDayTime() == Midnight))  &&
+                random.nextInt(chanceSpawn) == 0 && tick.level.getDayTime() != lastSpawnWronged) {
+
+            lastSpawnWronged = tick.level.getDayTime();
             WrongedEntity entity = ModEntities.WRONGED.get().create(tick.level);
             if (entity == null) return;
 
@@ -94,6 +121,11 @@ public class EventHandler extends Event {
         }
     }
 
+    @SubscribeEvent
+    public static void onPlayerWake(SleepFinishedTimeEvent event) {
+        clockWronged = 0;
+    }
+
     public static void spawnEntity(int extraX, int extraZ, LivingEntity entity,
                                    Player player, TickEvent.LevelTickEvent event) {
         int entityX;
@@ -114,18 +146,17 @@ public class EventHandler extends Event {
 
     @SubscribeEvent
     public static void interactWronged(PlayerInteractEvent.EntityInteract event) {
+        if (event.getLevel().isClientSide) return;
         Player player = event.getEntity();
         if (event.getTarget() instanceof WrongedEntity && event.getHand() == InteractionHand.MAIN_HAND) {
             if (WrongedEntity.canGiveItem == true) {
                 randomIndex = random.nextInt(wrongedItemList.size());
                 ItemStack item = new ItemStack(wrongedItemList.get(randomIndex), 1);
                 player.addItem(item);
-                if (event.getLevel().isClientSide) {
-                    player.sendSystemMessage(Component.literal("<Wrong.ed> I hope you will find use for this."));
-                }
+                player.sendSystemMessage(Component.literal("<Wrong.ed> I hope you will find use for this."));
                 WrongedEntity.canGiveItem = false;
             }
-            else if (event.getLevel().isClientSide) {
+            else {
                 player.sendSystemMessage(Component.literal("<Wrong.ed> Sorry, that's all I have for now."));
             }
         }
