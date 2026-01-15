@@ -41,6 +41,8 @@ public class EventHandler extends Event {
         if (tick.level.isClientSide) return;
         if (tick.level.dimension() != Level.OVERWORLD) return;
 
+        if (tick.level.getServer().getPlayerList().getPlayers().isEmpty()) return;
+
         int spawnTime = 8000;
         int spawnChance = 10;
 
@@ -82,6 +84,8 @@ public class EventHandler extends Event {
         if (!(tick.level instanceof ServerLevel)) return;
         if (tick.level.isClientSide) return;
         if (tick.level.dimension() != Level.OVERWORLD) return;
+
+        if (tick.level.getServer().getPlayerList().getPlayers().isEmpty()) return;
 
         int chanceSpawn = 2;
         int chancePhrase = 3;

@@ -20,7 +20,7 @@ license="All Rights Reserved"
 # The modid of the mod
 modId="starless" #mandatory
 # The version number of the mod
-version="0.0.5" #mandatory
+version="0.0.6" #mandatory
 # A display name for the mod
 displayName="Starless" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
@@ -30,7 +30,7 @@ displayName="Starless" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
-credits="Thank you no_moon.jar team for creating no_moon.jar!" #optional
+credits="Credits to: big bird man for helping me with code, no_moon.jar team for creating no_moon.jar" #optional
 # A text field displayed in the mod UI
 authors="RedPalm" #optional
 # Display Test controls the display for your mod in the server connection screen

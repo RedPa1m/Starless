@@ -8,6 +8,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.MinecraftForge;
+import net.redpalm.starless.event.custom.WrongedChatEvent;
+import net.redpalm.starless.event.custom.WrongedRegisterChatEvent;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -60,6 +63,7 @@ public class WrongedEntity extends Mob implements GeoEntity {
         TimeAlive++;
         if (TimeAlive == 1) {
             canGiveItem = true;
+            MinecraftForge.EVENT_BUS.register(WrongedRegisterChatEvent.class);
         }
         if (TimeAlive == 2400) {
             this.remove(RemovalReason.KILLED);
@@ -73,6 +77,10 @@ public class WrongedEntity extends Mob implements GeoEntity {
         if (level().getNearestPlayer(this, 50D) != null) {
             getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
         }
+        if (this.isDeadOrDying()) {
+            MinecraftForge.EVENT_BUS.unregister(WrongedRegisterChatEvent.class);
+            MinecraftForge.EVENT_BUS.unregister(WrongedChatEvent.class);
+        }
         super.tick();
     }
 
@@ -85,5 +93,5 @@ public class WrongedEntity extends Mob implements GeoEntity {
             return super.hurt(pSource, pAmount);
         }
     }
-
+    // emo
 }
