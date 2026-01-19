@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "#",
+    "Q"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:white_wool"
+    },
+    "Q": {
+      "item": "minecraft:black_wool"
+    }
+  },
+  "result": {
+    "item": "starless:nothing_left_plush"
+  }
+}

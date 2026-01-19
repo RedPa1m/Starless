@@ -1,0 +1,19 @@
+{
+"variants": {
+"facing=north": {
+"model": "starless:block/nothing_left_plush"
+},
+"facing=south": {
+"model": "starless:block/nothing_left_plush",
+"y": 180
+},
+"facing=west": {
+"model": "starless:block/nothing_left_plush",
+"y": 270
+},
+"facing=east": {
+"model": "starless:block/nothing_left_plush",
+"y": 90
+}
+}
+}

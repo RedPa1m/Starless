@@ -24,7 +24,7 @@ public class WrongedRegisterChatEvent extends Event {
         eventMethod(event, "skibidi toilet", "<Wrong.ed> " +
                 "Don't say this to other entities, please...");
         eventMethod(event, "i love you", "<Wrong.ed> " +
-                "Thank you for that. But don't get too used to me.");
+                "I'm happy to hear that. But don't get too used to me.");
         eventMethod(event, "thank you", "<Wrong.ed> You're always welcome.");
         eventMethod(event, "you look emo", "<Wrong.ed> ...Is this a good thing?");
         eventMethod(event, "lesser soul", "<Wrong.ed> I am one of them.");

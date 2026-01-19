@@ -62,6 +62,9 @@ public class Starless
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.CORRUPTED_LAPIS);
         }
+        if (event.getTabKey() == CreativeModeTabs.COLORED_BLOCKS) {
+            event.accept(ModBlocks.NOTHING_LEFT_PLUSH);
+        }
     }
 
     @SubscribeEvent
