@@ -59,7 +59,7 @@ public class EventHandler extends Event {
             spawnEntity(10, 10, entity, player, tick);
 
             tick.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                    SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 1.5f, 0.85f);
+                    SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 2f, 0.85f);
         }
     }
 
