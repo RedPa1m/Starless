@@ -132,12 +132,12 @@ public class EventHandler extends Event {
         if (event.getLevel().isClientSide) return;
         Player player = event.getEntity();
         if (event.getTarget() instanceof WrongedEntity && event.getHand() == InteractionHand.MAIN_HAND) {
-            if (WrongedEntity.canGiveItem == true) {
+            if (((WrongedEntity) event.getTarget()).getCanGiveItem() == true) {
                 randomIndex = random.nextInt(wrongedItemList.size());
                 ItemStack item = new ItemStack(wrongedItemList.get(randomIndex), 1);
                 player.addItem(item);
                 player.sendSystemMessage(Component.literal("<Wrong.ed> I hope you will find use for this."));
-                WrongedEntity.canGiveItem = false;
+                ((WrongedEntity) event.getTarget()).setCanGiveItem(false);
             }
             else {
                 player.sendSystemMessage(Component.literal("<Wrong.ed> Sorry, that's all I have for now."));

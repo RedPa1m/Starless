@@ -1,5 +1,6 @@
 package net.redpalm.starless.entity.custom;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -15,8 +16,17 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 public class WrongedEntity extends Mob implements GeoEntity {
-    public static boolean canGiveItem;
+    private boolean canGiveItem;
     private int TimeAlive = 0;
+    public static boolean canChat = false;
+
+    public boolean getCanGiveItem() {
+        return this.canGiveItem;
+    }
+
+    public void setCanGiveItem(boolean set) {
+        this.canGiveItem = set;
+    }
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -57,21 +67,27 @@ public class WrongedEntity extends Mob implements GeoEntity {
     // Set his lifetime to 2400 ticks and make him look at player
     @Override
     public void tick() {
-        TimeAlive++;
-        if (TimeAlive == 1) {
-            canGiveItem = true;
+        this.TimeAlive++;
+        if (this.TimeAlive == 1) {
+            this.canGiveItem = true;
+            canChat = true;
         }
-        if (TimeAlive == 2400) {
+        if (this.TimeAlive == 2400) {
             this.remove(RemovalReason.KILLED);
-            TimeAlive = 0;
+            this.TimeAlive = 0;
             if (!level().isClientSide) {
                 level().getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Wrong.ed> Goodbye."), false);
             }
-            canGiveItem = true;
+            this.canGiveItem = true;
+            canChat = false;
         }
         if (level().getNearestPlayer(this, 50D) != null) {
             getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
+        }
+
+        if (this.isDeadOrDying()) {
+            canChat = false;
         }
         super.tick();
     }
@@ -83,6 +99,24 @@ public class WrongedEntity extends Mob implements GeoEntity {
             return false; }
         else {
             return super.hurt(pSource, pAmount);
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("canGiveItem", this.canGiveItem);
+        pCompound.putInt("TimeAlive", this.TimeAlive);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        if (pCompound.contains("canGiveItem")) {
+            this.canGiveItem = pCompound.getBoolean("canGiveItem");
+        }
+        if (pCompound.contains("TimeAlive")) {
+            this.TimeAlive = pCompound.getInt("TimeAlive");
         }
     }
     // emo
