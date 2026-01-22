@@ -37,6 +37,7 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "seeker", "<Wrong.ed> He likes to steal food, but he's mostly harmless.");
             eventMethod(event, "i'm sorry", "<Wrong.ed> It's okay.");
             eventMethod(event, "help me", "<Wrong.ed> I will try my best.");
+            eventMethod(event, "freedom", "<Wrong.ed> I wish...");
         }
     }
 
