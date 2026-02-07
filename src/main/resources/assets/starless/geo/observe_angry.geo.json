@@ -18,7 +18,7 @@
 				{
 					"name": "head",
 					"parent": "the guy",
-					"pivot": [-0.1, 24.2, 0],
+					"pivot": [-0.1, 19.2, 0],
 					"cubes": [
 						{
 							"origin": [-5.1, 19.2, 0],

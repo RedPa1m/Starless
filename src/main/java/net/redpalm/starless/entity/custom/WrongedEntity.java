@@ -80,15 +80,15 @@ public class WrongedEntity extends Mob implements GeoEntity {
                         (Component.literal("<Wrong.ed> Goodbye."), false);
             }
             this.canGiveItem = true;
-            canChat = false;
         }
         if (level().getNearestPlayer(this, 50D) != null) {
             getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
         }
 
-        if (this.isDeadOrDying()) {
+        if (this.isDeadOrDying() || this.isRemoved()) {
             canChat = false;
         }
+
         super.tick();
     }
 

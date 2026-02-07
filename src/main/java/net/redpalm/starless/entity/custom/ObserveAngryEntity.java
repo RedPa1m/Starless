@@ -25,9 +25,9 @@ import java.util.Random;
 public class ObserveAngryEntity extends Monster implements GeoEntity {
     private int TimeAlive = 0;
     Random random = new Random();
-    private boolean register = false; // for goals
-    private boolean runTask = true;
+    private boolean runTask = true; // thing for if he can start chase (so it doesn't duplicate)
     private boolean deathMessage = true;
+    private boolean goalState = false;
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -57,17 +57,11 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class,
                 50f, 1f));
-        if (register == true) {
-            this.goalSelector.addGoal(1, new MeleeAttackGoal
-                    (this, 1.3D, true));
-            this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
-            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>
-                    (this, Player.class, 0, false,
-                            false, null));
-            register = false;
-        }
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>
+                (this, Player.class, 0, false,
+                        false, null));
     }
-
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -79,7 +73,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
                 .add(Attributes.MAX_HEALTH, 100D)
                 .add(Attributes.FOLLOW_RANGE, 50D)
                 .add(Attributes.ATTACK_DAMAGE, 5D)
-                .add(Attributes.MOVEMENT_SPEED, 0.8D);
+                .add(Attributes.MOVEMENT_SPEED, 0.5D);
     }
 
     @Override
@@ -109,7 +103,16 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
                 observeTalk(level(), "<?> Begin.");
             }
             runTask = false;
-            register = true;
+            goalState = true;
+            this.goalSelector.addGoal(1, new MeleeAttackGoal
+                    (this, 1D, true));
+        }
+
+        // check if attack goal is running so he attacks after world reload
+        if (!level().isClientSide && goalState == true && this.goalSelector.getRunningGoals().noneMatch
+                (goal -> goal.getGoal().getClass() == MeleeAttackGoal.class)) {
+            this.goalSelector.addGoal(1, new MeleeAttackGoal
+                    (this, 1D, true));
         }
 
         if (TimeAlive == 1600) {
@@ -140,6 +143,8 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("TimeAlive", this.TimeAlive);
+        pCompound.putBoolean("runTask", this.runTask);
+        pCompound.putBoolean("goalState", this.goalState);
     }
 
     @Override
@@ -147,6 +152,12 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("TimeAlive")) {
             this.TimeAlive = pCompound.getInt("TimeAlive");
+        }
+        if (pCompound.contains("runTask")) {
+            this.runTask = pCompound.getBoolean("runTask");
+        }
+        if (pCompound.contains("goalState")) {
+            this.goalState = pCompound.getBoolean("goalState");
         }
     }
 
