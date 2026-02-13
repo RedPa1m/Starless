@@ -30,6 +30,7 @@ public class EventHandler extends Event {
     static long lastSpawnWronged = 0;
     static long lastSpawnObserve = 0;
     static Random random = new Random();
+    private static short responseTimerWronged = 0;
 
     // Attempt to spawn Observe after some amount of ticks with 10% chance
     @SubscribeEvent
@@ -90,21 +91,26 @@ public class EventHandler extends Event {
             tick.level.getServer().getPlayerList().broadcastSystemMessage
                     (Component.literal("<Wrong.ed> Hello."), false);
 
-            if (tick.level.getRandom().nextInt(chancePhrase) == 0) {
+            responseTimerWronged++;
+
+            if (tick.level.getRandom().nextInt(chancePhrase) == 0 && responseTimerWronged == 100) {
                 tick.level.getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Wrong.ed> Can I give you something? " +
                                 "I hope it's okay."), false);
+                responseTimerWronged = 0;
             }
-            else if (tick.level.getRandom().nextInt(chancePhrase) == 1) {
+            else if (tick.level.getRandom().nextInt(chancePhrase) == 1 && responseTimerWronged == 100) {
                 tick.level.getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Wrong.ed> I can give you an item. " +
                                 "Not sure if it's as useful as I think it is."), false);
+                responseTimerWronged = 0;
             }
-            else {
+            else if (responseTimerWronged == 100) {
                 tick.level.getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Wrong.ed> Can you take this item from me, if it's okay? " +
                                 "It gives me painful memories, but I don't want it to go to waste..."),
                                 false);
+                responseTimerWronged = 0;
             }
         }
     }

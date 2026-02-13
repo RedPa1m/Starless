@@ -20,7 +20,7 @@ license="All Rights Reserved"
 # The modid of the mod
 modId="starless" #mandatory
 # The version number of the mod
-version="0.0.9" #mandatory
+version="0.0.10" #mandatory
 # A display name for the mod
 displayName="Starless" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
@@ -42,7 +42,7 @@ authors="RedPalm" #optional
 #displayTest="MATCH_VERSION" # if nothing is specified, MATCH_VERSION is the default when clientSideOnly=false, otherwise IGNORE_ALL_VERSION when clientSideOnly=true (#optional)
 
 # The description text for the mod (multi line!) (#mandatory)
-description='''Silly little no_moon.jar addon. Works without no_moon too. !!This is NOT a horror themed addon.'''
+description='''Mod that adds some entities for player to interact with. Meant to be a complementary mod for no_moon.jar, can be played standalone.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.${mod_id}]] #optional
     # the modid of the dependency
