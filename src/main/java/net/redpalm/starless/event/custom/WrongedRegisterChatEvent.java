@@ -47,8 +47,6 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "shattered", "<Wrong.ed> Be alerted.");
             eventMethod(event, "administrator", "<Wrong.ed> He's watching.");
             eventMethod(event, "i'm scared", "<Wrong.ed> I am here for now.");
-            eventMethod(event, "hello", "<Wrong.ed> Hello.");
-            eventMethod(event, "hi", "<Wrong.ed> Hello.");
             eventMethod(event, "are you scared", "<Wrong.ed> Maybe.");
             eventMethod(event, "how are you", "<Wrong.ed> I feel numb.");
             eventMethod(event, "separation", "<Wrong.ed> Defeated by her own pride.");
@@ -59,11 +57,24 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "starry", "<Wrong.ed> Friendly little guy.");
             eventMethod(event, "red palm", "<...> Hey, no breaking the fourth wall!");
             eventMethod(event, "what happened", "<Wrong.ed> I forgot so much.");
+            eventMethodHello(event, "<Wrong.ed> Hello.");
         }
     }
 
     public static void eventMethod(ServerChatEvent event, String question, String answer) {
         if (event.getMessage().toString().toLowerCase(Locale.ROOT).contains(question) && event.getPlayer() != null) {
+            WrongedChatEvent.wrongedResponse = answer;
+            if (canChat == true) {
+                fireAnswer = true;
+            }
+        }
+    }
+    public static void eventMethodHello(ServerChatEvent event, String answer) {
+        if ((event.getMessage().toString().toLowerCase(Locale.ROOT).contains("hi") ||
+                event.getMessage().toString().toLowerCase(Locale.ROOT).contains("hello")) &&
+                        !event.getMessage().toString().toLowerCase(Locale.ROOT).contains("nothing_left") &&
+                !event.getMessage().toString().toLowerCase(Locale.ROOT).contains("nothingisreal")
+                && event.getPlayer() != null) {
             WrongedChatEvent.wrongedResponse = answer;
             if (canChat == true) {
                 fireAnswer = true;

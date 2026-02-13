@@ -19,6 +19,7 @@ public class WrongedEntity extends Mob implements GeoEntity {
     private boolean canGiveItem;
     private int TimeAlive = 0;
     public static boolean canChat = false;
+    private int chancePhrase = 3;
 
     public boolean getCanGiveItem() {
         return this.canGiveItem;
@@ -64,14 +65,38 @@ public class WrongedEntity extends Mob implements GeoEntity {
     public boolean shouldDropExperience() {
         return false;
     }
-    // Set his lifetime to 2400 ticks and make him look at player
+    // Set his lifetime to 2400 ticks
     @Override
     public void tick() {
         this.TimeAlive++;
         if (this.TimeAlive == 1) {
             this.canGiveItem = true;
             canChat = true;
+            if (!level().isClientSide && !level().getServer().getPlayerList().getPlayers().isEmpty()) {
+                level().getServer().getPlayerList().broadcastSystemMessage
+                        (Component.literal("<Wrong.ed> Hello."), false);
+            }
         }
+
+        if (!level().isClientSide && this.TimeAlive == 40 && !level().getServer().getPlayerList().getPlayers().isEmpty()) {
+            if (level().getRandom().nextInt(chancePhrase) == 0) {
+                level().getServer().getPlayerList().broadcastSystemMessage
+                        (Component.literal("<Wrong.ed> Can I give you something? " +
+                                "I hope it's okay."), false);
+            }
+            else if (level().getRandom().nextInt(chancePhrase) == 1) {
+                level().getServer().getPlayerList().broadcastSystemMessage
+                        (Component.literal("<Wrong.ed> I can give you an item. " +
+                                "Not sure if it's as useful as I think it is."), false);
+            }
+            else {
+                level().getServer().getPlayerList().broadcastSystemMessage
+                        (Component.literal("<Wrong.ed> Can you take this item from me, if it's okay? " +
+                                        "It gives me painful memories, but I don't want it to go to waste..."),
+                                false);
+            }
+        }
+
         if (this.TimeAlive == 2400) {
             this.remove(RemovalReason.KILLED);
             this.TimeAlive = 0;

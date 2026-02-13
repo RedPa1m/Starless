@@ -22,6 +22,7 @@ import net.redpalm.starless.entity.custom.WrongedEntity;
 
 import java.util.Random;
 
+import static net.redpalm.starless.entity.custom.WrongedEntity.canChat;
 import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 
 @Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -30,7 +31,6 @@ public class EventHandler extends Event {
     static long lastSpawnWronged = 0;
     static long lastSpawnObserve = 0;
     static Random random = new Random();
-    private static short responseTimerWronged = 0;
 
     // Attempt to spawn Observe after some amount of ticks with 10% chance
     @SubscribeEvent
@@ -73,7 +73,6 @@ public class EventHandler extends Event {
         if (tick.level.getServer().getPlayerList().getPlayers().isEmpty()) return;
 
         int chanceSpawn = 2;
-        int chancePhrase = 3;
         int Midnight = 18000;
 
         if (((tick.level.getGameTime() % 24000 == Midnight) || tick.level.getGameTime() == Midnight)  &&
@@ -88,30 +87,9 @@ public class EventHandler extends Event {
 
             spawnEntity(10, 10, entity, player, tick);
 
-            tick.level.getServer().getPlayerList().broadcastSystemMessage
-                    (Component.literal("<Wrong.ed> Hello."), false);
-
-            responseTimerWronged++;
-
-            if (tick.level.getRandom().nextInt(chancePhrase) == 0 && responseTimerWronged == 100) {
-                tick.level.getServer().getPlayerList().broadcastSystemMessage
-                        (Component.literal("<Wrong.ed> Can I give you something? " +
-                                "I hope it's okay."), false);
-                responseTimerWronged = 0;
-            }
-            else if (tick.level.getRandom().nextInt(chancePhrase) == 1 && responseTimerWronged == 100) {
-                tick.level.getServer().getPlayerList().broadcastSystemMessage
-                        (Component.literal("<Wrong.ed> I can give you an item. " +
-                                "Not sure if it's as useful as I think it is."), false);
-                responseTimerWronged = 0;
-            }
-            else if (responseTimerWronged == 100) {
-                tick.level.getServer().getPlayerList().broadcastSystemMessage
-                        (Component.literal("<Wrong.ed> Can you take this item from me, if it's okay? " +
-                                "It gives me painful memories, but I don't want it to go to waste..."),
-                                false);
-                responseTimerWronged = 0;
-            }
+        }
+        if (tick.level.getGameTime() % 21000 == 0) {
+            canChat = false;
         }
     }
 
