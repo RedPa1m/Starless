@@ -29,40 +29,9 @@ import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 public class EventHandler extends Event {
     static int randomIndex;
     static long lastSpawnWronged = 0;
-    static long lastSpawnObserve = 0;
     static Random random = new Random();
 
-    // Attempt to spawn Observe after some amount of ticks with 10% chance
-    @SubscribeEvent
-    public static void spawnObserve(TickEvent.LevelTickEvent tick) {
-        if (tick.phase != TickEvent.Phase.END) return;
-        if (!(tick.level instanceof ServerLevel)) return;
-        if (tick.level.isClientSide) return;
-        if (tick.level.dimension() != Level.OVERWORLD) return;
-
-        if (tick.level.getServer().getPlayerList().getPlayers().isEmpty()) return;
-
-        int spawnTime = 8000;
-        int spawnChance = 10;
-
-        if ((tick.level.getGameTime() % spawnTime == 0) && tick.level.getRandom().nextInt(spawnChance) == 0 &&
-        tick.level.getGameTime() != lastSpawnObserve) {
-
-            lastSpawnObserve = tick.level.getGameTime();
-            ObserveEntity entity = ModEntities.OBSERVE.get().create(tick.level);
-            if (entity == null) return;
-
-            Player player = tick.level.getServer().getPlayerList().getPlayers().get
-                    (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-
-            spawnEntity(10, 10, entity, player, tick);
-
-            tick.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                    SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 2f, 0.85f);
-        }
-    }
-
-    // Spawn Wronged at Midnight
+    // Spawn Wronged
     @SubscribeEvent
     public static void spawnWronged(TickEvent.LevelTickEvent tick) {
         if (tick.phase != TickEvent.Phase.END) return;
@@ -73,10 +42,10 @@ public class EventHandler extends Event {
         if (tick.level.getServer().getPlayerList().getPlayers().isEmpty()) return;
 
         int chanceSpawn = 2;
-        int Midnight = 18000;
+        int wrongedSpawnTimer = 18000;
 
-        if (((tick.level.getGameTime() % 24000 == Midnight) || tick.level.getGameTime() == Midnight)  &&
-                tick.level.getRandom().nextInt(chanceSpawn) == 0 && tick.level.getGameTime() != lastSpawnWronged) {
+        if (((tick.level.getGameTime() % 24000 == wrongedSpawnTimer) || tick.level.getGameTime() == wrongedSpawnTimer)
+                && tick.level.getRandom().nextInt(chanceSpawn) == 0 && tick.level.getGameTime() != lastSpawnWronged) {
 
             lastSpawnWronged = tick.level.getGameTime();
             WrongedEntity entity = ModEntities.WRONGED.get().create(tick.level);
@@ -88,7 +57,7 @@ public class EventHandler extends Event {
             spawnEntity(10, 10, entity, player, tick);
 
         }
-        if (tick.level.getGameTime() % 21000 == 0) {
+        if (tick.level.getGameTime() % 20500 == 0) {
             canChat = false;
         }
     }
