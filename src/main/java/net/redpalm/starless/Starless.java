@@ -19,6 +19,7 @@ import net.redpalm.starless.entity.ModEntities;
 import net.redpalm.starless.entity.client.ObserveAngryRenderer;
 import net.redpalm.starless.entity.client.ObserveRenderer;
 import net.redpalm.starless.entity.client.WrongedRenderer;
+import net.redpalm.starless.event.EntitySpawnEventHandler;
 import net.redpalm.starless.event.EventHandler;
 import net.redpalm.starless.event.custom.WrongedChatEvent;
 import net.redpalm.starless.event.custom.WrongedRegisterChatEvent;
@@ -48,6 +49,7 @@ public class Starless
         MinecraftForge.EVENT_BUS.register(EventHandler.class);
         MinecraftForge.EVENT_BUS.register(WrongedRegisterChatEvent.class);
         MinecraftForge.EVENT_BUS.register(WrongedChatEvent.class);
+        MinecraftForge.EVENT_BUS.register(EntitySpawnEventHandler.class);
 
         modEventBus.addListener(this::addCreative);
 

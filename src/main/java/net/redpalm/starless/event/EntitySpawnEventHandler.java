@@ -9,9 +9,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
+import net.redpalm.starless.entity.custom.ObserveAngryEntity;
+import net.redpalm.starless.entity.custom.ObserveEntity;
 
 import java.util.Random;
 
@@ -26,6 +29,7 @@ public class EntitySpawnEventHandler extends Event {
     private static boolean dailyObserveSpawn = true;
     private static boolean dailyWrongedSpawn = true;
 
+    @SubscribeEvent
     public static void worldTick (TickEvent.LevelTickEvent tick) {
         if (tick.phase != TickEvent.Phase.END) return;
         if (!(tick.level instanceof ServerLevel)) return;
@@ -33,15 +37,19 @@ public class EntitySpawnEventHandler extends Event {
         if (tick.level.dimension() != Level.OVERWORLD) return;
         if (tick.level.getServer().getPlayerList().getPlayers().isEmpty()) return;
         // make it so angry Observe can only spawn after 6 days
-        if (canAngryObserveSpawn == false && tick.level.getGameTime() > 24000 * 6) {
+        if (!canAngryObserveSpawn && tick.level.getGameTime() > 24000 * 6) {
             canAngryObserveSpawn = true;
         }
         // reset day starting boolean
-        if (tick.level.getGameTime() % 24000 == 0) {
+        if (tick.level.getGameTime() % 24000 == 0 && tick.level.getGameTime() != 0) {
             startDay = true;
         }
+        // 1st day is set to peaceful type
+        if (tick.level.getGameTime() == 20) {
+            eventType = 0;
+        }
         // start of the day event reset
-        if (startDay == true) {
+        if (startDay) {
             eventCount = 0;
             dailyObserveSpawn = true;
             dailyWrongedSpawn = true;
@@ -53,6 +61,8 @@ public class EntitySpawnEventHandler extends Event {
             }
             startDay = false;
         }
+        // calling event type method
+        fireEventType(tick);
     }
 
     public enum DayType {
@@ -73,25 +83,24 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    private static void fireEventType(TickEvent.LevelTickEvent tick, LivingEntity entity,
-                                  Player player) {
+    private static void fireEventType(TickEvent.LevelTickEvent tick) {
         if (eventType == DayType.PEACEFUL.getValue()) {
-            peacefulPreset(tick, entity, player);
+            peacefulPreset(tick);
         }
         else if (eventType == DayType.CALM.getValue()) {
-            calmPreset(tick, entity, player);
+            calmPreset(tick);
         }
         else if (eventType == DayType.RISKY.getValue()) {
-            riskyPreset(tick, entity, player);
+            riskyPreset(tick);
         }
         else if (eventType == DayType.DANGEROUS.getValue()) {
-            dangerousPreset(tick, entity, player);
+            dangerousPreset(tick);
         }
         else if (eventType == DayType.HARD.getValue()) {
-            hardPreset(tick, entity, player);
+            hardPreset(tick);
         }
         else if (eventType == DayType.EXTREME.getValue()) {
-            extremePreset(tick, entity, player);
+            extremePreset(tick);
         }
     }
 
@@ -99,18 +108,16 @@ public class EntitySpawnEventHandler extends Event {
         return eventCount < 6;
     }
 
-    private static void peacefulPreset (TickEvent.LevelTickEvent tick, LivingEntity entity,
-                                 Player player) {
+    private static void peacefulPreset (TickEvent.LevelTickEvent tick) {
         int observePeacefulSpawnTime = 10000;
-        int observePeacefulSpawnChance = 20;
+        int observePeacefulSpawnChance = 10;
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observePeacefulSpawnTime, observePeacefulSpawnChance, false);
         }
     }
 
-    private static void calmPreset (TickEvent.LevelTickEvent tick, LivingEntity entity,
-                             Player player) {
+    private static void calmPreset (TickEvent.LevelTickEvent tick) {
         int observeCalmSpawnTime = 7500;
         int observeCalmSpawnChance = 10;
 
@@ -119,8 +126,7 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    private static void riskyPreset (TickEvent.LevelTickEvent tick, LivingEntity entity,
-                              Player player) {
+    private static void riskyPreset (TickEvent.LevelTickEvent tick) {
         int observeRiskySpawnTime = 7000;
         int observeRiskySpawnChance = 10;
 
@@ -129,8 +135,7 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    private static void dangerousPreset (TickEvent.LevelTickEvent tick, LivingEntity entity,
-                                  Player player) {
+    private static void dangerousPreset (TickEvent.LevelTickEvent tick) {
         int observeDangerousSpawnTime = 7000;
         int observeDangerousSpawnChance = 5;
 
@@ -139,8 +144,7 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    private static void hardPreset (TickEvent.LevelTickEvent tick, LivingEntity entity,
-                             Player player) {
+    private static void hardPreset (TickEvent.LevelTickEvent tick) {
         int observeHardSpawnTime = 7000;
         int observeHardSpawnChance = 5;
 
@@ -149,8 +153,7 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    private static void extremePreset (TickEvent.LevelTickEvent tick, LivingEntity entity,
-                                Player player) {
+    private static void extremePreset (TickEvent.LevelTickEvent tick) {
         int observeExtremeSpawnTime = 7000;
         int observeExtremeSpawnChance = 2;
 
@@ -161,7 +164,7 @@ public class EntitySpawnEventHandler extends Event {
 
     private static void spawnObserve(TickEvent.LevelTickEvent tick, int spawnTime, int spawnChance, boolean isAngry) {
         if ((tick.level.getGameTime() % spawnTime == 0) && tick.level.getRandom().nextInt(spawnChance) == 0 &&
-                dailyObserveSpawn == true) {
+                dailyObserveSpawn) {
 
             LivingEntity entity = observeCreate(tick, isAngry);
             if (entity == null) return;
@@ -169,7 +172,12 @@ public class EntitySpawnEventHandler extends Event {
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
 
-            spawnEntity(10, 10, 3, 3, entity, player, tick);
+            if (isAngry) {
+                spawnEntity(15, 15, 10, 10, entity, player, tick);
+            }
+            else {
+                spawnEntity(10, 10, 3, 3, entity, player, tick);
+            }
 
             tick.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                     SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 2.3f, 0.85f);
@@ -179,11 +187,13 @@ public class EntitySpawnEventHandler extends Event {
     }
 
     private static LivingEntity observeCreate(TickEvent.LevelTickEvent tick, boolean isAngry) {
-        if (isAngry == false) {
-            return ModEntities.OBSERVE.get().create(tick.level);
+        if (!isAngry) {
+            ObserveEntity entity = ModEntities.OBSERVE.get().create(tick.level);
+            return entity;
         }
         else {
-            return ModEntities.OBSERVE_ANGRY.get().create(tick.level);
+            ObserveAngryEntity entity = ModEntities.OBSERVE_ANGRY.get().create(tick.level);
+            return entity;
         }
     }
 
