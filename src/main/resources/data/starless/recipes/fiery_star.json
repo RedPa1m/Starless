@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "#Q#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "starless:corrupted_lapis"
+    },
+    "Q": {
+      "item": "minecraft:blaze_powder"
+    }
+  },
+  "result": {
+    "count": 8,
+    "item": "starless:fiery_star"
+  }
+}

@@ -14,6 +14,9 @@ public class ModItems {
     public static final RegistryObject<Item> CORRUPTED_LAPIS = ITEMS.register
             ("corrupted_lapis", () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> FIERY_STAR = ITEMS.register
+            ("fiery_star", () -> new Item(new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

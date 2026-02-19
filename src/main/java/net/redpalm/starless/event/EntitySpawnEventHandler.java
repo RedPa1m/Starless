@@ -15,8 +15,11 @@ import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
 import net.redpalm.starless.entity.custom.ObserveAngryEntity;
 import net.redpalm.starless.entity.custom.ObserveEntity;
+import net.redpalm.starless.entity.custom.WrongedEntity;
 
 import java.util.Random;
+
+import static net.redpalm.starless.entity.custom.WrongedEntity.canChat;
 
 @Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntitySpawnEventHandler extends Event {
@@ -63,6 +66,10 @@ public class EntitySpawnEventHandler extends Event {
         }
         // calling event type method
         fireEventType(tick);
+
+        if (tick.level.getGameTime() % 20500 == 0) {
+            canChat = false;
+        }
     }
 
     public enum DayType {
@@ -111,6 +118,10 @@ public class EntitySpawnEventHandler extends Event {
     private static void peacefulPreset (TickEvent.LevelTickEvent tick) {
         int observePeacefulSpawnTime = 10000;
         int observePeacefulSpawnChance = 10;
+        int wrongedSpawnTime = 18000;
+
+        spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
+                "wronged");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observePeacefulSpawnTime, observePeacefulSpawnChance, false);
@@ -120,6 +131,10 @@ public class EntitySpawnEventHandler extends Event {
     private static void calmPreset (TickEvent.LevelTickEvent tick) {
         int observeCalmSpawnTime = 7500;
         int observeCalmSpawnChance = 10;
+        int wrongedSpawnTime = 18000;
+
+        spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
+                "wronged");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeCalmSpawnTime, observeCalmSpawnChance, false);
@@ -129,6 +144,12 @@ public class EntitySpawnEventHandler extends Event {
     private static void riskyPreset (TickEvent.LevelTickEvent tick) {
         int observeRiskySpawnTime = 7000;
         int observeRiskySpawnChance = 10;
+        int wrongedSpawnTime = 18000;
+
+        if (random.nextInt(2) == 0) {
+            spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
+                    "wronged");
+        }
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeRiskySpawnTime, observeRiskySpawnChance, false);
@@ -138,6 +159,12 @@ public class EntitySpawnEventHandler extends Event {
     private static void dangerousPreset (TickEvent.LevelTickEvent tick) {
         int observeDangerousSpawnTime = 7000;
         int observeDangerousSpawnChance = 5;
+        int wrongedSpawnTime = 18000;
+
+        if (random.nextInt(2) == 0) {
+            spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
+                    "wronged");
+        }
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeDangerousSpawnTime, observeDangerousSpawnChance, false);
@@ -160,6 +187,32 @@ public class EntitySpawnEventHandler extends Event {
         if (canFireNewEvent() && canAngryObserveSpawn) {
             spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, true);
         }
+    }
+
+    private static void spawnPresetEntity(TickEvent.LevelTickEvent tick, int spawnTime, boolean dailyEntitySpawn,
+                                          int extraX, int extraZ, int eX, int eZ, String entityType) {
+        if (tick.level.getGameTime() % spawnTime == 0 && dailyEntitySpawn) {
+            LivingEntity entity = entityCreate(tick, entityType);
+            if (entity == null) return;
+
+            Player player = tick.level.getServer().getPlayerList().getPlayers().get
+                    (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
+            spawnEntity(extraX, extraZ, eX, eZ, entity, player, tick);
+
+            dailyEntitySpawn = false;
+
+            if (!entityType.equals("wronged")) {
+                eventCount++;
+            }
+        }
+    }
+
+    private static LivingEntity entityCreate (TickEvent.LevelTickEvent tick, String entityType) {
+        if (entityType.equals("wronged")) {
+            WrongedEntity entity = ModEntities.WRONGED.get().create(tick.level);
+            return entity;
+        }
+        else return null;
     }
 
     private static void spawnObserve(TickEvent.LevelTickEvent tick, int spawnTime, int spawnChance, boolean isAngry) {

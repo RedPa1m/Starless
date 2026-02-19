@@ -1,84 +1,24 @@
 package net.redpalm.starless.event;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
-import net.redpalm.starless.entity.ModEntities;
-import net.redpalm.starless.entity.custom.ObserveEntity;
 import net.redpalm.starless.entity.custom.WrongedEntity;
 
 import java.util.Random;
 
-import static net.redpalm.starless.entity.custom.WrongedEntity.canChat;
 import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 
 @Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandler extends Event {
     static int randomIndex;
-    static long lastSpawnWronged = 0;
     static Random random = new Random();
-
-    // Spawn Wronged
-    @SubscribeEvent
-    public static void spawnWronged(TickEvent.LevelTickEvent tick) {
-        if (tick.phase != TickEvent.Phase.END) return;
-        if (!(tick.level instanceof ServerLevel)) return;
-        if (tick.level.isClientSide) return;
-        if (tick.level.dimension() != Level.OVERWORLD) return;
-
-        if (tick.level.getServer().getPlayerList().getPlayers().isEmpty()) return;
-
-        int chanceSpawn = 2;
-        int wrongedSpawnTimer = 18000;
-
-        if (((tick.level.getGameTime() % 24000 == wrongedSpawnTimer) || tick.level.getGameTime() == wrongedSpawnTimer)
-                && tick.level.getRandom().nextInt(chanceSpawn) == 0 && tick.level.getGameTime() != lastSpawnWronged) {
-
-            lastSpawnWronged = tick.level.getGameTime();
-            WrongedEntity entity = ModEntities.WRONGED.get().create(tick.level);
-            if (entity == null) return;
-
-            Player player = tick.level.getServer().getPlayerList().getPlayers().get
-                    (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-
-            spawnEntity(10, 10, entity, player, tick);
-
-        }
-        if (tick.level.getGameTime() % 20500 == 0) {
-            canChat = false;
-        }
-    }
-
-    public static void spawnEntity(int extraX, int extraZ, LivingEntity entity,
-                                   Player player, TickEvent.LevelTickEvent event) {
-        int entityX;
-        int entityZ;
-        int chance = 2;
-        if (event.level.getRandom().nextInt(chance) == 0) {
-            entityX = (int) player.getX() + event.level.getRandom().nextInt(15) + extraX;
-            entityZ = (int) player.getZ() + event.level.getRandom().nextInt(15) + extraZ;
-        }
-        else {
-            entityX = (int) player.getX() - event.level.getRandom().nextInt(15) - extraX;
-            entityZ = (int) player.getZ() - event.level.getRandom().nextInt(15) - extraZ;
-        }
-        entity.setPos(entityX, event.level.getHeight(Heightmap.Types.WORLD_SURFACE,
-                entityX, entityZ), entityZ);
-        event.level.addFreshEntity(entity);
-    }
 
     @SubscribeEvent
     public static void interactWronged(PlayerInteractEvent.EntityInteract event) {

@@ -2,10 +2,6 @@ package net.redpalm.starless.entity.custom;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -37,13 +33,6 @@ public class FireServantEntity extends Allay implements GeoEntity {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
-
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-    }
-
-
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource != damageSources().genericKill() && pSource != damageSources().fellOutOfWorld()) {
