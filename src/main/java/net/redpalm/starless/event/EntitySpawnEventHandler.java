@@ -228,7 +228,7 @@ public class EntitySpawnEventHandler extends Event {
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
 
             if (isAngry) {
-                spawnEntity(15, 15, 10, 10, entity, player, tick);
+                spawnEntity(11, 11, 3, 3, entity, player, tick);
             }
             else {
                 spawnEntity(10, 10, 3, 3, entity, player, tick);
