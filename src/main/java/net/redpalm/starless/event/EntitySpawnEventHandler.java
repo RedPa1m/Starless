@@ -67,7 +67,7 @@ public class EntitySpawnEventHandler extends Event {
         // calling event type method
         fireEventType(tick);
 
-        if (tick.level.getGameTime() % 20500 == 0) {
+        if (tick.level.getGameTime() % 24000 == 20500) {
             canChat = false;
         }
     }
@@ -133,8 +133,10 @@ public class EntitySpawnEventHandler extends Event {
         int observeCalmSpawnChance = 10;
         int wrongedSpawnTime = 18000;
 
-        spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
-                "wronged");
+        if (random.nextInt(2) == 0) {
+            spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
+                    "wronged");
+        }
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeCalmSpawnTime, observeCalmSpawnChance, false);
@@ -191,7 +193,7 @@ public class EntitySpawnEventHandler extends Event {
 
     private static void spawnPresetEntity(TickEvent.LevelTickEvent tick, int spawnTime, boolean dailyEntitySpawn,
                                           int extraX, int extraZ, int eX, int eZ, String entityType) {
-        if (tick.level.getGameTime() % spawnTime == 0 && dailyEntitySpawn) {
+        if (tick.level.getGameTime() % 24000 == spawnTime && dailyEntitySpawn) {
             LivingEntity entity = entityCreate(tick, entityType);
             if (entity == null) return;
 
