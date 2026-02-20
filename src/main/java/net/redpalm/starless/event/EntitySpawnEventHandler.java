@@ -60,7 +60,7 @@ public class EntitySpawnEventHandler extends Event {
                 eventType = random.nextInt(4);
             }
             else {
-                eventType = random.nextInt(6);
+                eventType = random.nextInt(2) + 4;
             }
             startDay = false;
         }
