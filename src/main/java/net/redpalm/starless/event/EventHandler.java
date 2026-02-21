@@ -9,7 +9,10 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
+import net.redpalm.starless.entity.ModEntities;
+import net.redpalm.starless.entity.custom.FireServantEntity;
 import net.redpalm.starless.entity.custom.WrongedEntity;
+import net.redpalm.starless.item.ModItems;
 
 import java.util.Random;
 
@@ -35,6 +38,19 @@ public class EventHandler extends Event {
             else {
                 player.sendSystemMessage(Component.literal("<Wrong.ed> Sorry, that's all I have for now."));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void fieryStarPlacement(PlayerInteractEvent.RightClickItem event) {
+        if (event.getLevel().isClientSide) return;
+        if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().getItem() ==
+                ModItems.FIERY_STAR.get()) {
+            FireServantEntity entity = ModEntities.FIRE_SERVANT.get().create(event.getLevel());
+            if (entity == null) return;
+            entity.setPos(event.getPos().getCenter());
+            event.getLevel().addFreshEntity(entity);
+            event.getItemStack().shrink(1);
         }
     }
 }
