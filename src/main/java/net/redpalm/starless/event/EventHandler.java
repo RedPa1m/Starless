@@ -50,7 +50,9 @@ public class EventHandler extends Event {
             if (entity == null) return;
             entity.setPos(event.getPos().getCenter());
             event.getLevel().addFreshEntity(entity);
-            event.getItemStack().shrink(1);
+            if (!event.getEntity().isCreative()) {
+                event.getItemStack().shrink(1);
+            }
         }
     }
 }
