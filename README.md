@@ -15,6 +15,9 @@ Discord server: https://discord.gg/qVJCRkxr
 Credits:
 
 Red Palm (mod idea, coding, some of entities textures and animations, wiki)
+
 One freaky guy (textures for some entities and items)
+
 Chaaze (helping with code)
+
 no_moon.jar team for creating no_moon.jar :D
