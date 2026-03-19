@@ -10,12 +10,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
+import net.redpalm.starless.entity.custom.CitaseEntity;
 import net.redpalm.starless.entity.custom.FireServantEntity;
 import net.redpalm.starless.entity.custom.WrongedEntity;
 import net.redpalm.starless.item.ModItems;
 
 import java.util.Random;
 
+import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 
 @Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -40,6 +42,51 @@ public class EventHandler extends Event {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void giveFoodCitase (PlayerInteractEvent.EntityInteract event) {
+        if (event.getLevel().isClientSide) return;
+        Player player = event.getEntity();
+        if (event.getTarget() instanceof CitaseEntity && event.getHand() == InteractionHand.MAIN_HAND) {
+            if (event.getItemStack().isEdible()) {
+                if (((CitaseEntity) event.getTarget()).getCanAcceptFood()) {
+                    if (!event.getEntity().isCreative()) {
+                        event.getItemStack().shrink(1);
+                    }
+                        ((CitaseEntity) event.getTarget()).setCanAcceptFood(false);
+                        switch (random.nextInt(3)) {
+                            case 0:
+                                citaseTalk(event, "Ahh, thank you so much! This is so nice.");
+                                break;
+                            case 1:
+                                citaseTalk(event, "Amazing! I'm very-very-very grateful, thank you!");
+                                break;
+                            case 2:
+                                citaseTalk(event, "Food!! Thank you, arigato, spasibo, danke-something... " +
+                                        "You get what I mean! Appreciate a lot!!");
+                                break;
+                    }
+                }
+                else {
+                    player.sendSystemMessage(Component.literal(isFamiliarString() + "This will be enough for me " +
+                            "for now, thank you for offering though!"));
+                }
+            }
+        }
+    }
+
+    private static void citaseTalk (PlayerInteractEvent.EntityInteract event, String speech) {
+        if (event.getLevel().isClientSide) return;
+        if (event.getLevel().getServer().getPlayerList().getPlayers().isEmpty()) return;
+        event.getLevel().getServer().getPlayerList().broadcastSystemMessage
+                (Component.literal(isFamiliarString() + speech), false);
+    }
+
+    private static String isFamiliarString () {
+        if (isFamiliar) return "<Citase> ";
+        else return "<??????> ";
+    }
+
 
     @SubscribeEvent
     public static void fieryStarPlacement(PlayerInteractEvent.RightClickItem event) {
