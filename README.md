@@ -10,7 +10,7 @@ Download release version here (you only need jar file): https://github.com/RedPa
 
 Wiki (WIP): https://github.com/RedPa1m/Starless/wiki
 
-Discord server: https://discord.gg/qVJCRkxr
+Discord server: https://discord.gg/MB38fSA874
 
 Credits:
 
