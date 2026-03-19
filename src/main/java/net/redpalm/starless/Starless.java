@@ -16,12 +16,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.redpalm.starless.block.ModBlocks;
 import net.redpalm.starless.entity.ModEntities;
-import net.redpalm.starless.entity.client.FireServantRenderer;
-import net.redpalm.starless.entity.client.ObserveAngryRenderer;
-import net.redpalm.starless.entity.client.ObserveRenderer;
-import net.redpalm.starless.entity.client.WrongedRenderer;
+import net.redpalm.starless.entity.client.*;
 import net.redpalm.starless.event.EntitySpawnEventHandler;
 import net.redpalm.starless.event.EventHandler;
+import net.redpalm.starless.event.custom.CitaseEventsAndReputation;
 import net.redpalm.starless.event.custom.WrongedChatEvent;
 import net.redpalm.starless.event.custom.WrongedRegisterChatEvent;
 import net.redpalm.starless.item.ModItems;
@@ -51,6 +49,7 @@ public class Starless
         MinecraftForge.EVENT_BUS.register(WrongedRegisterChatEvent.class);
         MinecraftForge.EVENT_BUS.register(WrongedChatEvent.class);
         MinecraftForge.EVENT_BUS.register(EntitySpawnEventHandler.class);
+        MinecraftForge.EVENT_BUS.register(CitaseEventsAndReputation.class);
 
         modEventBus.addListener(this::addCreative);
 
@@ -91,6 +90,7 @@ public class Starless
             EntityRenderers.register(ModEntities.WRONGED.get(), WrongedRenderer::new);
             EntityRenderers.register(ModEntities.OBSERVE_ANGRY.get(), ObserveAngryRenderer::new);
             EntityRenderers.register(ModEntities.FIRE_SERVANT.get(), FireServantRenderer::new);
+            EntityRenderers.register(ModEntities.CITASE.get(), CitaseRenderer::new);
         }
     }
 }

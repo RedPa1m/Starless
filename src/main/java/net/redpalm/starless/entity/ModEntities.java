@@ -7,10 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.redpalm.starless.Starless;
-import net.redpalm.starless.entity.custom.FireServantEntity;
-import net.redpalm.starless.entity.custom.ObserveAngryEntity;
-import net.redpalm.starless.entity.custom.ObserveEntity;
-import net.redpalm.starless.entity.custom.WrongedEntity;
+import net.redpalm.starless.entity.custom.*;
 
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
@@ -31,6 +28,10 @@ public class ModEntities {
     public static final RegistryObject<EntityType<FireServantEntity>> FIRE_SERVANT =
             ENTITY_TYPES.register("fire_servant", () -> EntityType.Builder.of(FireServantEntity::new, MobCategory.CREATURE)
                     .sized(0.4f, 0.4f).build("fire_servant"));
+
+    public static final RegistryObject<EntityType<CitaseEntity>> CITASE =
+            ENTITY_TYPES.register("citase", () -> EntityType.Builder.of(CitaseEntity::new, MobCategory.CREATURE)
+                    .sized(0.8f, 1.8f).build("citase"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

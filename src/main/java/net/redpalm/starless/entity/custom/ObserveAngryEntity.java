@@ -75,7 +75,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
                 .add(Attributes.ATTACK_DAMAGE, 12f)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5f)
-                .add(Attributes.JUMP_STRENGTH, 1f);
+                .add(Attributes.JUMP_STRENGTH, 0.4f);
     }
 
     @Override
