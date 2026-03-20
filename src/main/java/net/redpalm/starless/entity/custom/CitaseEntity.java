@@ -8,9 +8,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.redpalm.starless.event.custom.CitaseEventsAndReputation;
+import net.redpalm.starless.util.CitaseSavedData;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -42,8 +43,6 @@ public class CitaseEntity extends Mob implements GeoEntity {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class,
-                50f, 1f));
     }
 
     @Override
@@ -53,6 +52,9 @@ public class CitaseEntity extends Mob implements GeoEntity {
             return animationState.setAndContinue(RawAnimation.begin().then("blink",
                     Animation.LoopType.LOOP));
         }));
+        controllerRegistrar.add(new AnimationController<>(this, "hold_controller",
+                animationState -> PlayState.CONTINUE).triggerableAnim("hold",
+                RawAnimation.begin().then("hold", Animation.LoopType.HOLD_ON_LAST_FRAME)));
         controllerRegistrar.add(new AnimationController<>(this, "controller",
                 0, this::predicate));
         controllerRegistrar.add(new AnimationController<>(this, "walking",
@@ -93,10 +95,13 @@ public class CitaseEntity extends Mob implements GeoEntity {
             switch (random.nextInt(3)) {
                 case 0:
                     citaseTalk(level(), "Owch... Stop it!");
+                    break;
                 case 1:
                     citaseTalk(level(), "Why would you do this?!");
-                default:
+                    break;
+                case 2:
                     citaseTalk(level(), "Stop, I had enough of that in my life!");
+                    break;
             }
         }
         if (pSource != damageSources().genericKill() && pSource != damageSources().fellOutOfWorld()) {
@@ -148,6 +153,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
                 level().getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Citase> See you later!"), false);
                 isFamiliar = true;
+                CitaseSavedData.save(level().getServer());
                 this.remove(RemovalReason.KILLED);
             }
         }
@@ -158,6 +164,18 @@ public class CitaseEntity extends Mob implements GeoEntity {
             }
             if (TimeAlive == 80) {
                 citaseTalk(level(), "Do you, perchance, have a spare meal? I would be very thankful!");
+            }
+        }
+
+        if (isFamiliar && !canAcceptFood) {
+            isTimerRunning = false;
+            specialTimer++;
+            if (specialTimer == 100) {
+                citaseTalk(level(), "Well, I gotta go now.");
+            }
+            if (specialTimer == 160) {
+                citaseTalk(level(), "See you later, and thank you once more!");
+                this.remove(RemovalReason.KILLED);
             }
         }
 
@@ -184,6 +202,12 @@ public class CitaseEntity extends Mob implements GeoEntity {
                 citaseTalk(level(), "Well, goodbye.");
             }
         }
+        if (!canAcceptFood && !level().isClientSide) {
+            triggerAnim("hold_controller", "hold");
+        }
+        if (level().getNearestPlayer(this, 50D) != null && canAcceptFood) {
+            getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
+        }
         if (this.isDeadOrDying()) {
             citaseTalk(level(), "Huh?! This is NOT nice!!");
         }
@@ -206,6 +230,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("canAcceptFood", this.canAcceptFood);
+        pCompound.putBoolean("isTimerRunning", this.isTimerRunning);
         pCompound.putInt("TimeAlive", this.TimeAlive);
         pCompound.putInt("specialTimer", this.specialTimer);
     }
@@ -215,6 +240,9 @@ public class CitaseEntity extends Mob implements GeoEntity {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("canAcceptFood")) {
             this.canAcceptFood = pCompound.getBoolean("canAcceptFood");
+        }
+        if (pCompound.contains("isTimerRunning")) {
+            this.isTimerRunning = pCompound.getBoolean("isTimerRunning");
         }
         if (pCompound.contains("TimeAlive")) {
             this.TimeAlive = pCompound.getInt("TimeAlive");

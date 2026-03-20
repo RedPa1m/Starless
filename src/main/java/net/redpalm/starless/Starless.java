@@ -23,6 +23,7 @@ import net.redpalm.starless.event.custom.CitaseEventsAndReputation;
 import net.redpalm.starless.event.custom.WrongedChatEvent;
 import net.redpalm.starless.event.custom.WrongedRegisterChatEvent;
 import net.redpalm.starless.item.ModItems;
+import net.redpalm.starless.util.CitaseSavedData;
 import org.slf4j.Logger;
 import software.bernie.geckolib.GeckoLib;
 
@@ -77,7 +78,7 @@ public class Starless
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-
+        CitaseSavedData.read(event.getServer());
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
