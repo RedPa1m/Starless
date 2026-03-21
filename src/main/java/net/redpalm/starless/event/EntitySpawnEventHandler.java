@@ -13,6 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
+import net.redpalm.starless.entity.custom.CitaseEntity;
 import net.redpalm.starless.entity.custom.ObserveAngryEntity;
 import net.redpalm.starless.entity.custom.ObserveEntity;
 import net.redpalm.starless.entity.custom.WrongedEntity;
@@ -24,6 +25,7 @@ import static net.redpalm.starless.entity.custom.WrongedEntity.canChat;
 @Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntitySpawnEventHandler extends Event {
     private static boolean startDay = false;
+    // todo - make those into saveddata
     private static byte eventCount = 0;
     private static boolean canAngryObserveSpawn = false;
     static Random random = new Random();
@@ -31,6 +33,7 @@ public class EntitySpawnEventHandler extends Event {
 
     private static boolean dailyObserveSpawn = true;
     private static boolean dailyWrongedSpawn = true;
+    private static boolean dailyCitaseSpawn = true;
 
     @SubscribeEvent
     public static void worldTick (TickEvent.LevelTickEvent tick) {
@@ -56,6 +59,7 @@ public class EntitySpawnEventHandler extends Event {
             eventCount = 0;
             dailyObserveSpawn = true;
             dailyWrongedSpawn = true;
+            dailyCitaseSpawn = true;
             if (random.nextInt(3) == 0 || random.nextInt(3) == 1) {
                 eventType = random.nextInt(4);
             }
@@ -119,9 +123,12 @@ public class EntitySpawnEventHandler extends Event {
         int observePeacefulSpawnTime = 10000;
         int observePeacefulSpawnChance = 10;
         int wrongedSpawnTime = 18000;
+        int citaseSpawnTime = 12000;
 
         spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
                 "wronged");
+
+        spawnPresetEntity(tick, citaseSpawnTime, dailyCitaseSpawn, 8, 8, 3, 3, "citase");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observePeacefulSpawnTime, observePeacefulSpawnChance, false);
@@ -132,11 +139,14 @@ public class EntitySpawnEventHandler extends Event {
         int observeCalmSpawnTime = 7500;
         int observeCalmSpawnChance = 10;
         int wrongedSpawnTime = 18000;
+        int citaseSpawnTime = 12000;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
                     "wronged");
         }
+
+        spawnPresetEntity(tick, citaseSpawnTime, dailyCitaseSpawn, 8, 8, 3, 3, "citase");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeCalmSpawnTime, observeCalmSpawnChance, false);
@@ -212,6 +222,10 @@ public class EntitySpawnEventHandler extends Event {
     private static LivingEntity entityCreate (TickEvent.LevelTickEvent tick, String entityType) {
         if (entityType.equals("wronged")) {
             WrongedEntity entity = ModEntities.WRONGED.get().create(tick.level);
+            return entity;
+        }
+        else if (entityType.equals("citase")) {
+            CitaseEntity entity = ModEntities.CITASE.get().create(tick.level);
             return entity;
         }
         else return null;

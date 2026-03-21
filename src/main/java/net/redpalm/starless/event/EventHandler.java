@@ -4,8 +4,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,7 +15,6 @@ import net.redpalm.starless.entity.custom.CitaseEntity;
 import net.redpalm.starless.entity.custom.FireServantEntity;
 import net.redpalm.starless.entity.custom.WrongedEntity;
 import net.redpalm.starless.item.ModItems;
-import net.redpalm.starless.util.CitaseSavedData;
 
 import java.util.Random;
 
@@ -50,12 +49,19 @@ public class EventHandler extends Event {
         if (event.getLevel().isClientSide) return;
         Player player = event.getEntity();
         if (event.getTarget() instanceof CitaseEntity && event.getHand() == InteractionHand.MAIN_HAND) {
-            if (event.getItemStack().isEdible()) {
+            if (event.getItemStack().isEdible() && (
+                    (event.getItemStack().getItem() != Items.ROTTEN_FLESH) &&
+                    (event.getItemStack().getItem() != Items.SPIDER_EYE) &&
+                    (event.getItemStack().getItem() != Items.SUSPICIOUS_STEW) &&
+                    (event.getItemStack().getItem() != Items.POISONOUS_POTATO) &&
+                    (event.getItemStack().getItem() != Items.PUFFERFISH))) {
                 if (((CitaseEntity) event.getTarget()).getCanAcceptFood()) {
                     if (!event.getEntity().isCreative()) {
                         event.getItemStack().shrink(1);
                     }
-                        ((CitaseEntity) event.getTarget()).setCanAcceptFood(false);
+                    ((CitaseEntity) event.getTarget()).setCanAcceptFood(false);
+                    ItemStack itemStack = event.getItemStack().copyWithCount(1);
+                    ((CitaseEntity) event.getTarget()).setItemInHand(InteractionHand.MAIN_HAND, itemStack);
                         switch (random.nextInt(3)) {
                             case 0:
                                 citaseTalk(event, "Ahh, thank you so much! This is so nice.");

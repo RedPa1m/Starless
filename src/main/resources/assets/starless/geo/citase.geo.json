@@ -164,8 +164,8 @@
 				{
 					"name": "item",
 					"parent": "right_armm",
-					"pivot": [-9.75, 3.3, 0],
-					"rotation": [62.5, 0, 0]
+					"pivot": [-9.75, 4.0, -0.3],
+					"rotation": [0, 0, 0]
 				},
 				{
 					"name": "left arm",

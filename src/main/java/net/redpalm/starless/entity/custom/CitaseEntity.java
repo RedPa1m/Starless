@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.redpalm.starless.event.custom.CitaseEventsAndReputation;
 import net.redpalm.starless.util.CitaseSavedData;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
