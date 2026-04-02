@@ -81,7 +81,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 15D)
-                .add(Attributes.FOLLOW_RANGE, 50f)
+                .add(Attributes.FOLLOW_RANGE, 100f)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f);
     }
 

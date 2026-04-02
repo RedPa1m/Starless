@@ -71,7 +71,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 300D)
-                .add(Attributes.FOLLOW_RANGE, 90D)
+                .add(Attributes.FOLLOW_RANGE, 200D)
                 .add(Attributes.ATTACK_DAMAGE, 12f)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5f)

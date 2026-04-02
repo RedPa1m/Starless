@@ -26,7 +26,6 @@ import static net.redpalm.starless.entity.custom.WrongedEntity.canChat;
 @Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntitySpawnEventHandler extends Event {
     private static boolean startDay = false;
-    // todo - make those into saveddata
     public static byte eventCount = 0;
     private static boolean canAngryObserveSpawn = false;
     static Random random = new Random();
@@ -128,10 +127,9 @@ public class EntitySpawnEventHandler extends Event {
         int wrongedSpawnTime = 18000;
         int citaseSpawnTime = 12500;
 
-        spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
-                "wronged");
+        spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
 
-        spawnPresetEntity(tick, citaseSpawnTime, dailyCitaseSpawn, 8, 8, 3, 3, "citase");
+        spawnPresetEntity(0, tick, citaseSpawnTime, dailyCitaseSpawn, "citase");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observePeacefulSpawnTime, observePeacefulSpawnChance, false);
@@ -145,11 +143,10 @@ public class EntitySpawnEventHandler extends Event {
         int citaseSpawnTime = 12500;
 
         if (random.nextInt(2) == 0) {
-            spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
-                    "wronged");
+            spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
         }
 
-        spawnPresetEntity(tick, citaseSpawnTime, dailyCitaseSpawn, 8, 8, 3, 3, "citase");
+        spawnPresetEntity(0, tick, citaseSpawnTime, dailyCitaseSpawn, "citase");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeCalmSpawnTime, observeCalmSpawnChance, false);
@@ -162,8 +159,7 @@ public class EntitySpawnEventHandler extends Event {
         int wrongedSpawnTime = 18000;
 
         if (random.nextInt(2) == 0) {
-            spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
-                    "wronged");
+            spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
         }
 
         if (canFireNewEvent()) {
@@ -177,8 +173,7 @@ public class EntitySpawnEventHandler extends Event {
         int wrongedSpawnTime = 18000;
 
         if (random.nextInt(2) == 0) {
-            spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
-                    "wronged");
+            spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
         }
 
         if (canFireNewEvent()) {
@@ -204,15 +199,15 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    private static void spawnPresetEntity(TickEvent.LevelTickEvent tick, int spawnTime, boolean dailyEntitySpawn,
-                                          int extraX, int extraZ, int eX, int eZ, String entityType) {
+    private static void spawnPresetEntity(int i, TickEvent.LevelTickEvent tick, int spawnTime, boolean dailyEntitySpawn,
+                                          String entityType) {
         if (tick.level.getGameTime() % 24000 == spawnTime && dailyEntitySpawn) {
             LivingEntity entity = entityCreate(tick, entityType);
             if (entity == null) return;
 
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-            spawnEntity(extraX, extraZ, eX, eZ, entity, player, tick);
+            spawnEntity(i, entity, player, tick);
 
             dailyEntitySpawn = false;
 
@@ -246,10 +241,10 @@ public class EntitySpawnEventHandler extends Event {
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
 
             if (isAngry) {
-                spawnEntity(11, 11, 3, 3, entity, player, tick);
+                spawnEntity(20, entity, player, tick);
             }
             else {
-                spawnEntity(10, 10, 3, 3, entity, player, tick);
+                spawnEntity(0, entity, player, tick);
             }
 
             tick.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
@@ -271,21 +266,15 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    private static void spawnEntity(int extraX, int extraZ, int eX, int eZ, LivingEntity entity,
-                                   Player player, TickEvent.LevelTickEvent event) {
-        int entityX;
-        int entityZ;
-        int chance = 2;
-        if (event.level.getRandom().nextInt(chance) == 0) {
-            entityX = (int) player.getX() + event.level.getRandom().nextInt(15) + extraX + random.nextInt(eX);
-            entityZ = (int) player.getZ() + event.level.getRandom().nextInt(15) + extraZ + random.nextInt(eZ);
-        }
-        else {
-            entityX = (int) player.getX() - event.level.getRandom().nextInt(15) - extraX - random.nextInt(eX);
-            entityZ = (int) player.getZ() - event.level.getRandom().nextInt(15) - extraZ - random.nextInt(eZ);
-        }
+    // credits to Chaaze for handling and explaining this particular part for me. used to have different thing that wasn't as good
+    private static void spawnEntity(int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
+        double angle = event.level.random.nextDouble() * Math.PI * 2;
+        double radius = 30 + event.level.random.nextInt(30) + i;
+
+        double entityX = player.getX() + Math.cos(angle) * radius;
+        double entityZ = player.getZ() + Math.sin(angle) * radius;
         entity.setPos(entityX, event.level.getHeight(Heightmap.Types.WORLD_SURFACE,
-                entityX, entityZ), entityZ);
+                (int)entityX, (int)entityZ), entityZ);
         event.level.addFreshEntity(entity);
     }
 
