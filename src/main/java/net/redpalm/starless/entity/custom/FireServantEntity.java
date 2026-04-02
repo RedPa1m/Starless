@@ -3,6 +3,7 @@ package net.redpalm.starless.entity.custom;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -40,5 +41,10 @@ public class FireServantEntity extends Allay implements GeoEntity {
         else {
             return super.hurt(pSource, pAmount);
         }
+    }
+
+    @Override
+    public boolean canBeLeashed(Player pPlayer) {
+        return false;
     }
 }

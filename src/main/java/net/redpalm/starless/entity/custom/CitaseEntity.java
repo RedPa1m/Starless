@@ -24,6 +24,8 @@ import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFami
 public class CitaseEntity extends Mob implements GeoEntity {
     private int TimeAlive = 0;
     private int specialTimer = 0;
+    private boolean reachedPlayer = false;
+    private boolean deathMessage = true;
     private boolean canAcceptFood = true;
     private boolean isTimerRunning = true;
     static Random random = new Random();
@@ -207,8 +209,16 @@ public class CitaseEntity extends Mob implements GeoEntity {
         if (level().getNearestPlayer(this, 50D) != null && canAcceptFood) {
             getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
         }
-        if (this.isDeadOrDying()) {
+        if (!reachedPlayer && !(level().getNearestPlayer(this, 200D) == null)) {
+            Player player = level().getNearestPlayer(this, 200D);
+            this.getNavigation().moveTo(player, 1.0f);
+            if (!(level().getNearestPlayer(this, 5D) == null)) {
+                reachedPlayer = true;
+            }
+        }
+        if (this.isDeadOrDying() && deathMessage == true) {
             citaseTalk(level(), "Huh?! This is NOT nice!!");
+            deathMessage = false;
         }
         super.tick();
     }
@@ -230,6 +240,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("canAcceptFood", this.canAcceptFood);
         pCompound.putBoolean("isTimerRunning", this.isTimerRunning);
+        pCompound.putBoolean("reachedPlayer", this.reachedPlayer);
         pCompound.putInt("TimeAlive", this.TimeAlive);
         pCompound.putInt("specialTimer", this.specialTimer);
     }
@@ -249,5 +260,13 @@ public class CitaseEntity extends Mob implements GeoEntity {
         if (pCompound.contains("specialTimer")) {
             this.specialTimer = pCompound.getInt("specialTimer");
         }
+        if (pCompound.contains("reachedPlayer")) {
+            this.reachedPlayer = pCompound.getBoolean("reachedPlayer");
+        }
+    }
+
+    @Override
+    public boolean canBeLeashed(Player pPlayer) {
+        return false;
     }
 }
