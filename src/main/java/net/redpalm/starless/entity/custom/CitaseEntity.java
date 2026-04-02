@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.redpalm.starless.util.CitaseSavedData;
+import net.redpalm.starless.util.StarlessSavedData;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -154,7 +154,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
                 level().getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Citase> See you later!"), false);
                 isFamiliar = true;
-                CitaseSavedData.save(level().getServer());
+                StarlessSavedData.save(level().getServer());
                 this.remove(RemovalReason.KILLED);
             }
         }

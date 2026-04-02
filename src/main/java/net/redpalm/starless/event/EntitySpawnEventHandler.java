@@ -17,6 +17,7 @@ import net.redpalm.starless.entity.custom.CitaseEntity;
 import net.redpalm.starless.entity.custom.ObserveAngryEntity;
 import net.redpalm.starless.entity.custom.ObserveEntity;
 import net.redpalm.starless.entity.custom.WrongedEntity;
+import net.redpalm.starless.util.StarlessSavedData;
 
 import java.util.Random;
 
@@ -26,14 +27,14 @@ import static net.redpalm.starless.entity.custom.WrongedEntity.canChat;
 public class EntitySpawnEventHandler extends Event {
     private static boolean startDay = false;
     // todo - make those into saveddata
-    private static byte eventCount = 0;
+    public static byte eventCount = 0;
     private static boolean canAngryObserveSpawn = false;
     static Random random = new Random();
-    private static int eventType;
+    public static int eventType;
 
-    private static boolean dailyObserveSpawn = true;
-    private static boolean dailyWrongedSpawn = true;
-    private static boolean dailyCitaseSpawn = true;
+    public static boolean dailyObserveSpawn = true;
+    public static boolean dailyWrongedSpawn = true;
+    public static boolean dailyCitaseSpawn = true;
 
     @SubscribeEvent
     public static void worldTick (TickEvent.LevelTickEvent tick) {
@@ -62,9 +63,11 @@ public class EntitySpawnEventHandler extends Event {
             dailyCitaseSpawn = true;
             if (random.nextInt(3) == 0 || random.nextInt(3) == 1) {
                 eventType = random.nextInt(4);
+                StarlessSavedData.save(tick.level.getServer());
             }
             else {
                 eventType = random.nextInt(2) + 4;
+                StarlessSavedData.save(tick.level.getServer());
             }
             startDay = false;
         }
@@ -123,7 +126,7 @@ public class EntitySpawnEventHandler extends Event {
         int observePeacefulSpawnTime = 10000;
         int observePeacefulSpawnChance = 10;
         int wrongedSpawnTime = 18000;
-        int citaseSpawnTime = 12000;
+        int citaseSpawnTime = 12500;
 
         spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
                 "wronged");
@@ -139,7 +142,7 @@ public class EntitySpawnEventHandler extends Event {
         int observeCalmSpawnTime = 7500;
         int observeCalmSpawnChance = 10;
         int wrongedSpawnTime = 18000;
-        int citaseSpawnTime = 12000;
+        int citaseSpawnTime = 12500;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(tick, wrongedSpawnTime, dailyWrongedSpawn, 10, 10, 3, 3,
@@ -215,6 +218,7 @@ public class EntitySpawnEventHandler extends Event {
 
             if (!entityType.equals("wronged")) {
                 eventCount++;
+                StarlessSavedData.save(tick.level.getServer());
             }
         }
     }
@@ -252,6 +256,7 @@ public class EntitySpawnEventHandler extends Event {
                     SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 2.3f, 0.85f);
             dailyObserveSpawn = false;
             eventCount++;
+            StarlessSavedData.save(tick.level.getServer());
         }
     }
 
