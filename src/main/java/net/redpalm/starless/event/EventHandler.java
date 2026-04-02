@@ -2,9 +2,12 @@ package net.redpalm.starless.event;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +16,7 @@ import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
 import net.redpalm.starless.entity.custom.CitaseEntity;
 import net.redpalm.starless.entity.custom.FireServantEntity;
+import net.redpalm.starless.entity.custom.ObserveAngryEntity;
 import net.redpalm.starless.entity.custom.WrongedEntity;
 import net.redpalm.starless.item.ModItems;
 
@@ -93,6 +97,14 @@ public class EventHandler extends Event {
     private static String isFamiliarString () {
         if (isFamiliar) return "<Citase> ";
         else return "<??????> ";
+    }
+
+    @SubscribeEvent
+    public static void despawnObserve(LivingDeathEvent event) {
+        Entity entity = event.getSource().getEntity();
+        if (event.getEntity() instanceof Player && event.getSource().getEntity() instanceof ObserveAngryEntity) {
+            entity.remove(Entity.RemovalReason.KILLED);
+        }
     }
 
 

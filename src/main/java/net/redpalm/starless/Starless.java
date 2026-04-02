@@ -22,6 +22,7 @@ import net.redpalm.starless.event.EventHandler;
 import net.redpalm.starless.event.custom.CitaseEventsAndReputation;
 import net.redpalm.starless.event.custom.WrongedChatEvent;
 import net.redpalm.starless.event.custom.WrongedRegisterChatEvent;
+import net.redpalm.starless.item.ModCreativeModeTabs;
 import net.redpalm.starless.item.ModItems;
 import net.redpalm.starless.util.CitaseSavedData;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class Starless
     {
         IEventBus modEventBus = context.getModEventBus();
 
+        ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -52,27 +54,12 @@ public class Starless
         MinecraftForge.EVENT_BUS.register(EntitySpawnEventHandler.class);
         MinecraftForge.EVENT_BUS.register(CitaseEventsAndReputation.class);
 
-        modEventBus.addListener(this::addCreative);
-
 
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
 
-    }
-
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(ModBlocks.CORRUPTED_LAPIS_BLOCK);
-        }
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ModItems.CORRUPTED_LAPIS);
-        }
-        if (event.getTabKey() == CreativeModeTabs.COLORED_BLOCKS) {
-            event.accept(ModBlocks.NOTHING_LEFT_PLUSH);
-        }
     }
 
     @SubscribeEvent
