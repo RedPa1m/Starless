@@ -16,6 +16,7 @@ import net.redpalm.starless.entity.ModEntities;
 import net.redpalm.starless.entity.client.*;
 import net.redpalm.starless.event.EntitySpawnEventHandler;
 import net.redpalm.starless.event.EventHandler;
+import net.redpalm.starless.event.RandomEventHandler;
 import net.redpalm.starless.event.custom.CitaseEventsAndReputation;
 import net.redpalm.starless.event.custom.WrongedChatEvent;
 import net.redpalm.starless.event.custom.WrongedRegisterChatEvent;
@@ -50,6 +51,7 @@ public class Starless
         MinecraftForge.EVENT_BUS.register(WrongedChatEvent.class);
         MinecraftForge.EVENT_BUS.register(EntitySpawnEventHandler.class);
         MinecraftForge.EVENT_BUS.register(CitaseEventsAndReputation.class);
+        MinecraftForge.EVENT_BUS.register(RandomEventHandler.class);
 
 
     }
