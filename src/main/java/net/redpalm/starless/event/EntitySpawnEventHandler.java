@@ -207,6 +207,7 @@ public class EntitySpawnEventHandler extends Event {
 
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
+            if (player.getY() < 30) return;
             spawnEntity(i, entity, player, tick);
 
             dailyEntitySpawn = false;
@@ -239,9 +240,9 @@ public class EntitySpawnEventHandler extends Event {
 
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-
+            if (player.getY() < 30) return;
             if (isAngry) {
-                spawnEntity(20, entity, player, tick);
+                spawnEntity(15, entity, player, tick);
             }
             else {
                 spawnEntity(0, entity, player, tick);
@@ -269,7 +270,7 @@ public class EntitySpawnEventHandler extends Event {
     // credits to Chaaze for handling and explaining this particular part for me. used to have different thing that wasn't as good
     private static void spawnEntity(int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
         double angle = event.level.random.nextDouble() * Math.PI * 2;
-        double radius = 30 + event.level.random.nextInt(30) + i;
+        double radius = 20 + event.level.random.nextInt(30) + i;
 
         double entityX = player.getX() + Math.cos(angle) * radius;
         double entityZ = player.getZ() + Math.sin(angle) * radius;
