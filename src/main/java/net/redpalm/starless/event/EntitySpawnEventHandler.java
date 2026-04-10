@@ -185,8 +185,8 @@ public class EntitySpawnEventHandler extends Event {
         int observeHardSpawnTime = 7000;
         int observeHardSpawnChance = 5;
 
-        if (canFireNewEvent() && canAngryObserveSpawn) {
-            spawnObserve(tick,observeHardSpawnTime, observeHardSpawnChance, true);
+        if (canFireNewEvent()) {
+            spawnObserve(tick,observeHardSpawnTime, observeHardSpawnChance, canAngryObserveSpawn);
         }
     }
 
@@ -194,8 +194,11 @@ public class EntitySpawnEventHandler extends Event {
         int observeExtremeSpawnTime = 7000;
         int observeExtremeSpawnChance = 2;
 
-        if (canFireNewEvent() && canAngryObserveSpawn) {
-            spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, true);
+        if (canFireNewEvent()) {
+            spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, canAngryObserveSpawn);
+        }
+        if (canFireNewEvent() && tick.level.getGameTime() == 22000 && dailyObserveSpawn) {
+            spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, canAngryObserveSpawn);
         }
     }
 
@@ -207,7 +210,7 @@ public class EntitySpawnEventHandler extends Event {
 
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-            if (player.getY() < 30) return;
+            if (player.getY() < 35) return;
             spawnEntity(i, entity, player, tick);
 
             dailyEntitySpawn = false;
@@ -242,7 +245,7 @@ public class EntitySpawnEventHandler extends Event {
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
             if (player.getY() < 30) return;
             if (isAngry) {
-                spawnEntity(15, entity, player, tick);
+                spawnEntity(5, entity, player, tick);
             }
             else {
                 spawnEntity(0, entity, player, tick);
@@ -270,7 +273,7 @@ public class EntitySpawnEventHandler extends Event {
     // credits to Chaaze for handling and explaining this particular part for me. used to have different thing that wasn't as good
     private static void spawnEntity(int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
         double angle = event.level.random.nextDouble() * Math.PI * 2;
-        double radius = 20 + event.level.random.nextInt(30) + i;
+        double radius = 20 + event.level.random.nextInt(20) + i;
 
         double entityX = player.getX() + Math.cos(angle) * radius;
         double entityZ = player.getZ() + Math.sin(angle) * radius;
