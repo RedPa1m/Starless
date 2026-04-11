@@ -24,7 +24,7 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "fuck you", "<Wrong.ed> ...Do you really have to be rude?");
             eventMethod(event, "skibidi toilet", "<Wrong.ed> " +
                     "Don't say this to other entities, please...");
-            eventMethod(event, "i love you", "<Wrong.ed> " +
+            eventMethod(event, "love you", "<Wrong.ed> " +
                     "I'm happy to hear that. But don't get too used to me.");
             eventMethod(event, "thank you", "<Wrong.ed> You're always welcome.");
             eventMethod(event, "you look emo", "<Wrong.ed> ...Is this a good thing?");
@@ -58,6 +58,10 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "red palm", "<...> Hey, no breaking the fourth wall!");
             eventMethod(event, "what happened", "<Wrong.ed> I forgot so much.");
             eventMethodHello(event, "<Wrong.ed> Hello.");
+            eventMethod(event, "citase", "<Wrong.ed> She seems to be looking for help and food. " +
+                    "But mainly food.");
+            eventMethod(event, "fire servant", "<Wrong.ed> They resemble creatures made by a " +
+                    "certain entity, but they're slightly different from the original.");
         }
     }
 
