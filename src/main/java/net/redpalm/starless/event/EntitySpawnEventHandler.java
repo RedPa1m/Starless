@@ -53,6 +53,7 @@ public class EntitySpawnEventHandler extends Event {
         // 1st day is set to peaceful type
         if (tick.level.getGameTime() == 20) {
             eventType = 0;
+            StarlessSavedData.save(tick.level.getServer());
         }
         // start of the day event reset
         if (startDay) {
@@ -243,7 +244,7 @@ public class EntitySpawnEventHandler extends Event {
 
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-            if (player.getY() < 30) return;
+            if (player.getY() < 35) return;
             if (isAngry) {
                 spawnEntity(5, entity, player, tick);
             }
