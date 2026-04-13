@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "#Q#",
+    "#Q#",
+    "#W#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "Q": {
+      "item": "minecraft:redstone_dust"
+    },
+    "W": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "starless:primitive_terminal"
+  }
+}

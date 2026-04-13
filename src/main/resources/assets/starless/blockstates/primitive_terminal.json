@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "starless:block/primitive_terminal"
+    },
+    "facing=south": {
+      "model": "starless:block/primitive_terminal",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "starless:block/primitive_terminal",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "starless:block/primitive_terminal",
+      "y": 90
+    }
+  }
+}

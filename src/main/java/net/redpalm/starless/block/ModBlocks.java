@@ -11,6 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.redpalm.starless.Starless;
 import net.redpalm.starless.block.custom.NothingLeftPlushBlock;
+import net.redpalm.starless.block.custom.PrimitiveTerminalBlock;
 import net.redpalm.starless.item.ModItems;
 
 import java.util.function.Supplier;
@@ -24,6 +25,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> NOTHING_LEFT_PLUSH = registerBlock("nothing_left_plush",
             () -> new NothingLeftPlushBlock(BlockBehaviour.Properties.copy(Blocks.BLACK_WOOL).noOcclusion()));
+
+    public static final RegistryObject<Block> PRIMITIVE_TERMINAL = registerBlock("primitive_terminal",
+            () -> new PrimitiveTerminalBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
