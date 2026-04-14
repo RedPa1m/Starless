@@ -6,11 +6,11 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import static net.redpalm.starless.Starless.queueServerWork;
 import static net.redpalm.starless.event.custom.WrongedRegisterChatEvent.fireAnswer;
 
 public class WrongedChatEvent extends Event {
     public static String wrongedResponse;
-    static int wrongedResponseTimer = 0;
 
     @SubscribeEvent
     public static void wrongedSendMessage(TickEvent.LevelTickEvent tick) {
@@ -19,13 +19,11 @@ public class WrongedChatEvent extends Event {
         if (tick.level.isClientSide) return;
 
         if (fireAnswer == true) {
-            wrongedResponseTimer++;
-            if (wrongedResponseTimer == 100) {
+            queueServerWork(40, () -> {
                 tick.level.getServer().getPlayerList().broadcastSystemMessage(Component.literal
                         (wrongedResponse), false);
-                wrongedResponseTimer = 0;
-                fireAnswer = false;
+            });
+            fireAnswer = false;
             }
         }
     }
-}

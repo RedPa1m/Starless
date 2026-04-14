@@ -62,6 +62,8 @@ public class WrongedRegisterChatEvent extends Event {
                     "But mainly food.");
             eventMethod(event, "fire servant", "<Wrong.ed> They resemble creatures made by a " +
                     "certain entity, but they're slightly different from the original.");
+            eventMethod(event, "terminal", "<Wrong.ed> Used to be able to get a message from a" +
+                    " random entity about once a day. Resets every start of the day.");
         }
     }
 
