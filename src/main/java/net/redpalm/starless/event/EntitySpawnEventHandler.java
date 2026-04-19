@@ -34,6 +34,7 @@ public class EntitySpawnEventHandler extends Event {
     public static boolean dailyObserveSpawn = true;
     public static boolean dailyWrongedSpawn = true;
     public static boolean dailyCitaseSpawn = true;
+    public static boolean dailyTerminalUsage = true;
 
     @SubscribeEvent
     public static void worldTick (TickEvent.LevelTickEvent tick) {
@@ -61,6 +62,7 @@ public class EntitySpawnEventHandler extends Event {
             dailyObserveSpawn = true;
             dailyWrongedSpawn = true;
             dailyCitaseSpawn = true;
+            dailyTerminalUsage = true;
             if (random.nextInt(3) == 0 || random.nextInt(3) == 1) {
                 eventType = random.nextInt(4);
                 StarlessSavedData.save(tick.level.getServer());

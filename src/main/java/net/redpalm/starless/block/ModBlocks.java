@@ -10,7 +10,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.redpalm.starless.Starless;
-import net.redpalm.starless.block.custom.NothingLeftPlushBlock;
 import net.redpalm.starless.block.custom.PrimitiveTerminalBlock;
 import net.redpalm.starless.item.ModItems;
 
@@ -22,9 +21,6 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> CORRUPTED_LAPIS_BLOCK = registerBlock("corrupted_lapis_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK)));
-
-    public static final RegistryObject<Block> NOTHING_LEFT_PLUSH = registerBlock("nothing_left_plush",
-            () -> new NothingLeftPlushBlock(BlockBehaviour.Properties.copy(Blocks.BLACK_WOOL).noOcclusion()));
 
     public static final RegistryObject<Block> PRIMITIVE_TERMINAL = registerBlock("primitive_terminal",
             () -> new PrimitiveTerminalBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));

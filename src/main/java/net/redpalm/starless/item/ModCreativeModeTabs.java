@@ -21,7 +21,6 @@ public class ModCreativeModeTabs {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.CORRUPTED_LAPIS.get());
                         output.accept(ModBlocks.CORRUPTED_LAPIS_BLOCK.get());
-                        output.accept(ModBlocks.NOTHING_LEFT_PLUSH.get());
                         output.accept(ModItems.FIERY_STAR.get());
                         output.accept(ModBlocks.PRIMITIVE_TERMINAL.get());
                     })

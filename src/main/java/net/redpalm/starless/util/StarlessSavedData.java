@@ -12,6 +12,7 @@ public class StarlessSavedData extends SavedData {
     private byte eventCountSD = 0;
     private int eventTypeSD;
     private boolean dailyObserveSpawnSD = true;
+    private boolean dailyTerminalUsageSD = true;
 
     public static StarlessSavedData create() {
         return new StarlessSavedData();
@@ -23,6 +24,7 @@ public class StarlessSavedData extends SavedData {
         data.eventCountSD = tag.getByte("eventCount");
         data.eventTypeSD = tag.getInt("eventType");
         data.dailyObserveSpawnSD = tag.getBoolean("dailyObserveSpawn");
+        data.dailyTerminalUsageSD = tag.getBoolean("dailyTerminalUsage");
         return data;
     }
 
@@ -32,6 +34,7 @@ public class StarlessSavedData extends SavedData {
         compoundTag.putByte("eventCount", eventCountSD);
         compoundTag.putInt("eventType", eventTypeSD);
         compoundTag.putBoolean("dailyObserveSpawn", dailyObserveSpawnSD);
+        compoundTag.putBoolean("dailyTerminalUsage", dailyTerminalUsageSD);
         return compoundTag;
     }
 
@@ -51,6 +54,7 @@ public class StarlessSavedData extends SavedData {
             data.eventCountSD = eventCount;
             data.eventTypeSD = eventType;
             data.dailyObserveSpawnSD = dailyObserveSpawn;
+            data.dailyTerminalUsageSD = dailyTerminalUsage;
             data.save();
     }
 
@@ -60,5 +64,6 @@ public class StarlessSavedData extends SavedData {
             eventCount = data.eventCountSD;
             eventType = data.eventTypeSD;
             dailyObserveSpawn = data.dailyObserveSpawnSD;
+            dailyTerminalUsage = data.dailyTerminalUsageSD;
     }
 }
