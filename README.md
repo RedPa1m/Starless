@@ -5,8 +5,6 @@ Welcome to Starless, this is a mod that adds some entities for player to interac
 
 I don't position this mod as horror, you won't find much of scary stuff here, nor this mod actually tries to be scary. This is what I personally call a "silly entity mod". Some of entities will assist you, some of them will want you dead, some of them won't do either.
 
-The mod was originally meant to be complementary mod for no_moon.jar, but it can be played completely standalone just fine. You can find links to nm.j inside the mod and many nm.j fan characters.
-
 Download here: https://www.curseforge.com/minecraft/mc-mods/starless
 
 Wiki: https://github.com/RedPa1m/Starless/wiki
@@ -20,5 +18,3 @@ Red Palm (mod idea, coding, some of entities textures and animations, wiki)
 One freaky guy (textures and animations for some entities, blocks and items)
 
 Chaaze (helping with code)
-
-no_moon.jar team for creating no_moon.jar :D
