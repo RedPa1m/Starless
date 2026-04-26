@@ -21,8 +21,6 @@ public class WrongedRegisterChatEvent extends Event {
                     "You should avoid him when his eyes are wide open.");
             eventMethod(event, "no_light", "<Wrong.ed> I think I've seen him around...");
             eventMethod(event, "fuck you", "<Wrong.ed> ...Do you really have to be rude?");
-            eventMethod(event, "skibidi toilet", "<Wrong.ed> " +
-                    "Don't say this to other entities, please...");
             eventMethod(event, "love you", "<Wrong.ed> " +
                     "I'm happy to hear that. But don't get too used to me.");
             eventMethod(event, "thank you", "<Wrong.ed> You're always welcome.");
@@ -35,24 +33,23 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "seeker", "<Wrong.ed> He likes to steal food, but he's mostly harmless.");
             eventMethod(event, "sorry", "<Wrong.ed> It's okay.");
             eventMethod(event, "help me", "<Wrong.ed> I will try my best.");
-            eventMethod(event, "freedom", "<Wrong.ed> I wish...");
             eventMethod(event, "inspector", "<...> <3");
             eventMethod(event, "i'm scared", "<Wrong.ed> I am here for now.");
             eventMethod(event, "are you scared", "<Wrong.ed> Maybe.");
             eventMethod(event, "how are you", "<Wrong.ed> I feel numb.");
             eventMethod(event, "separation", "<Wrong.ed> Defeated by her own pride.");
-            eventMethod(event, "daybreak", "<Wrong.ed> Waits patiently until the Void is gone.");
+            eventMethod(event, "daybreak", "<Wrong.ed> Creature born from a star similar to our Sun.");
             eventMethod(event, "transitioned", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "cassiopea", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "cassie", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "starry", "<Wrong.ed> Friendly little guy.");
             eventMethod(event, "red palm", "<...> Hey, no breaking the fourth wall!");
-            eventMethod(event, "what happened", "<Wrong.ed> I forgot so much.");
+            eventMethod(event, "what happened", "<Wrong.ed> I forgot so much. A lot of time passed.");
             eventMethodHello(event, "<Wrong.ed> Hello.");
             eventMethod(event, "citase", "<Wrong.ed> She seems to be looking for help and food. " +
                     "But mainly food.");
             eventMethod(event, "fire servant", "<Wrong.ed> They resemble creatures made by a " +
-                    "certain entity, but they're slightly different from the original.");
+                    "certain entity, but they're slightly different from the original. They act like Allays.");
             eventMethod(event, "terminal", "<Wrong.ed> Used to be able to get a message from a" +
                     " random entity about once a day. Resets every start of the day.");
         }

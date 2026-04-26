@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -18,7 +19,7 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class WrongedEntity extends Mob implements GeoEntity {
     private boolean canGiveItem;
-    private int TimeAlive = 0;
+    private int timeAlive = 0;
     public static boolean canChat = false;
     private int chancePhrase = 3;
 
@@ -39,6 +40,8 @@ public class WrongedEntity extends Mob implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class,
+                50f, 1f));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -49,12 +52,9 @@ public class WrongedEntity extends Mob implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    private PlayState predicate(AnimationState<WrongedEntity> wrongedEntityAnimationState) {
-        wrongedEntityAnimationState.getController().setAnimation(RawAnimation.begin().then("wronged.idle", Animation.LoopType.LOOP));
-        return PlayState.CONTINUE;
+        controllerRegistrar.add(new AnimationController<>(this, "blinking",
+                animationState -> PlayState.CONTINUE).triggerableAnim("blink",
+                RawAnimation.begin().then("blink", Animation.LoopType.PLAY_ONCE)));
     }
 
     @Override
@@ -69,8 +69,8 @@ public class WrongedEntity extends Mob implements GeoEntity {
     // Set his lifetime to 2400 ticks
     @Override
     public void tick() {
-        this.TimeAlive++;
-        if (this.TimeAlive == 1) {
+        this.timeAlive++;
+        if (this.timeAlive == 1) {
             this.canGiveItem = true;
             canChat = true;
             if (!level().isClientSide && !level().getServer().getPlayerList().getPlayers().isEmpty()) {
@@ -79,7 +79,7 @@ public class WrongedEntity extends Mob implements GeoEntity {
             }
         }
 
-        if (!level().isClientSide && this.TimeAlive == 40 && !level().getServer().getPlayerList().getPlayers().isEmpty()) {
+        if (!level().isClientSide && this.timeAlive == 40 && !level().getServer().getPlayerList().getPlayers().isEmpty()) {
             if (level().getRandom().nextInt(chancePhrase) == 0) {
                 level().getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Wrong.ed> Can I give you something? " +
@@ -98,21 +98,22 @@ public class WrongedEntity extends Mob implements GeoEntity {
             }
         }
 
-        if (this.TimeAlive == 2400) {
+        if (this.timeAlive == 2400) {
             this.remove(RemovalReason.KILLED);
-            this.TimeAlive = 0;
+            this.timeAlive = 0;
             if (!level().isClientSide) {
                 level().getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Wrong.ed> Goodbye."), false);
             }
             this.canGiveItem = true;
         }
-        if (level().getNearestPlayer(this, 50D) != null) {
-            getLookControl().setLookAt(level().getNearestPlayer(this, 50D));
-        }
 
         if (this.isDeadOrDying() || this.isRemoved()) {
             canChat = false;
+        }
+
+        if (timeAlive % 100 == 0 && !level().isClientSide) {
+            triggerAnim("blinking", "blink");
         }
 
         super.tick();
@@ -132,7 +133,7 @@ public class WrongedEntity extends Mob implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("canGiveItem", this.canGiveItem);
-        pCompound.putInt("TimeAlive", this.TimeAlive);
+        pCompound.putInt("TimeAlive", this.timeAlive);
     }
 
     @Override
@@ -142,7 +143,7 @@ public class WrongedEntity extends Mob implements GeoEntity {
             this.canGiveItem = pCompound.getBoolean("canGiveItem");
         }
         if (pCompound.contains("TimeAlive")) {
-            this.TimeAlive = pCompound.getInt("TimeAlive");
+            this.timeAlive = pCompound.getInt("TimeAlive");
         }
     }
 

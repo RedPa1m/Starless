@@ -23,7 +23,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import java.util.Random;
 
 public class ObserveAngryEntity extends Monster implements GeoEntity {
-    private int TimeAlive = 0;
+    private int timeAlive = 0;
     Random random = new Random();
     private boolean runTask = true; // thing for if he can start chase (so it doesn't duplicate)
     private boolean deathMessage = true;
@@ -90,13 +90,13 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
-        TimeAlive++;
+        timeAlive++;
 
-        if (TimeAlive == 1) {
+        if (timeAlive == 1) {
             observeTalk(level(), "<?> I see you.");
         }
 
-        if ((TimeAlive == 200 || level().getNearestPlayer(this, 10D) != null) && runTask == true) {
+        if ((timeAlive == 200 || level().getNearestPlayer(this, 10D) != null) && runTask == true) {
             if (random.nextInt(3) == 0) {
                 observeTalk(level(), "<?> Try.");
             } else if (random.nextInt(3) == 1) {
@@ -117,9 +117,9 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
                     (this, 1D, true));
         }
 
-        if (TimeAlive == 1600) {
+        if (timeAlive == 1600) {
             this.remove(RemovalReason.KILLED);
-            TimeAlive = 0;
+            timeAlive = 0;
             observeTalk(level(), "<?> ...");
         }
 
@@ -144,7 +144,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("TimeAlive", this.TimeAlive);
+        pCompound.putInt("TimeAlive", this.timeAlive);
         pCompound.putBoolean("runTask", this.runTask);
         pCompound.putBoolean("goalState", this.goalState);
     }
@@ -153,7 +153,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("TimeAlive")) {
-            this.TimeAlive = pCompound.getInt("TimeAlive");
+            this.timeAlive = pCompound.getInt("TimeAlive");
         }
         if (pCompound.contains("runTask")) {
             this.runTask = pCompound.getBoolean("runTask");

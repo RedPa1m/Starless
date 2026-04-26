@@ -60,7 +60,7 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
 
     public void randomSpeech(Level level, Player player) {
         if (dailyTerminalUsage) {
-            int x = level.getRandom().nextInt(8);
+            int x = level.getRandom().nextInt(11);
             int y = level.getRandom().nextInt(3);
             level.getServer().getPlayerList().broadcastSystemMessage(Component.literal
                     ("Loading..."), false);
@@ -73,7 +73,7 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
                         ("§kLoading..."), false);
             });
             queueServerWork(120, () -> {
-                if (level.getRandom().nextInt(2) != 0) {
+                if (level.getRandom().nextInt(10) != 0) {
                     switch (x) {
                         case 0:
                             speech(level, "<UNKNOWN_SOURCE>", "Hello? Who's that? I am busy with my bread! Please contact me later, beep-beep."); // citase
@@ -98,6 +98,15 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
                             break;
                         case 7:
                             speech(level, "<UNKNOWN_SOURCE>", "This mod changes Minecraft forever... This mod controls everything... Do you think I can be a good horror Minecraft youtuber?"); // citase
+                            break;
+                        case 8:
+                            speech(level, "<UNKNOWN_SOURCE>", "If you hear this message, you're cool, strong, handsome and funny. And also very smart!"); // citase
+                            break;
+                        case 9:
+                            speech(level, "<UNKNOWN_SOURCE>", "I know it will sound embarassing, but I start forgetting multiplication table..."); // citase
+                            break;
+                        case 10:
+                            speech(level, "<UNKNOWN_SOURCE>", "I am aware of your presence. I will find you."); // observe
                             break;
                     }
                 } else {

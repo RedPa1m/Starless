@@ -30,7 +30,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/starless" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
-credits="Red Palm (mod idea, coding, some entities textures), One freaky guy (some entities and items textures), Chaaze (helping with code)" #optional
+credits="Red Palm (mod idea, coding, some entities textures), One freaky guy (textures and animations for some entities, blocks and items), Chaaze (helping with code)" #optional
 # A text field displayed in the mod UI
 authors="Red Palm" #optional
 # Display Test controls the display for your mod in the server connection screen

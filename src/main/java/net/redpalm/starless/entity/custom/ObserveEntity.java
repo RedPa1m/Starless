@@ -20,7 +20,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
 public class ObserveEntity extends Monster implements GeoEntity {
-    private int TimeAlive = 0;
+    private int timeAlive = 0;
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -67,10 +67,10 @@ public class ObserveEntity extends Monster implements GeoEntity {
     // Set his lifetime to 600 ticks and make him look at player
     @Override
     public void tick() {
-        TimeAlive++;
-        if (TimeAlive == 600) {
+        timeAlive++;
+        if (timeAlive == 600) {
             this.remove(RemovalReason.KILLED);
-            TimeAlive = 0;
+            timeAlive = 0;
         }
         if (level().getNearestPlayer(this, 50D) != null) {
             getLookControl().setLookAt(level().getNearestPlayer(this, 100D));

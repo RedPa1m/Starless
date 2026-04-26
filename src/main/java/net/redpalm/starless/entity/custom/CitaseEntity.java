@@ -22,7 +22,7 @@ import java.util.Random;
 import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 
 public class CitaseEntity extends Mob implements GeoEntity {
-    private int TimeAlive = 0;
+    private int timeAlive = 0;
     private int specialTimer = 0;
     private boolean reachedPlayer = false;
     private boolean deathMessage = true;
@@ -115,20 +115,20 @@ public class CitaseEntity extends Mob implements GeoEntity {
 
     @Override
     public void tick() {
-        TimeAlive++;
+        timeAlive++;
         isTimerRunning = true;
 
         if (!isFamiliar) {
-            if (TimeAlive == 20) {
+            if (timeAlive == 20) {
                 citaseTalk(level(), "Player, player!");
             }
-            if (TimeAlive == 60) {
+            if (timeAlive == 60) {
                 citaseTalk(level(), "Hey!!");
             }
-            if (TimeAlive == 100) {
+            if (timeAlive == 100) {
                 citaseTalk(level(), "Sorry to approach you like that, but...");
             }
-            if (TimeAlive == 140) {
+            if (timeAlive == 140) {
                 citaseTalk(level(), "Would you... Have some spare food, please?");
             }
         }
@@ -160,10 +160,10 @@ public class CitaseEntity extends Mob implements GeoEntity {
         }
 
         if (isFamiliar) {
-            if (TimeAlive == 20) {
+            if (timeAlive == 20) {
                 citaseTalk(level(), "Hello!");
             }
-            if (TimeAlive == 80) {
+            if (timeAlive == 80) {
                 citaseTalk(level(), "Do you, perchance, have a spare meal? I would be very thankful!");
             }
         }
@@ -180,9 +180,9 @@ public class CitaseEntity extends Mob implements GeoEntity {
             }
         }
 
-        if (this.TimeAlive == 2400 && isTimerRunning) {
+        if (this.timeAlive == 2400 && isTimerRunning) {
             this.remove(RemovalReason.KILLED);
-            this.TimeAlive = 0;
+            this.timeAlive = 0;
             if (isFamiliar) {
                 switch (random.nextInt(4)) {
                     case 0:
@@ -241,7 +241,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
         pCompound.putBoolean("canAcceptFood", this.canAcceptFood);
         pCompound.putBoolean("isTimerRunning", this.isTimerRunning);
         pCompound.putBoolean("reachedPlayer", this.reachedPlayer);
-        pCompound.putInt("TimeAlive", this.TimeAlive);
+        pCompound.putInt("TimeAlive", this.timeAlive);
         pCompound.putInt("specialTimer", this.specialTimer);
     }
 
@@ -255,7 +255,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
             this.isTimerRunning = pCompound.getBoolean("isTimerRunning");
         }
         if (pCompound.contains("TimeAlive")) {
-            this.TimeAlive = pCompound.getInt("TimeAlive");
+            this.timeAlive = pCompound.getInt("TimeAlive");
         }
         if (pCompound.contains("specialTimer")) {
             this.specialTimer = pCompound.getInt("specialTimer");
