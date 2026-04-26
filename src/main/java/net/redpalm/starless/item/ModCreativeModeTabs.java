@@ -24,6 +24,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.FIERY_STAR.get());
                         output.accept(ModBlocks.PRIMITIVE_TERMINAL.get());
                         output.accept(ModItems.CORRUPTED_BREAD.get());
+                        output.accept(ModItems.CORRUPTED_DAGGER.get());
                     })
                     .build());
 

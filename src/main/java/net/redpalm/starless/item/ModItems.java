@@ -1,6 +1,8 @@
 package net.redpalm.starless.item;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,6 +21,10 @@ public class ModItems {
 
     public static final RegistryObject<Item> CORRUPTED_BREAD = ITEMS.register
             ("corrupted_bread", () -> new Item(new Item.Properties().food(ModFood.CORRUPTED_BREAD)));
+
+    public static final RegistryObject<Item> CORRUPTED_DAGGER = ITEMS.register
+            ("corrupted_dagger", () -> new SwordItem(Tiers.NETHERITE, 6, 3,
+                    new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
