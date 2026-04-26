@@ -248,14 +248,14 @@ public class EntitySpawnEventHandler extends Event {
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
             if (player.getY() < 35) return;
             if (isAngry) {
-                spawnEntity(5, entity, player, tick);
+                spawnEntity(10, entity, player, tick);
             }
             else {
                 spawnEntity(0, entity, player, tick);
             }
 
             tick.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                    SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 2.3f, 0.85f);
+                    SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 3.3f, 0.85f);
             dailyObserveSpawn = false;
             eventCount++;
             StarlessSavedData.save(tick.level.getServer());
@@ -276,7 +276,7 @@ public class EntitySpawnEventHandler extends Event {
     // credits to Chaaze for handling and explaining this particular part for me. used to have different thing that wasn't as good
     private static void spawnEntity(int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
         double angle = event.level.random.nextDouble() * Math.PI * 2;
-        double radius = 20 + event.level.random.nextInt(20) + i;
+        double radius = 15 + event.level.random.nextInt(20) + i;
 
         double entityX = player.getX() + Math.cos(angle) * radius;
         double entityZ = player.getZ() + Math.sin(angle) * radius;

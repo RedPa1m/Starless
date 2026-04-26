@@ -23,6 +23,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.CORRUPTED_LAPIS_BLOCK.get());
                         output.accept(ModItems.FIERY_STAR.get());
                         output.accept(ModBlocks.PRIMITIVE_TERMINAL.get());
+                        output.accept(ModItems.CORRUPTED_BREAD.get());
                     })
                     .build());
 

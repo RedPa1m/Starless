@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "#Q#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:wheat"
+    },
+    "Q": {
+      "item": "starless:corrupted_lapis"
+    }
+  },
+  "result": {
+    "item": "starless:corrupted_bread"
+  }
+}

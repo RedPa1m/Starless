@@ -17,6 +17,9 @@ public class ModItems {
     public static final RegistryObject<Item> FIERY_STAR = ITEMS.register
             ("fiery_star", () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> CORRUPTED_BREAD = ITEMS.register
+            ("corrupted_bread", () -> new Item(new Item.Properties().food(ModFood.CORRUPTED_BREAD)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
