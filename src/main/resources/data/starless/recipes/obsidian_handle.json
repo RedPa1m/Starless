@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "#Q#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "Q": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "starless:obsidian_handle"
+  }
+}

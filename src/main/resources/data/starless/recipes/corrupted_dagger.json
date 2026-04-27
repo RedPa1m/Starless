@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "QQ ",
+    " Q ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "starless:obsidian_handle"
+    },
+    "Q": {
+      "item": "starless:corrupted_lapis"
+    }
+  },
+  "result": {
+    "item": "starless:corrupted_dagger"
+  }
+}

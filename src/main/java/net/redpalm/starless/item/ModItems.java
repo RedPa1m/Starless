@@ -26,6 +26,10 @@ public class ModItems {
             ("corrupted_dagger", () -> new SwordItem(Tiers.NETHERITE, 6, 3,
                     new Item.Properties()));
 
+    public static final RegistryObject<Item> OBSIDIAN_HANDLE = ITEMS.register
+            ("obsidian_handle", () -> new Item(new Item.Properties()));
+
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

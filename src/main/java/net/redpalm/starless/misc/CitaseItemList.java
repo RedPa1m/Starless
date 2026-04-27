@@ -7,19 +7,18 @@ import java.util.List;
 
 public class CitaseItemList {
     public static List<Item> citaseItemList = List.of(
-            Items.EMERALD_ORE,
             Items.BOW,
             Items.IRON_ORE,
-            Items.RABBIT_HIDE,
             Items.LEATHER,
             Items.MUSIC_DISC_CHIRP,
             Items.BUNDLE,
-            Items.CHERRY_SAPLING,
-            Items.CANDLE,
-            Items.BLACK_CANDLE,
             Items.COMPASS,
             Items.FISHING_ROD,
             Items.ECHO_SHARD,
-            Items.LEAD
+            Items.LEAD,
+            Items.IRON_INGOT,
+            Items.DIAMOND,
+            Items.GOLD_INGOT,
+            Items.ENDER_PEARL
     );
 }

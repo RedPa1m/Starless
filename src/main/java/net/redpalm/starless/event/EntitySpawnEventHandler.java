@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -62,7 +63,6 @@ public class EntitySpawnEventHandler extends Event {
             dailyObserveSpawn = true;
             dailyWrongedSpawn = true;
             dailyCitaseSpawn = true;
-            dailyTerminalUsage = true;
             if (random.nextInt(3) == 0 || random.nextInt(3) == 1) {
                 eventType = random.nextInt(4);
                 StarlessSavedData.save(tick.level.getServer());
@@ -79,6 +79,8 @@ public class EntitySpawnEventHandler extends Event {
         if (tick.level.getGameTime() % 24000 == 20500) {
             canChat = false;
         }
+
+        terminalReset(tick);
     }
 
     public enum DayType {
@@ -213,7 +215,7 @@ public class EntitySpawnEventHandler extends Event {
 
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-            if (player.getY() < 35) return;
+            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
             spawnEntity(i, entity, player, tick);
 
             dailyEntitySpawn = false;
@@ -283,6 +285,19 @@ public class EntitySpawnEventHandler extends Event {
         entity.setPos(entityX, event.level.getHeight(Heightmap.Types.WORLD_SURFACE,
                 (int)entityX, (int)entityZ), entityZ);
         event.level.addFreshEntity(entity);
+    }
+
+    public static void terminalReset(TickEvent.LevelTickEvent tick) {
+        if (tick.level.getDayTime() % 24000 == 0) {
+            dailyTerminalUsage = true;
+            System.out.println("terminal should be updated");
+            StarlessSavedData.save(tick.level.getServer());
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerWake (PlayerWakeUpEvent event) {
+        dailyTerminalUsage = true;
     }
 
 }

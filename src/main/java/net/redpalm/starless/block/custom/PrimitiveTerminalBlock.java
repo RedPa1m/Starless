@@ -59,8 +59,9 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
     }
 
     public void randomSpeech(Level level, Player player) {
+        StarlessSavedData.read(level.getServer());
         if (dailyTerminalUsage) {
-            int x = level.getRandom().nextInt(11);
+            int x = level.getRandom().nextInt(13);
             int y = level.getRandom().nextInt(3);
             level.getServer().getPlayerList().broadcastSystemMessage(Component.literal
                     ("Loading..."), false);
@@ -108,6 +109,12 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
                         case 10:
                             speech(level, "<UNKNOWN_SOURCE>", "I am aware of your presence. I will find you."); // observe
                             break;
+                        case 11:
+                            speech(level, "<UNKNOWN_SOURCE>", "Once I drank about two bottles of wine, and I woke up with such insane headache... But the next day after that I was feeling so great! I think healing properties of alcohol only start being noticeable at the second day..."); //citase
+                            break;
+                        case 12:
+                            speech(level, "<UNKNOWN_SOURCE>", "If you get the Ender Dragon's breath and gather a bunch of Lapis, you can craft Corrupted Lapis that lets you craft some useful stuff. Hope that helps."); // no_light
+                            break;
                     }
                 } else {
                     switch (y) {
@@ -123,6 +130,7 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
                     }
                 }
             });
+            dailyTerminalUsage = false;
             StarlessSavedData.save(level.getServer());
         }
         else {
