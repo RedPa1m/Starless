@@ -84,7 +84,7 @@ public class ObserveEntity extends Monster implements GeoEntity {
     // Make it so he takes no damage unless falls out of the world or /kill applied
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource != damageSources().genericKill() && pSource != damageSources().fellOutOfWorld()) {
+        if (pSource != damageSources().genericKill() || pSource != damageSources().fellOutOfWorld()) {
         return false; }
         else {
             return super.hurt(pSource, pAmount);

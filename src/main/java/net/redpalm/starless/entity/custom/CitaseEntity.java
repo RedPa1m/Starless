@@ -105,7 +105,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
                     break;
             }
         }
-        if (pSource != damageSources().genericKill() && pSource != damageSources().fellOutOfWorld()) {
+        if (pSource != damageSources().genericKill() || pSource != damageSources().fellOutOfWorld()) {
             return false;
         }
         else {

@@ -36,7 +36,7 @@ public class FireServantEntity extends Allay implements GeoEntity {
     }
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource != damageSources().genericKill() && pSource != damageSources().fellOutOfWorld()) {
+        if (pSource != damageSources().genericKill() || pSource != damageSources().fellOutOfWorld()) {
             return false; }
         else {
             return super.hurt(pSource, pAmount);

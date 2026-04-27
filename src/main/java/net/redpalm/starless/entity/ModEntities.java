@@ -19,11 +19,11 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<WrongedEntity>> WRONGED =
             ENTITY_TYPES.register("wronged", () -> EntityType.Builder.of(WrongedEntity::new, MobCategory.CREATURE)
-                    .sized(1f, 1.5f).build("wronged"));
+                    .sized(0.75f, 1.5f).build("wronged"));
 
     public static final RegistryObject<EntityType<ObserveAngryEntity>> OBSERVE_ANGRY =
             ENTITY_TYPES.register("observe_angry", () -> EntityType.Builder.of(ObserveAngryEntity::new, MobCategory.MONSTER)
-                    .sized(0.8f, 1.5f).build("observe_angry"));
+                    .sized(0.75f, 1.5f).build("observe_angry"));
 
     public static final RegistryObject<EntityType<FireServantEntity>> FIRE_SERVANT =
             ENTITY_TYPES.register("fire_servant", () -> EntityType.Builder.of(FireServantEntity::new, MobCategory.CREATURE)
@@ -31,7 +31,11 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<CitaseEntity>> CITASE =
             ENTITY_TYPES.register("citase", () -> EntityType.Builder.of(CitaseEntity::new, MobCategory.CREATURE)
-                    .sized(0.8f, 1.8f).build("citase"));
+                    .sized(0.75f, 1.8f).build("citase"));
+
+    public static final RegistryObject<EntityType<SeekerEntity>> SEEKER =
+            ENTITY_TYPES.register("seeker", () -> EntityType.Builder.of(SeekerEntity::new, MobCategory.CREATURE)
+                    .sized(0.75f, 1.8f).build("Seeker"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

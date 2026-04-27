@@ -3,22 +3,29 @@ package net.redpalm.starless.event;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
+import net.redpalm.starless.entity.custom.ObserveAngryEntity;
 
 import java.util.Random;
 
+import static net.redpalm.starless.event.EntitySpawnEventHandler.eventType;
 import static net.redpalm.starless.misc.CitaseItemList.citaseItemList;
 
 @Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RandomEventHandler extends Event {
     static Random random = new Random();
+    private static boolean noLightSpeechStart = false;
 
     @SubscribeEvent
     public static void worldTick(TickEvent.LevelTickEvent tick) {
@@ -36,7 +43,7 @@ public class RandomEventHandler extends Event {
             tick.level.getServer().getPlayerList().broadcastSystemMessage
                     (Component.literal("Interesting.").withStyle(ChatFormatting.DARK_RED), false);
         }
-        if ((EntitySpawnEventHandler.eventType == 3 || EntitySpawnEventHandler.eventType == 4) &&
+        if ((eventType == 3 || eventType == 4) &&
                 random.nextInt(8) == 0) {
             if (tick.level.getGameTime() % 24000 == 13000) {
                 int x = random.nextInt(4);
@@ -55,10 +62,11 @@ public class RandomEventHandler extends Event {
             }
         }
         }
-        if (EntitySpawnEventHandler.eventType == 5 && random.nextInt(2) == 0 && tick.level.getGameTime() % 24000
+        if (eventType == 5 && random.nextInt(2) == 0 && tick.level.getGameTime() % 24000
         == 13000) {
             citaseRandomEvent(tick);
         }
+        noLightSpeech(tick);
     }
 
     private static void saySpeech (String string, Level level) {
@@ -81,5 +89,23 @@ public class RandomEventHandler extends Event {
                     Player player = tick.level.getServer().getPlayerList().getPlayers().get(i);
                     player.addItem(item);
             }
+    }
+
+    @SubscribeEvent
+    public static void noLightEventHeal (LivingHurtEvent event) {
+        if (event.getEntity() instanceof Player player && event.getSource().getEntity() instanceof Monster &&
+        random.nextInt(50) == 0 && !(event.getSource().getEntity() instanceof ObserveAngryEntity)
+                && eventType == 5) {
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100));
+            noLightSpeechStart = true;
+        }
+    }
+
+    private static void noLightSpeech (TickEvent.LevelTickEvent tick) {
+        if (noLightSpeechStart) {
+            tick.level.getServer().getPlayerList().broadcastSystemMessage
+                    (Component.literal("<UNKNOWN_SOURCE> Hello? I saw you struggle here. I hope that will help a little bit."), false);
+            noLightSpeechStart = false;
+        }
     }
 }

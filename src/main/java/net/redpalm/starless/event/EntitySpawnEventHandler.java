@@ -31,6 +31,7 @@ public class EntitySpawnEventHandler extends Event {
     private static boolean canAngryObserveSpawn = false;
     static Random random = new Random();
     public static int eventType;
+    private static long lastDayTime = -1;
 
     public static boolean dailyObserveSpawn = true;
     public static boolean dailyWrongedSpawn = true;
@@ -288,16 +289,15 @@ public class EntitySpawnEventHandler extends Event {
     }
 
     public static void terminalReset(TickEvent.LevelTickEvent tick) {
-        if (tick.level.getDayTime() % 24000 == 0) {
+        long dayTime = tick.level.getDayTime() % 24000;
+
+        if (lastDayTime != -1 && dayTime < lastDayTime) {
             dailyTerminalUsage = true;
             System.out.println("terminal should be updated");
             StarlessSavedData.save(tick.level.getServer());
         }
-    }
 
-    @SubscribeEvent
-    public static void playerWake (PlayerWakeUpEvent event) {
-        dailyTerminalUsage = true;
+        lastDayTime = dayTime;
     }
 
 }

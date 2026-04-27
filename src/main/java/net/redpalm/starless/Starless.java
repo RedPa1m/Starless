@@ -105,6 +105,7 @@ public class Starless
             EntityRenderers.register(ModEntities.OBSERVE_ANGRY.get(), ObserveAngryRenderer::new);
             EntityRenderers.register(ModEntities.FIRE_SERVANT.get(), FireServantRenderer::new);
             EntityRenderers.register(ModEntities.CITASE.get(), CitaseRenderer::new);
+            EntityRenderers.register(ModEntities.SEEKER.get(), SeekerRenderer::new);
         }
     }
 }
