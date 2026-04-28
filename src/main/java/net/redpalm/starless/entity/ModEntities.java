@@ -35,7 +35,7 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<SeekerEntity>> SEEKER =
             ENTITY_TYPES.register("seeker", () -> EntityType.Builder.of(SeekerEntity::new, MobCategory.CREATURE)
-                    .sized(0.75f, 1.8f).build("Seeker"));
+                    .sized(0.75f, 2.75f).build("seeker"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

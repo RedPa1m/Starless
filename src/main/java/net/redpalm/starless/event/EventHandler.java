@@ -13,10 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
-import net.redpalm.starless.entity.custom.CitaseEntity;
-import net.redpalm.starless.entity.custom.FireServantEntity;
-import net.redpalm.starless.entity.custom.ObserveAngryEntity;
-import net.redpalm.starless.entity.custom.WrongedEntity;
+import net.redpalm.starless.entity.custom.*;
 import net.redpalm.starless.item.ModItems;
 
 import java.util.Random;
