@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -80,8 +79,11 @@ public class EntitySpawnEventHandler extends Event {
         if (tick.level.getGameTime() % 24000 == 20500) {
             canChat = false;
         }
-
         terminalReset(tick);
+
+        spawnPresetEntity(0, tick, 200, dailyWrongedSpawn, "wronged");
+        spawnPresetEntity(0, tick, 200, dailyCitaseSpawn, "citase");
+        spawnPresetEntity(0, tick, 200, dailySeekerSpawn, "seeker");
     }
 
     public enum DayType {
@@ -229,19 +231,17 @@ public class EntitySpawnEventHandler extends Event {
         if (tick.level.getGameTime() % 24000 == spawnTime && dailyEntitySpawn) {
             LivingEntity entity = entityCreate(tick, entityType);
             if (entity == null) return;
-
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
                     (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
             if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
             spawnEntity(i, entity, player, tick);
 
-            dailyEntitySpawn = false;
-
             if (!entityType.equals("wronged")) {
                 eventCount++;
             }
-            StarlessSavedData.save(tick.level.getServer());
+            dailyEntitySpawn = false;
         }
+        StarlessSavedData.save(tick.level.getServer());
     }
 
     private static LivingEntity entityCreate (TickEvent.LevelTickEvent tick, String entityType) {
@@ -279,10 +279,10 @@ public class EntitySpawnEventHandler extends Event {
 
             tick.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                     SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 2.9f, 0.85f);
-            dailyObserveSpawn = false;
             eventCount++;
-            StarlessSavedData.save(tick.level.getServer());
+            dailyObserveSpawn = false;
         }
+        StarlessSavedData.save(tick.level.getServer());
     }
 
     private static LivingEntity observeCreate(TickEvent.LevelTickEvent tick, boolean isAngry) {
@@ -303,7 +303,7 @@ public class EntitySpawnEventHandler extends Event {
 
         double entityX = player.getX() + Math.cos(angle) * radius;
         double entityZ = player.getZ() + Math.sin(angle) * radius;
-        entity.setPos(entityX, event.level.getHeight(Heightmap.Types.WORLD_SURFACE,
+        entity.setPos(entityX, event.level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (int)entityX, (int)entityZ), entityZ);
         event.level.addFreshEntity(entity);
     }
