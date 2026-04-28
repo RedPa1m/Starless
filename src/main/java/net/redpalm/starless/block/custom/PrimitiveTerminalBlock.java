@@ -59,7 +59,6 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
     }
 
     public void randomSpeech(Level level, Player player) {
-        StarlessSavedData.read(level.getServer());
         if (dailyTerminalUsage) {
             int x = level.getRandom().nextInt(13);
             int y = level.getRandom().nextInt(3);

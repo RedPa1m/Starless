@@ -13,6 +13,8 @@ public class StarlessSavedData extends SavedData {
     private int eventTypeSD;
     private boolean dailyObserveSpawnSD = true;
     private boolean dailyTerminalUsageSD = true;
+    private boolean seekerSpawnsFirstTimeSD = true;
+    private boolean dailySeekerSpawnSD = true;
 
     public static StarlessSavedData create() {
         return new StarlessSavedData();
@@ -25,6 +27,8 @@ public class StarlessSavedData extends SavedData {
         data.eventTypeSD = tag.getInt("eventType");
         data.dailyObserveSpawnSD = tag.getBoolean("dailyObserveSpawn");
         data.dailyTerminalUsageSD = tag.getBoolean("dailyTerminalUsage");
+        data.seekerSpawnsFirstTimeSD = tag.getBoolean("seekerSpawnsFirstTime");
+        data.dailySeekerSpawnSD = tag.getBoolean("dailySeekerSpawn");
         return data;
     }
 
@@ -35,6 +39,8 @@ public class StarlessSavedData extends SavedData {
         compoundTag.putInt("eventType", eventTypeSD);
         compoundTag.putBoolean("dailyObserveSpawn", dailyObserveSpawnSD);
         compoundTag.putBoolean("dailyTerminalUsage", dailyTerminalUsageSD);
+        compoundTag.putBoolean("seekerSpawnsFirstTime", seekerSpawnsFirstTimeSD);
+        compoundTag.putBoolean("dailySeekerSpawn", dailySeekerSpawnSD);
         return compoundTag;
     }
 
@@ -55,6 +61,8 @@ public class StarlessSavedData extends SavedData {
             data.eventTypeSD = eventType;
             data.dailyObserveSpawnSD = dailyObserveSpawn;
             data.dailyTerminalUsageSD = dailyTerminalUsage;
+            data.seekerSpawnsFirstTimeSD = seekerSpawnsFirstTime;
+            data.dailySeekerSpawnSD = dailySeekerSpawn;
             data.save();
     }
 
@@ -65,5 +73,7 @@ public class StarlessSavedData extends SavedData {
             eventType = data.eventTypeSD;
             dailyObserveSpawn = data.dailyObserveSpawnSD;
             dailyTerminalUsage = data.dailyTerminalUsageSD;
+            seekerSpawnsFirstTime = data.seekerSpawnsFirstTimeSD;
+            dailySeekerSpawn = data.dailySeekerSpawnSD;
     }
 }

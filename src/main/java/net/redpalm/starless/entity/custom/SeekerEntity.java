@@ -1,6 +1,7 @@
 package net.redpalm.starless.entity.custom;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -8,16 +9,24 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+import net.redpalm.starless.util.StarlessSavedData;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+
+import static net.redpalm.starless.event.EntitySpawnEventHandler.seekerSpawnsFirstTime;
+import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 
 public class SeekerEntity extends PathfinderMob implements GeoEntity {
     public static final double TEMPT_SPEED_MOD = 0.6;
@@ -29,14 +38,21 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
     private int specialTimer = 0;
     private int timeAlive = 0;
     private int lookTimer = 0;
-    private int runAwayByHurtTimer = 0;
 
     public SeekerEntity(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Walk/Run/Idle", state -> {
+            if (state.isMoving())
+                return state.setAndContinue(SeekerEntity.this.isSprinting() ?
+                        RawAnimation.begin().then("run", Animation.LoopType.LOOP)
+                        : RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+
+            return state.setAndContinue(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+        }));
     }
 
     @Override
@@ -48,6 +64,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -90,6 +107,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
             timeAlive = 0;
         }
         if (!level().isClientSide) {
+            firstEncounterSequence(level());
             Player player = level().getNearestPlayer(this, 100D);
             if (!gotFood) {
                 if (player != null) {
@@ -180,6 +198,44 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
         }
     }
 
+    public void firstEncounterSequence (Level level) {
+        if (seekerSpawnsFirstTime) {
+            if (timeAlive == 20) {
+                citaseTalk(level, "Oh, it's this guy! Don't be afraid, he's not dangerous.");
+            }
+            if (timeAlive == 80) {
+                citaseTalk(level, "But he, uh... Will try to steal food from your inventory.");
+            }
+            if (timeAlive == 140) {
+                citaseTalk(level, "If you want to scare him off, just look at him and he will scurry away.");
+            }
+            if (timeAlive == 200) {
+                citaseTalk(level, "But you can also give him something willinly - just crouch, and he will " +
+                        "slowly approach you. You can look at him while crouching, he won't get scared.");
+            }
+            if (timeAlive == 260) {
+                citaseTalk(level, "Also, if you do this, you can get food in your hand, and he will take it " +
+                        "instead of taking it from your inventory. You don't want him to take your god apples!");
+            }
+            if (timeAlive == 280) {
+                seekerSpawnsFirstTime = false;
+                StarlessSavedData.save(level.getServer());
+            }
+        }
+    }
+
+    public void citaseTalk (Level level, String speech) {
+        if (level.isClientSide) return;
+        if (level.getServer().getPlayerList().getPlayers().isEmpty()) return;
+        level.getServer().getPlayerList().broadcastSystemMessage
+                (Component.literal(isFamiliarString() + speech), false);
+    }
+
+    private static String isFamiliarString () {
+        if (isFamiliar) return "<Citase> ";
+        else return "<??????> ";
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
@@ -193,5 +249,4 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
             this.timeAlive = pCompound.getInt("TimeAlive");
         }
     }
-
 }

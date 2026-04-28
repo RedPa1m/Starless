@@ -14,10 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
-import net.redpalm.starless.entity.custom.CitaseEntity;
-import net.redpalm.starless.entity.custom.ObserveAngryEntity;
-import net.redpalm.starless.entity.custom.ObserveEntity;
-import net.redpalm.starless.entity.custom.WrongedEntity;
+import net.redpalm.starless.entity.custom.*;
 import net.redpalm.starless.util.StarlessSavedData;
 
 import java.util.Random;
@@ -29,6 +26,7 @@ public class EntitySpawnEventHandler extends Event {
     private static boolean startDay = false;
     public static byte eventCount = 0;
     private static boolean canAngryObserveSpawn = false;
+    public static boolean seekerSpawnsFirstTime = true;
     static Random random = new Random();
     public static int eventType;
     private static long lastDayTime = -1;
@@ -37,6 +35,7 @@ public class EntitySpawnEventHandler extends Event {
     public static boolean dailyWrongedSpawn = true;
     public static boolean dailyCitaseSpawn = true;
     public static boolean dailyTerminalUsage = true;
+    public static boolean dailySeekerSpawn = true;
 
     @SubscribeEvent
     public static void worldTick (TickEvent.LevelTickEvent tick) {
@@ -147,12 +146,18 @@ public class EntitySpawnEventHandler extends Event {
         int observeCalmSpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int citaseSpawnTime = 12500;
+        int seekerSpawnTime = 5000;
+        int seekerSpawnChance = 10;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
         }
 
         spawnPresetEntity(0, tick, citaseSpawnTime, dailyCitaseSpawn, "citase");
+
+        if (random.nextInt(seekerSpawnChance) == 0) {
+        spawnPresetEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
+        }
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeCalmSpawnTime, observeCalmSpawnChance, false);
@@ -163,9 +168,15 @@ public class EntitySpawnEventHandler extends Event {
         int observeRiskySpawnTime = 7000;
         int observeRiskySpawnChance = 10;
         int wrongedSpawnTime = 18000;
+        int seekerSpawnTime = 5000;
+        int seekerSpawnChance = 8;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
+        }
+
+        if (random.nextInt(seekerSpawnChance) == 0) {
+            spawnPresetEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
         }
 
         if (canFireNewEvent()) {
@@ -177,9 +188,15 @@ public class EntitySpawnEventHandler extends Event {
         int observeDangerousSpawnTime = 7000;
         int observeDangerousSpawnChance = 5;
         int wrongedSpawnTime = 18000;
+        int seekerSpawnTime = 5000;
+        int seekerSpawnChance = 5;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
+        }
+
+        if (random.nextInt(seekerSpawnChance) == 0) {
+            spawnPresetEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
         }
 
         if (canFireNewEvent()) {
@@ -223,8 +240,8 @@ public class EntitySpawnEventHandler extends Event {
 
             if (!entityType.equals("wronged")) {
                 eventCount++;
-                StarlessSavedData.save(tick.level.getServer());
             }
+            StarlessSavedData.save(tick.level.getServer());
         }
     }
 
@@ -235,6 +252,10 @@ public class EntitySpawnEventHandler extends Event {
         }
         else if (entityType.equals("citase")) {
             CitaseEntity entity = ModEntities.CITASE.get().create(tick.level);
+            return entity;
+        }
+        else if (entityType.equals("seeker")) {
+            SeekerEntity entity = ModEntities.SEEKER.get().create(tick.level);
             return entity;
         }
         else return null;
@@ -293,7 +314,6 @@ public class EntitySpawnEventHandler extends Event {
 
         if (lastDayTime != -1 && dayTime < lastDayTime) {
             dailyTerminalUsage = true;
-            System.out.println("terminal should be updated");
             StarlessSavedData.save(tick.level.getServer());
         }
 
