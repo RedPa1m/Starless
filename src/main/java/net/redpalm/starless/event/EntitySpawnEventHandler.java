@@ -63,6 +63,7 @@ public class EntitySpawnEventHandler extends Event {
             dailyObserveSpawn = true;
             dailyWrongedSpawn = true;
             dailyCitaseSpawn = true;
+            dailySeekerSpawn = true;
             if (random.nextInt(3) == 0 || random.nextInt(3) == 1) {
                 eventType = random.nextInt(4);
                 StarlessSavedData.save(tick.level.getServer());
@@ -149,9 +150,7 @@ public class EntitySpawnEventHandler extends Event {
         int seekerSpawnTime = 5000;
         int seekerSpawnChance = 10;
 
-        if (random.nextInt(2) == 0) {
-            spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
-        }
+        spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
 
         spawnPresetEntity(0, tick, citaseSpawnTime, dailyCitaseSpawn, "citase");
 
@@ -169,7 +168,7 @@ public class EntitySpawnEventHandler extends Event {
         int observeRiskySpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 8;
+        int seekerSpawnChance = 5;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
@@ -189,7 +188,7 @@ public class EntitySpawnEventHandler extends Event {
         int observeDangerousSpawnChance = 5;
         int wrongedSpawnTime = 18000;
         int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 5;
+        int seekerSpawnChance = 3;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
@@ -279,7 +278,7 @@ public class EntitySpawnEventHandler extends Event {
             }
 
             tick.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                    SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 3.3f, 0.85f);
+                    SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 2.9f, 0.85f);
             dailyObserveSpawn = false;
             eventCount++;
             StarlessSavedData.save(tick.level.getServer());
