@@ -80,10 +80,6 @@ public class EntitySpawnEventHandler extends Event {
             canChat = false;
         }
         terminalReset(tick);
-
-        spawnPresetEntity(0, tick, 200, dailyWrongedSpawn, "wronged");
-        spawnPresetEntity(0, tick, 200, dailyCitaseSpawn, "citase");
-        spawnPresetEntity(0, tick, 200, dailySeekerSpawn, "seeker");
     }
 
     public enum DayType {
