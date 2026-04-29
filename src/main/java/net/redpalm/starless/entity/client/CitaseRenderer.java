@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
-import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.custom.CitaseEntity;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -49,12 +47,12 @@ public class CitaseRenderer extends GeoEntityRenderer<CitaseEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(CitaseEntity animatable) {
-        return new ResourceLocation(Starless.MODID, "textures/entity/citase.png");
+        return ResourceLocation.parse("starless:textures/entity/citase.png");
     }
 
     @Override
-    public void preRender(PoseStack poseStack, CitaseEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    public void preRender(PoseStack poseStack, CitaseEntity animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         this.mainHandItem = animatable.getMainHandItem();
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
     }
 }

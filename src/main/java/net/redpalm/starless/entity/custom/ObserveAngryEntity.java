@@ -15,10 +15,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 
 import java.util.Random;
 
@@ -111,7 +115,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
         }
 
         // check if attack goal is running so he attacks after world reload
-        if (!level().isClientSide && goalState == true && this.goalSelector.getRunningGoals().noneMatch
+        if (!level().isClientSide && goalState == true && this.goalSelector.getAvailableGoals().stream().noneMatch
                 (goal -> goal.getGoal().getClass() == MeleeAttackGoal.class)) {
             this.goalSelector.addGoal(1, new MeleeAttackGoal
                     (this, 1D, true));

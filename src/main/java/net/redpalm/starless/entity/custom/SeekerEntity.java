@@ -18,12 +18,14 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.redpalm.starless.util.StarlessSavedData;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 
 import static net.redpalm.starless.event.EntitySpawnEventHandler.seekerSpawnsFirstTime;
 import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
@@ -95,7 +97,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
-    public boolean canBeLeashed(Player pPlayer) {
+    public boolean canBeLeashed() {
         return false;
     }
 
@@ -158,7 +160,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
     private void seekerTempted (Player player) {
         if (player != null && hasEdibleFood(player)) {
             this.getNavigation().moveTo(player, TEMPT_SPEED_MOD);
-            if (player.getMainHandItem().isEdible() && this.isWithinMeleeAttackRange(player)) {
+            if (player.getMainHandItem().getFoodProperties(player) != null && this.isWithinMeleeAttackRange(player)) { // check
                 player.getMainHandItem().shrink(1);
                 gotFood = true;
             }
@@ -169,7 +171,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
     private void seekerTakeFood (Player player) {
         if (this.isWithinMeleeAttackRange(player) && hasEdibleFood(player)) {
             ItemStack food = player.getInventory().items.stream().filter(stack -> !stack.isEmpty() && stack.getItem()
-                    .isEdible()).findFirst().get();
+                    .getFoodProperties(stack, player) != null).findFirst().get(); // check
             int i = player.getInventory().items.indexOf(food);
             player.getInventory().removeItem(i, 1);
             gotFood = true;
@@ -178,7 +180,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
 
     public boolean hasEdibleFood(Player player) {
         return player.getInventory().items.stream()
-                .anyMatch(stack -> !stack.isEmpty() && stack.getItem().isEdible());
+                .anyMatch(stack -> !stack.isEmpty() && stack.getItem().getFoodProperties(stack, player) != null); // check
     }
 
     public boolean isLookingAtMe (Player pPlayer) {

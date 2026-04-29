@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.custom.FireServantEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -45,7 +44,7 @@ public class FireServantRenderer extends GeoEntityRenderer<FireServantEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(FireServantEntity animatable) {
-        return new ResourceLocation(Starless.MODID, "textures/entity/fire_servant.png");
+        return ResourceLocation.parse("starless:textures/entity/fire_servant.png");
     }
 
     @Override
@@ -54,8 +53,8 @@ public class FireServantRenderer extends GeoEntityRenderer<FireServantEntity> {
     }
 
     @Override
-    public void preRender(PoseStack poseStack, FireServantEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    public void preRender(PoseStack poseStack, FireServantEntity animatable, BakedGeoModel model, @org.jetbrains.annotations.Nullable MultiBufferSource bufferSource, @org.jetbrains.annotations.Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         this.mainHandItem = animatable.getMainHandItem();
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
     }
 }

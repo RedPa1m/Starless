@@ -1,5 +1,6 @@
 package net.redpalm.starless.util;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -20,7 +21,7 @@ public class StarlessSavedData extends SavedData {
         return new StarlessSavedData();
     }
 
-    public static StarlessSavedData load (CompoundTag tag) {
+    public static StarlessSavedData load (CompoundTag tag, HolderLookup.Provider provider) {
         StarlessSavedData data = create();
         data.isFamiliarSD = tag.getBoolean("isFamiliar");
         data.eventCountSD = tag.getByte("eventCount");
@@ -33,7 +34,7 @@ public class StarlessSavedData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compoundTag) {
+    public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
         compoundTag.putBoolean("isFamiliar", isFamiliarSD);
         compoundTag.putByte("eventCount", eventCountSD);
         compoundTag.putInt("eventType", eventTypeSD);
@@ -45,9 +46,9 @@ public class StarlessSavedData extends SavedData {
     }
 
     public static StarlessSavedData get (MinecraftServer server) {
-            if (server == null) return create();
-            return server.overworld().getDataStorage().computeIfAbsent(StarlessSavedData::load,
-                    StarlessSavedData::create, "starless_data");
+        if (server == null) return create();
+        return server.overworld().getDataStorage().computeIfAbsent(
+                new SavedData.Factory<>(StarlessSavedData::create, StarlessSavedData::load), "starless_data");
     }
 
     public void save() {

@@ -6,11 +6,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
 import net.redpalm.starless.entity.custom.*;
@@ -21,7 +21,7 @@ import java.util.Random;
 import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 
-@Mod.EventBusSubscriber(modid = Starless.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = Starless.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class EventHandler extends Event {
     static int randomIndex;
     static Random random = new Random();
@@ -49,7 +49,7 @@ public class EventHandler extends Event {
         if (event.getLevel().isClientSide) return;
         Player player = event.getEntity();
         if (event.getTarget() instanceof CitaseEntity && event.getHand() == InteractionHand.MAIN_HAND) {
-            if (event.getItemStack().isEdible() && (
+            if (event.getItemStack().getFoodProperties(player) != null && (
                     (event.getItemStack().getItem() != Items.ROTTEN_FLESH) &&
                     (event.getItemStack().getItem() != Items.SPIDER_EYE) &&
                     (event.getItemStack().getItem() != Items.SUSPICIOUS_STEW) &&

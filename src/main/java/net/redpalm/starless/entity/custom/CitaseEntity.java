@@ -12,10 +12,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.redpalm.starless.util.StarlessSavedData;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 
 import java.util.Random;
 
@@ -47,18 +50,18 @@ public class CitaseEntity extends Mob implements GeoEntity {
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "blinking",
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "blinking",
                 0, animationState -> {
             return animationState.setAndContinue(RawAnimation.begin().then("blink",
                     Animation.LoopType.LOOP));
         }));
-        controllerRegistrar.add(new AnimationController<>(this, "hold_controller",
+        controllers.add(new AnimationController<>(this, "hold_controller",
                 animationState -> PlayState.CONTINUE).triggerableAnim("hold",
                 RawAnimation.begin().then("hold", Animation.LoopType.HOLD_ON_LAST_FRAME)));
-        controllerRegistrar.add(new AnimationController<>(this, "controller",
+        controllers.add(new AnimationController<>(this, "controller",
                 0, this::predicate));
-        controllerRegistrar.add(new AnimationController<>(this, "walking",
+        controllers.add(new AnimationController<>(this, "walking",
                 0, animationState -> {
             return animationState.isMoving() ? animationState.setAndContinue(RawAnimation.begin().then
                     ("walk", Animation.LoopType.LOOP)) : PlayState.STOP;
@@ -266,7 +269,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
     }
 
     @Override
-    public boolean canBeLeashed(Player pPlayer) {
+    public boolean canBeLeashed() {
         return false;
     }
 }

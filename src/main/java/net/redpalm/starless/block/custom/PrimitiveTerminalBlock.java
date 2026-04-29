@@ -1,9 +1,8 @@
 package net.redpalm.starless.block.custom;
 
-import net.minecraft.ChatFormatting;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -31,6 +30,11 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return null;
+    }
+
+    @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
     }
@@ -51,11 +55,11 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pHand == InteractionHand.MAIN_HAND && !pLevel.isClientSide && pLevel.getServer().getPlayerList() != null) {
-            randomSpeech(pLevel, pPlayer);
-        }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (!level.isClientSide) {
+            randomSpeech(level, player);
+    }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     public void randomSpeech(Level level, Player player) {

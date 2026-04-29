@@ -1,8 +1,8 @@
 package net.redpalm.starless.event.custom;
 
-import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.ServerChatEvent;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.SubscribeEvent;
 
 import java.util.Locale;
 

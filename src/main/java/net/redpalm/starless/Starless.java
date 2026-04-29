@@ -3,31 +3,30 @@ package net.redpalm.starless;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.util.Tuple;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.util.thread.SidedThreadGroups;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.util.thread.SidedThreadGroups;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.redpalm.starless.block.ModBlocks;
 import net.redpalm.starless.entity.ModEntities;
 import net.redpalm.starless.entity.client.*;
 import net.redpalm.starless.event.EntitySpawnEventHandler;
 import net.redpalm.starless.event.EventHandler;
 import net.redpalm.starless.event.RandomEventHandler;
-import net.redpalm.starless.event.custom.CitaseEventsAndReputation;
 import net.redpalm.starless.event.custom.WrongedChatEvent;
 import net.redpalm.starless.event.custom.WrongedRegisterChatEvent;
 import net.redpalm.starless.item.ModCreativeModeTabs;
 import net.redpalm.starless.item.ModItems;
 import net.redpalm.starless.util.StarlessSavedData;
 import org.slf4j.Logger;
-import software.bernie.geckolib.GeckoLib;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -36,29 +35,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Starless
 {
     public static final String MODID = "starless";
-
     private static final Logger LOGGER = LogUtils.getLogger();
-    public Starless(FMLJavaModLoadingContext context)
-    {
-        IEventBus modEventBus = context.getModEventBus();
+
+    public Starless(IEventBus modEventBus, ModContainer modContainer) {
+        modEventBus.addListener(this::commonSetup);
 
         ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
 
-        GeckoLib.initialize();
-
-        modEventBus.addListener(this::commonSetup);
-
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(EventHandler.class);
-        MinecraftForge.EVENT_BUS.register(WrongedRegisterChatEvent.class);
-        MinecraftForge.EVENT_BUS.register(WrongedChatEvent.class);
-        MinecraftForge.EVENT_BUS.register(EntitySpawnEventHandler.class);
-        MinecraftForge.EVENT_BUS.register(CitaseEventsAndReputation.class);
-        MinecraftForge.EVENT_BUS.register(RandomEventHandler.class);
-
+        NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(EventHandler.class);
+        NeoForge.EVENT_BUS.register(WrongedRegisterChatEvent.class);
+        NeoForge.EVENT_BUS.register(WrongedChatEvent.class);
+        NeoForge.EVENT_BUS.register(EntitySpawnEventHandler.class);
+        NeoForge.EVENT_BUS.register(RandomEventHandler.class);
 
     }
 
@@ -76,8 +68,7 @@ public class Starless
 
     // credits to Chaaze for handling this one for me
     @SubscribeEvent
-    public void tick(TickEvent.ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
+    public void tick(ServerTickEvent.Post event) {
         List<Tuple<Runnable, Integer>> actions = new ArrayList<>();
         workQueue.forEach(work -> {
             work.setB(work.getB() - 1);
@@ -94,7 +85,7 @@ public class Starless
         StarlessSavedData.read(event.getServer());
     }
 
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent
