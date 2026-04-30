@@ -1,9 +1,8 @@
-This mod requires LATEST version of Geckolib and will not function without it.
-This is a mod for Forge 1.20.1
+This mod requires LATEST version of Geckolib and will not function without it. This is a mod for Forge 1.20.1 and Neoforge 1.21.1
 
-Welcome to Starless, this is a mod that adds some entities for player to interact with. They can be friendly, neutral or hostile, depending on entity and type of day they spawn at.
+Welcome to Starless, this is a mod that adds some entities for player to interact with, mostly friendly and neutral, but sometimes hostile.
 
-I don't position this mod as horror, you won't find much of scary stuff here, nor this mod actually tries to be scary. This is what I personally call a "silly entity mod". Some of entities will assist you, some of them will want you dead, some of them won't do either.
+This mod mainly exists to fill the gap in horror mods with absolute lack of friendly/neutral entities that you can interact with and who can assist you instead of wishing you harm.
 
 Download here: https://www.curseforge.com/minecraft/mc-mods/starless
 
