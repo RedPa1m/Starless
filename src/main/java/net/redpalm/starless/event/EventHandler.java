@@ -2,10 +2,13 @@ package net.redpalm.starless.event;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -18,6 +21,9 @@ import net.redpalm.starless.item.ModItems;
 
 import java.util.Random;
 
+import static net.redpalm.starless.Starless.queueServerWork;
+import static net.redpalm.starless.event.EntitySpawnEventHandler.canSmilerSpawn;
+import static net.redpalm.starless.event.EntitySpawnEventHandler.specialSmilerSpawn;
 import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 
@@ -25,6 +31,7 @@ import static net.redpalm.starless.misc.WrongedItemList.wrongedItemList;
 public class EventHandler extends Event {
     static int randomIndex;
     static Random random = new Random();
+    public static Player playerSmilerSpawn;
 
     @SubscribeEvent
     public static void interactWronged(PlayerInteractEvent.EntityInteract event) {
@@ -117,6 +124,44 @@ public class EventHandler extends Event {
                 event.getItemStack().shrink(1);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void suspiciousPearlUsage(PlayerInteractEvent.RightClickItem event) {
+        if (event.getLevel().isClientSide) return;
+        if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().getItem() ==
+                ModItems.SUSPICIOUS_PEARL.get()) {
+            if (event.getEntity().level().canSeeSky(event.getEntity().blockPosition())) {
+                if (!canSmilerSpawn) {
+                    canSmilerSpawn = true;
+                    citaseTalkNoEvent("Huh?! Did you for real believe that stuff with free diamonds? You " +
+                            "can't be serious!", event.getLevel());
+                    event.getEntity().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80));
+                    playerSmilerSpawn = event.getEntity();
+                    specialSmilerSpawn = true;
+                    if (!event.getEntity().isCreative()) {
+                        event.getItemStack().shrink(1);
+                    }
+                    queueServerWork(80, () -> {
+                        citaseTalkNoEvent("Anyways... This guy can now spawn in your world. What? Crap, he's" +
+                                " already there! Pretty sure he's near you as well...", event.getLevel());
+                    });
+                } else {
+                    event.getEntity().sendSystemMessage(Component.literal("Item was already used."));
+                }
+            }
+            else {
+                if (!canSmilerSpawn) event.getEntity().sendSystemMessage
+                        (Component.literal("Item can only be used on the surface under open sky."));
+                else event.getEntity().sendSystemMessage(Component.literal("Item was already used."));
+            }
+        }
+    }
+
+    public static void citaseTalkNoEvent(String speech, Level level) {
+        if (level.getServer().getPlayerList().getPlayers().isEmpty()) return;
+        level.getServer().getPlayerList().broadcastSystemMessage
+                (Component.literal(isFamiliarString() + speech), false);
     }
 }
 

@@ -26,6 +26,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.CORRUPTED_BREAD.get());
                         output.accept(ModItems.CORRUPTED_DAGGER.get());
                         output.accept(ModItems.OBSIDIAN_HANDLE.get());
+                        output.accept(ModItems.SUSPICIOUS_PEARL.get());
                     })
                     .build());
 

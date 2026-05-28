@@ -15,6 +15,7 @@ public class StarlessSavedData extends SavedData {
     private boolean dailyTerminalUsageSD = true;
     private boolean seekerSpawnsFirstTimeSD = true;
     private boolean dailySeekerSpawnSD = true;
+    private boolean canSmilerSpawnSD = false;
 
     public static StarlessSavedData create() {
         return new StarlessSavedData();
@@ -29,6 +30,7 @@ public class StarlessSavedData extends SavedData {
         data.dailyTerminalUsageSD = tag.getBoolean("dailyTerminalUsage");
         data.seekerSpawnsFirstTimeSD = tag.getBoolean("seekerSpawnsFirstTime");
         data.dailySeekerSpawnSD = tag.getBoolean("dailySeekerSpawn");
+        data.canSmilerSpawnSD = tag.getBoolean("canSmilerSpawn");
         return data;
     }
 
@@ -41,6 +43,7 @@ public class StarlessSavedData extends SavedData {
         compoundTag.putBoolean("dailyTerminalUsage", dailyTerminalUsageSD);
         compoundTag.putBoolean("seekerSpawnsFirstTime", seekerSpawnsFirstTimeSD);
         compoundTag.putBoolean("dailySeekerSpawn", dailySeekerSpawnSD);
+        compoundTag.putBoolean("canSmilerSpawn", canSmilerSpawnSD);
         return compoundTag;
     }
 
@@ -63,6 +66,7 @@ public class StarlessSavedData extends SavedData {
             data.dailyTerminalUsageSD = dailyTerminalUsage;
             data.seekerSpawnsFirstTimeSD = seekerSpawnsFirstTime;
             data.dailySeekerSpawnSD = dailySeekerSpawn;
+            data.canSmilerSpawnSD = canSmilerSpawn;
             data.save();
     }
 
@@ -75,5 +79,6 @@ public class StarlessSavedData extends SavedData {
             dailyTerminalUsage = data.dailyTerminalUsageSD;
             seekerSpawnsFirstTime = data.seekerSpawnsFirstTimeSD;
             dailySeekerSpawn = data.dailySeekerSpawnSD;
+            canSmilerSpawn = data.canSmilerSpawnSD;
     }
 }

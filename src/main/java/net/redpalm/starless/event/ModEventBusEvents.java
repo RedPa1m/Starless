@@ -17,5 +17,6 @@ public class ModEventBusEvents {
         event.put(ModEntities.FIRE_SERVANT.get(), FireServantEntity.createAttributes().build());
         event.put(ModEntities.CITASE.get(), CitaseEntity.createAttributes().build());
         event.put(ModEntities.SEEKER.get(), SeekerEntity.createAttributes().build());
+        event.put(ModEntities.SMILER.get(), SmilerEntity.createAttributes().build());
     }
 }

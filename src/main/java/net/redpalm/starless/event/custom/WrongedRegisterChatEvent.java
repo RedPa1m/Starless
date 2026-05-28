@@ -7,6 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.util.Locale;
 
 import static net.redpalm.starless.entity.custom.WrongedEntity.canChat;
+import static net.redpalm.starless.event.EntitySpawnEventHandler.canSmilerSpawn;
 
 public class WrongedRegisterChatEvent extends Event {
     public static boolean fireAnswer = false;
@@ -19,7 +20,8 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "do you like", "<Wrong.ed> Sure.");
             eventMethod(event, "observe", "<Wrong.ed> " +
                     "You should avoid him when his eyes are wide open.");
-            eventMethod(event, "no_light", "<Wrong.ed> I think I've seen him around...");
+            eventMethod(event, "no_light", "<Wrong.ed> He doesn't show up in the world, but he can " +
+                    "help you sometimes.");
             eventMethod(event, "fuck you", "<Wrong.ed> ...Do you really have to be rude?");
             eventMethod(event, "love you", "<Wrong.ed> " +
                     "I'm happy to hear that. But don't get too used to me.");
@@ -37,12 +39,10 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "i'm scared", "<Wrong.ed> I am here for now.");
             eventMethod(event, "are you scared", "<Wrong.ed> Maybe.");
             eventMethod(event, "how are you", "<Wrong.ed> I feel numb.");
-            eventMethod(event, "separation", "<Wrong.ed> Defeated by her own pride.");
             eventMethod(event, "daybreak", "<Wrong.ed> Creature born from a star similar to our Sun.");
             eventMethod(event, "transitioned", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "cassiopea", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "cassie", "<Wrong.ed> Corrupted constellation.");
-            eventMethod(event, "starry", "<Wrong.ed> Friendly little guy.");
             eventMethod(event, "red palm", "<...> Hey, no breaking the fourth wall!");
             eventMethod(event, "what happened", "<Wrong.ed> I forgot so much. " +
                     "A lot of time have passed.");
@@ -64,6 +64,12 @@ public class WrongedRegisterChatEvent extends Event {
                     "I'm happy to hear that. But don't get too used to me.");
             eventMethod(event, "you're beautiful", "<Wrong.ed> Thank you. I appreciate.");
             eventMethod(event, "you're cool", "<Wrong.ed> Thank you. I appreciate.");
+            eventMethod(event, "you're cute", "<Wrong.ed> Thank you. I appreciate.");
+            eventMethodSmiler(event, "<Wrong.ed> Did you... Really believe that free diamonds thing?.." +
+                    " Please tell me you at least don't click on suspicious discord links from strangers... Anyways," +
+                            " he spawns at night and tries to attack you. If you hit him good, he will run away.",
+                    "<Wrong.ed> After crafting and using certain item that allows him to spawn, he will be " +
+                            "able to spawn in your world. But I doubt you need that, because he's very aggressive...");
         }
     }
 
@@ -82,6 +88,22 @@ public class WrongedRegisterChatEvent extends Event {
             WrongedChatEvent.wrongedResponse = answer;
             if (canChat == true) {
                 fireAnswer = true;
+            }
+        }
+    }
+    public static void eventMethodSmiler(ServerChatEvent event, String answerCanSpawn, String answerCantSpawn) {
+        if (event.getMessage().toString().toLowerCase(Locale.ROOT).contains("smiler")) {
+            if (canSmilerSpawn) {
+                WrongedChatEvent.wrongedResponse = answerCanSpawn;
+                if (canChat == true) {
+                    fireAnswer = true;
+                }
+            }
+            else {
+                WrongedChatEvent.wrongedResponse = answerCantSpawn;
+                if (canChat == true) {
+                    fireAnswer = true;
+                }
             }
         }
     }

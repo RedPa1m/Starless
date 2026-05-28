@@ -22,6 +22,7 @@ import java.util.Random;
 import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 
 public class CitaseEntity extends Mob implements GeoEntity {
+    private int tickCountCitase = 0;
     private int timeAlive = 0;
     private int specialTimer = 0;
     private boolean reachedPlayer = false;
@@ -211,7 +212,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
         }
         if (!reachedPlayer && !(level().getNearestPlayer(this, 200D) == null)) {
             Player player = level().getNearestPlayer(this, 200D);
-            this.getNavigation().moveTo(player, 1.0f);
+            moveToPlayer(player, 1.0f);
             if (!(level().getNearestPlayer(this, 5D) == null)) {
                 reachedPlayer = true;
             }
@@ -262,6 +263,14 @@ public class CitaseEntity extends Mob implements GeoEntity {
         }
         if (pCompound.contains("reachedPlayer")) {
             this.reachedPlayer = pCompound.getBoolean("reachedPlayer");
+        }
+    }
+
+    private void moveToPlayer (Player player, float speedMod) {
+        tickCountCitase++;
+        if (tickCountCitase == 10) {
+            this.getNavigation().moveTo(player, speedMod);
+            tickCountCitase = 0;
         }
     }
 
