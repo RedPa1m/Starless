@@ -39,7 +39,7 @@ public class RandomEventHandler extends Event {
             tick.level.getServer().getPlayerList().broadcastSystemMessage
                     (Component.literal("Who are you?"), false);
         }
-        if (tick.level.getGameTime() == 24000 * 6) {
+        if (tick.level.getGameTime() == 24000 * 5) {
             tick.level.getServer().getPlayerList().broadcastSystemMessage
                     (Component.literal("Interesting.").withStyle(ChatFormatting.DARK_RED), false);
         }

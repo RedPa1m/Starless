@@ -166,7 +166,7 @@ public class EntitySpawnEventHandler extends Event {
         spawnPresetEntity(0, tick, citaseSpawnTime, dailyCitaseSpawn, "citase");
 
         if (random.nextInt(seekerSpawnChance) == 0) {
-        spawnPresetTimeRunningEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
+        spawnSeeker(10, tick, seekerSpawnTime, "seeker");
         }
 
         if (canFireNewEvent()) {
@@ -186,7 +186,7 @@ public class EntitySpawnEventHandler extends Event {
         }
 
         if (random.nextInt(seekerSpawnChance) == 0) {
-            spawnPresetTimeRunningEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
+            spawnSeeker(10, tick, seekerSpawnTime, "seeker");
         }
 
         if (canFireNewEvent()) {
@@ -208,13 +208,13 @@ public class EntitySpawnEventHandler extends Event {
         }
 
         if (random.nextInt(seekerSpawnChance) == 0) {
-            spawnPresetTimeRunningEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
+            spawnSeeker(10, tick, seekerSpawnTime, "seeker");
         }
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeDangerousSpawnTime, observeDangerousSpawnChance, false);
             if (canSmilerSpawn && random.nextInt(smilerSpawnChance) == 0 && tick.level.isNight()) {
-                spawnPresetTimeRunningEntity(15, tick, smilerSpawnTime, dailySmilerSpawn, "smiler");
+                spawnSmiler(15, tick, smilerSpawnTime, "smiler");
             }
         }
 
@@ -229,7 +229,7 @@ public class EntitySpawnEventHandler extends Event {
         if (canFireNewEvent()) {
             spawnObserve(tick,observeHardSpawnTime, observeHardSpawnChance, canAngryObserveSpawn);
             if (canSmilerSpawn && random.nextInt(smilerSpawnChance) == 0 && tick.level.isNight()) {
-                spawnPresetTimeRunningEntity(15, tick, smilerSpawnTime, dailySmilerSpawn, "smiler");
+                spawnSmiler(15, tick, smilerSpawnTime, "smiler");
             }
         }
     }
@@ -242,7 +242,7 @@ public class EntitySpawnEventHandler extends Event {
         if (canFireNewEvent()) {
             spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, canAngryObserveSpawn);
             if (canSmilerSpawn && tick.level.isNight()) {
-                spawnPresetTimeRunningEntity(15, tick, smilerSpawnTime, dailySmilerSpawn, "smiler");
+                spawnSmiler(15, tick, smilerSpawnTime, "smiler");
             }
         }
         if (canFireNewEvent() && tick.level.getGameTime() == 22000 && dailyObserveSpawn) {
@@ -253,24 +253,6 @@ public class EntitySpawnEventHandler extends Event {
     private static void spawnPresetEntity(int i, TickEvent.LevelTickEvent tick, int spawnTime, boolean dailyEntitySpawn,
                                           String entityType) {
         if (tick.level.getGameTime() % 24000 == spawnTime && dailyEntitySpawn) {
-            LivingEntity entity = entityCreate(tick, entityType);
-            if (entity == null) return;
-            Player player = tick.level.getServer().getPlayerList().getPlayers().get
-                    (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
-            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
-            spawnEntity(i, entity, player, tick);
-
-            if (!entityType.equals("wronged")) {
-                eventCount++;
-            }
-            dailyEntitySpawn = false;
-            StarlessSavedData.save(tick.level.getServer());
-        }
-    }
-
-    private static void spawnPresetTimeRunningEntity(int i, TickEvent.LevelTickEvent tick, int spawnTime,
-                                                     boolean dailyEntitySpawn, String entityType) {
-        if (tick.level.getGameTime() % spawnTime == 0 && dailyEntitySpawn) {
             LivingEntity entity = entityCreate(tick, entityType);
             if (entity == null) return;
             Player player = tick.level.getServer().getPlayerList().getPlayers().get
@@ -393,5 +375,40 @@ public class EntitySpawnEventHandler extends Event {
         Player player = tick.level.getServer().getPlayerList().getPlayers().get
                 (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
         spawnEntity(i, entity, player, tick);
+    }
+
+
+    private static void spawnSeeker(int i, TickEvent.LevelTickEvent tick, int spawnTime, String entityType) {
+        if (tick.level.getGameTime() % spawnTime == 0 && dailySeekerSpawn) {
+            LivingEntity entity = entityCreate(tick, entityType);
+            if (entity == null) return;
+            Player player = tick.level.getServer().getPlayerList().getPlayers().get
+                    (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
+            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
+            spawnEntity(i, entity, player, tick);
+
+            if (!entityType.equals("wronged")) {
+                eventCount++;
+            }
+            dailySeekerSpawn = false;
+            StarlessSavedData.save(tick.level.getServer());
+        }
+    }
+
+    private static void spawnSmiler(int i, TickEvent.LevelTickEvent tick, int spawnTime, String entityType) {
+        if (tick.level.getGameTime() % spawnTime == 0 && dailySmilerSpawn) {
+            LivingEntity entity = entityCreate(tick, entityType);
+            if (entity == null) return;
+            Player player = tick.level.getServer().getPlayerList().getPlayers().get
+                    (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
+            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
+            spawnEntity(i, entity, player, tick);
+
+            if (!entityType.equals("wronged")) {
+                eventCount++;
+            }
+            dailySmilerSpawn = false;
+            StarlessSavedData.save(tick.level.getServer());
+        }
     }
 }

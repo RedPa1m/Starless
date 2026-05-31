@@ -18,6 +18,7 @@ import net.redpalm.starless.Starless;
 import net.redpalm.starless.entity.ModEntities;
 import net.redpalm.starless.entity.custom.*;
 import net.redpalm.starless.item.ModItems;
+import net.redpalm.starless.util.StarlessSavedData;
 
 import java.util.Random;
 
@@ -134,6 +135,7 @@ public class EventHandler extends Event {
             if (event.getEntity().level().canSeeSky(event.getEntity().blockPosition())) {
                 if (!canSmilerSpawn) {
                     canSmilerSpawn = true;
+                    StarlessSavedData.save(event.getEntity().getServer());
                     citaseTalkNoEvent("Huh?! Did you for real believe that stuff with free diamonds? You " +
                             "can't be serious!", event.getLevel());
                     event.getEntity().addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80));
