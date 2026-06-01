@@ -158,16 +158,10 @@ public class EntitySpawnEventHandler extends Event {
         int observeCalmSpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int citaseSpawnTime = 12500;
-        int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 10;
 
         spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
 
         spawnPresetEntity(0, tick, citaseSpawnTime, dailyCitaseSpawn, "citase");
-
-        if (random.nextInt(seekerSpawnChance) == 0) {
-        spawnSeeker(10, tick, seekerSpawnTime, "seeker");
-        }
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeCalmSpawnTime, observeCalmSpawnChance, false);
@@ -179,15 +173,12 @@ public class EntitySpawnEventHandler extends Event {
         int observeRiskySpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 5;
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
         }
 
-        if (random.nextInt(seekerSpawnChance) == 0) {
-            spawnSeeker(10, tick, seekerSpawnTime, "seeker");
-        }
+        spawnSeeker(15, tick, seekerSpawnTime, "seeker");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeRiskySpawnTime, observeRiskySpawnChance, false);
@@ -199,7 +190,6 @@ public class EntitySpawnEventHandler extends Event {
         int observeDangerousSpawnChance = 5;
         int wrongedSpawnTime = 18000;
         int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 3;
         int smilerSpawnTime = 11000;
         int smilerSpawnChance = 10;
 
@@ -207,9 +197,7 @@ public class EntitySpawnEventHandler extends Event {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
         }
 
-        if (random.nextInt(seekerSpawnChance) == 0) {
-            spawnSeeker(10, tick, seekerSpawnTime, "seeker");
-        }
+        spawnSeeker(15, tick, seekerSpawnTime, "seeker");
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeDangerousSpawnTime, observeDangerousSpawnChance, false);
@@ -245,7 +233,7 @@ public class EntitySpawnEventHandler extends Event {
                 spawnSmiler(15, tick, smilerSpawnTime, "smiler");
             }
         }
-        if (canFireNewEvent() && tick.level.getGameTime() == 22000 && dailyObserveSpawn) {
+        if (canFireNewEvent() && tick.level.getGameTime() % 22000 == 0 && dailyObserveSpawn) {
             spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, canAngryObserveSpawn);
         }
     }
@@ -379,7 +367,7 @@ public class EntitySpawnEventHandler extends Event {
 
 
     private static void spawnSeeker(int i, TickEvent.LevelTickEvent tick, int spawnTime, String entityType) {
-        if (tick.level.getGameTime() % spawnTime == 0 && dailySeekerSpawn) {
+        if (tick.level.getGameTime() % 24000 == spawnTime && dailySeekerSpawn) {
             LivingEntity entity = entityCreate(tick, entityType);
             if (entity == null) return;
             Player player = tick.level.getServer().getPlayerList().getPlayers().get

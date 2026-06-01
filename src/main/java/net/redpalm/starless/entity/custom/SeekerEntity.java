@@ -219,7 +219,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
                 citaseTalk(level, "If you want to scare him off, just look at him and he will scurry away.");
             }
             if (timeAlive == 200) {
-                citaseTalk(level, "But you can also give him something willinly - just crouch, and he will " +
+                citaseTalk(level, "But you can also give him something willingly - just crouch, and he will " +
                         "slowly approach you. You can look at him while crouching, he won't get scared.");
             }
             if (timeAlive == 260) {
