@@ -5,7 +5,7 @@ Welcome to Starless, this is a mod that adds some entities for player to interac
 
 This mod mainly exists to fill the gap in horror mods with absolute lack of friendly/neutral entities that you can interact with and who can assist you instead of wishing you harm.
 
-Download here: https://www.curseforge.com/minecraft/mc-mods/starless
+Download here: https://modrinth.com/mod/starless
 
 Wiki: https://github.com/RedPa1m/Starless/wiki
 
