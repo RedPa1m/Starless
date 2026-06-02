@@ -20,13 +20,13 @@ license="All Rights Reserved"
 # The modid of the mod
 modId="starless" #mandatory
 # The version number of the mod
-version="0.3.0" #mandatory
+version="0.4.0" #mandatory
 # A display name for the mod
 displayName="Starless" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://www.curseforge.com/minecraft/mc-mods/starless" #optional
+displayURL="https://modrinth.com/mod/starless" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
