@@ -32,7 +32,7 @@ public class StarlessSavedData extends SavedData {
         data.seekerSpawnsFirstTimeSD = tag.getBoolean("seekerSpawnsFirstTime");
         data.dailySeekerSpawnSD = tag.getBoolean("dailySeekerSpawn");
         data.canSmilerSpawnSD = tag.getBoolean("canSmilerSpawn");
-        data.dailySeekerSpawnSD = tag.getBoolean("dailySmilerSpawn");
+        data.dailySmilerSpawnSD = tag.getBoolean("dailySmilerSpawn");
         return data;
     }
 
