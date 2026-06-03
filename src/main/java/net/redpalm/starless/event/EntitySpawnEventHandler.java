@@ -1,5 +1,6 @@
 package net.redpalm.starless.event;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,16 +26,20 @@ public class EntitySpawnEventHandler extends Event {
     private static boolean startDay = false;
     public static byte eventCount = 0;
     private static boolean canAngryObserveSpawn = false;
+    public static boolean canSmilerSpawn = false;
     public static boolean seekerSpawnsFirstTime = true;
     static Random random = new Random();
     public static int eventType;
     private static long lastDayTime = -1;
+    public static int eventTypeOld;
+    public static boolean specialSmilerSpawn = false;
 
     public static boolean dailyObserveSpawn = true;
     public static boolean dailyWrongedSpawn = true;
     public static boolean dailyCitaseSpawn = true;
     public static boolean dailyTerminalUsage = true;
     public static boolean dailySeekerSpawn = true;
+    public static boolean dailySmilerSpawn = true;
 
     @SubscribeEvent
     public static void worldTick (LevelTickEvent.Post tick) {
@@ -62,12 +67,18 @@ public class EntitySpawnEventHandler extends Event {
             dailyWrongedSpawn = true;
             dailyCitaseSpawn = true;
             dailySeekerSpawn = true;
+            dailySmilerSpawn = true;
+            eventTypeOld = eventType;
             if (random.nextInt(3) == 0 || random.nextInt(3) == 1) {
                 eventType = random.nextInt(4);
                 StarlessSavedData.save(tick.getLevel().getServer());
             }
-            else {
+            else if (eventTypeOld != 5) {
                 eventType = random.nextInt(2) + 4;
+                StarlessSavedData.save(tick.getLevel().getServer());
+            }
+            else {
+                eventType = 0;
                 StarlessSavedData.save(tick.getLevel().getServer());
             }
             startDay = false;
@@ -79,6 +90,8 @@ public class EntitySpawnEventHandler extends Event {
             canChat = false;
         }
         terminalReset(tick);
+        smilerChatEvent(tick);
+        smilerSpawnFromItem(tick);
     }
 
     public enum DayType {
@@ -144,16 +157,10 @@ public class EntitySpawnEventHandler extends Event {
         int observeCalmSpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int citaseSpawnTime = 12500;
-        int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 10;
 
         spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
 
         spawnPresetEntity(0, tick, citaseSpawnTime, dailyCitaseSpawn, "citase");
-
-        if (random.nextInt(seekerSpawnChance) == 0) {
-        spawnPresetEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
-        }
 
         if (canFireNewEvent()) {
             spawnObserve(tick, observeCalmSpawnTime, observeCalmSpawnChance, false);
@@ -165,14 +172,11 @@ public class EntitySpawnEventHandler extends Event {
         int observeRiskySpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 5;
+
+        spawnSeeker(15, tick, seekerSpawnTime, "seeker");
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
-        }
-
-        if (random.nextInt(seekerSpawnChance) == 0) {
-            spawnPresetEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
         }
 
         if (canFireNewEvent()) {
@@ -185,38 +189,49 @@ public class EntitySpawnEventHandler extends Event {
         int observeDangerousSpawnChance = 5;
         int wrongedSpawnTime = 18000;
         int seekerSpawnTime = 5000;
-        int seekerSpawnChance = 3;
+        int smilerSpawnTime = 11000;
+        int smilerSpawnChance = 10;
+
+        spawnSeeker(15, tick, seekerSpawnTime, "seeker");
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
         }
 
-        if (random.nextInt(seekerSpawnChance) == 0) {
-            spawnPresetEntity(10, tick, seekerSpawnTime, dailySeekerSpawn, "seeker");
-        }
-
         if (canFireNewEvent()) {
             spawnObserve(tick, observeDangerousSpawnTime, observeDangerousSpawnChance, false);
+            if (canSmilerSpawn && random.nextInt(smilerSpawnChance) == 0 && tick.getLevel().isNight()) {
+                spawnSmiler(15, tick, smilerSpawnTime, "smiler");
+            }
         }
     }
 
     private static void hardPreset (LevelTickEvent.Post tick) {
         int observeHardSpawnTime = 7000;
         int observeHardSpawnChance = 5;
+        int smilerSpawnTime = 4500;
+        int smilerSpawnChance = 2;
 
         if (canFireNewEvent()) {
             spawnObserve(tick,observeHardSpawnTime, observeHardSpawnChance, canAngryObserveSpawn);
+            if (canSmilerSpawn && random.nextInt(smilerSpawnChance) == 0 && tick.getLevel().isNight()) {
+                spawnSmiler(15, tick, smilerSpawnTime, "smiler");
+            }
         }
     }
 
     private static void extremePreset (LevelTickEvent.Post tick) {
         int observeExtremeSpawnTime = 7000;
         int observeExtremeSpawnChance = 2;
+        int smilerSpawnTime = 4500;
 
         if (canFireNewEvent()) {
             spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, canAngryObserveSpawn);
+            if (canSmilerSpawn && tick.getLevel().isNight()) {
+                spawnSmiler(15, tick, smilerSpawnTime, "smiler");
+            }
         }
-        if (canFireNewEvent() && tick.getLevel().getGameTime() == 22000 && dailyObserveSpawn) {
+        if (canFireNewEvent() && tick.getLevel().getGameTime() % 22000 == 0 && dailyObserveSpawn) {
             spawnObserve(tick,observeExtremeSpawnTime, observeExtremeSpawnChance, canAngryObserveSpawn);
         }
     }
@@ -235,8 +250,8 @@ public class EntitySpawnEventHandler extends Event {
                 eventCount++;
             }
             dailyEntitySpawn = false;
+            StarlessSavedData.save(tick.getLevel().getServer());
         }
-        StarlessSavedData.save(tick.getLevel().getServer());
     }
 
     private static LivingEntity entityCreate (LevelTickEvent.Post tick, String entityType) {
@@ -252,6 +267,10 @@ public class EntitySpawnEventHandler extends Event {
             SeekerEntity entity = ModEntities.SEEKER.get().create(tick.getLevel());
             return entity;
         }
+        else if (entityType.equals("smiler")) {
+            SmilerEntity entity = ModEntities.SMILER.get().create(tick.getLevel());
+            return entity;
+        }
         else return null;
     }
 
@@ -264,7 +283,7 @@ public class EntitySpawnEventHandler extends Event {
 
             Player player = tick.getLevel().getServer().getPlayerList().getPlayers().get
                     (tick.getLevel().getRandom().nextInt(tick.getLevel().getServer().getPlayerList().getPlayers().size()));
-            if (player.getY() < 35) return;
+            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
             if (isAngry) {
                 spawnEntity(10, entity, player, tick);
             }
@@ -276,8 +295,8 @@ public class EntitySpawnEventHandler extends Event {
                     SoundEvents.AMBIENT_CAVE, SoundSource.HOSTILE, 2.9f, 0.85f);
             eventCount++;
             dailyObserveSpawn = false;
+            StarlessSavedData.save(tick.getLevel().getServer());
         }
-        StarlessSavedData.save(tick.getLevel().getServer());
     }
 
     private static LivingEntity observeCreate(LevelTickEvent.Post tick, boolean isAngry) {
@@ -299,7 +318,7 @@ public class EntitySpawnEventHandler extends Event {
         double entityX = player.getX() + Math.cos(angle) * radius;
         double entityZ = player.getZ() + Math.sin(angle) * radius;
         entity.setPos(entityX, event.getLevel().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                (int)entityX, (int)entityZ), entityZ);
+                (int)entityX, (int)entityZ) + 1, entityZ);
         event.getLevel().addFreshEntity(entity);
     }
 
@@ -312,6 +331,70 @@ public class EntitySpawnEventHandler extends Event {
         }
 
         lastDayTime = dayTime;
+    }
+
+    public static void smilerChatEvent(LevelTickEvent.Post tick) {
+        if (!canSmilerSpawn && tick.getLevel().getGameTime() % (24000 * 6) == 0) {
+            smilerSpeech(tick);
+        }
+    }
+
+    public static void smilerSpeech(LevelTickEvent.Post tick) {
+        if (tick.getLevel().getServer().getPlayerList().getPlayers().isEmpty()) return;
+        tick.getLevel().getServer().getPlayerList().broadcastSystemMessage
+                (Component.literal("<UNKNOWN_SOURCE> Did you know you could get free diamonds from " +
+                        "just one diamond? Just put a diamond, a redstone dust and an ender pearl on " +
+                        "a crafting grid, use it and you will get FIVE free diamonds! Trust me, that works wonders, " +
+                        "though you can only use it once."), false);
+    }
+
+    public static void smilerSpawnFromItem (LevelTickEvent.Post tick) {
+        if (specialSmilerSpawn) {
+            spawnEntityNoRequirements(20, tick, "smiler");
+            specialSmilerSpawn = false;
+        }
+    }
+
+    private static void spawnEntityNoRequirements(int i, LevelTickEvent.Post tick, String entityType) {
+        LivingEntity entity = entityCreate(tick, entityType);
+        if (entity == null) return;
+        Player player = tick.getLevel().getServer().getPlayerList().getPlayers().get
+                (tick.getLevel().getRandom().nextInt(tick.getLevel().getServer().getPlayerList().getPlayers().size()));
+        spawnEntity(i, entity, player, tick);
+    }
+
+    private static void spawnSeeker(int i, LevelTickEvent.Post tick, int spawnTime, String entityType) {
+        if (tick.getLevel().getGameTime() % 24000 == spawnTime && dailySeekerSpawn) {
+            LivingEntity entity = entityCreate(tick, entityType);
+            if (entity == null) return;
+            Player player = tick.getLevel().getServer().getPlayerList().getPlayers().get
+                    (tick.getLevel().getRandom().nextInt(tick.getLevel().getServer().getPlayerList().getPlayers().size()));
+            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
+            spawnEntity(i, entity, player, tick);
+
+            if (!entityType.equals("wronged")) {
+                eventCount++;
+            }
+            dailySeekerSpawn = false;
+            StarlessSavedData.save(tick.getLevel().getServer());
+        }
+    }
+
+    private static void spawnSmiler(int i, LevelTickEvent.Post tick, int spawnTime, String entityType) {
+        if (tick.getLevel().getGameTime() % spawnTime == 0 && dailySmilerSpawn) {
+            LivingEntity entity = entityCreate(tick, entityType);
+            if (entity == null) return;
+            Player player = tick.getLevel().getServer().getPlayerList().getPlayers().get
+                    (tick.getLevel().getRandom().nextInt(tick.getLevel().getServer().getPlayerList().getPlayers().size()));
+            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
+            spawnEntity(i, entity, player, tick);
+
+            if (!entityType.equals("wronged")) {
+                eventCount++;
+            }
+            dailySmilerSpawn = false;
+            StarlessSavedData.save(tick.getLevel().getServer());
+        }
     }
 
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +32,7 @@ import static net.redpalm.starless.event.EntitySpawnEventHandler.seekerSpawnsFir
 import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 
 public class SeekerEntity extends PathfinderMob implements GeoEntity {
+    private int tickCountSeeker = 0;
     public static final double TEMPT_SPEED_MOD = 0.6;
     public static final double WALK_SPEED_MOD = 0.8;
     public static final double SPRINT_SPEED_MOD = 1.33;
@@ -40,6 +42,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
     private int specialTimer = 0;
     private int timeAlive = 0;
     private int lookTimer = 0;
+    private Vec3 vecZero = new Vec3(0, 0, 0);
 
     public SeekerEntity(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -49,7 +52,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Walk/Run/Idle", state -> {
             if (state.isMoving())
-                return state.setAndContinue(SeekerEntity.this.isSprinting() ?
+                return state.setAndContinue(SeekerEntity.this.startSprinting() ?
                         RawAnimation.begin().then("run", Animation.LoopType.LOOP)
                         : RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
 
@@ -64,9 +67,15 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
+    private boolean startSprinting () {
+        return (this.getDeltaMovement() != vecZero) && gotFood;
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class,
+                50f, 1f));
+        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -145,10 +154,10 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
     private void seekerFollowPlayer (Player player) {
         if (player != null && hasEdibleFood(player) && !player.isCreative()) {
             if (this.distanceTo(player) > 30 || this.distanceTo(player) < 10) {
-                this.getNavigation().moveTo(player, SPRINT_SPEED_MOD);
+                moveToPlayer(player, SPRINT_SPEED_MOD);
             }
             else {
-                this.getNavigation().moveTo(player, WALK_SPEED_MOD);
+                moveToPlayer(player, WALK_SPEED_MOD);
             }
             seekerTakeFood(player);
         }
@@ -159,7 +168,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
 
     private void seekerTempted (Player player) {
         if (player != null && hasEdibleFood(player)) {
-            this.getNavigation().moveTo(player, TEMPT_SPEED_MOD);
+            moveToPlayer(player, TEMPT_SPEED_MOD);
             if (player.getMainHandItem().getFoodProperties(player) != null && this.isWithinMeleeAttackRange(player)) { // check
                 player.getMainHandItem().shrink(1);
                 gotFood = true;
@@ -212,7 +221,7 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
                 citaseTalk(level, "If you want to scare him off, just look at him and he will scurry away.");
             }
             if (timeAlive == 200) {
-                citaseTalk(level, "But you can also give him something willinly - just crouch, and he will " +
+                citaseTalk(level, "But you can also give him something willingly - just crouch, and he will " +
                         "slowly approach you. You can look at him while crouching, he won't get scared.");
             }
             if (timeAlive == 260) {
@@ -249,6 +258,14 @@ public class SeekerEntity extends PathfinderMob implements GeoEntity {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("TimeAlive")) {
             this.timeAlive = pCompound.getInt("TimeAlive");
+        }
+    }
+
+    private void moveToPlayer (Player player, double speedMod) {
+        tickCountSeeker++;
+        if (tickCountSeeker == 10) {
+            this.getNavigation().moveTo(player, speedMod);
+            tickCountSeeker = 0;
         }
     }
 }

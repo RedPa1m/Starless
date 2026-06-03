@@ -28,6 +28,8 @@ public class ModItems {
     public static final DeferredItem<Item> OBSIDIAN_HANDLE = ITEMS.register
             ("obsidian_handle", () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> SUSPICIOUS_PEARL = ITEMS.register
+            ("suspicious_pearl", () -> new Item(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
