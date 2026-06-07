@@ -2,17 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "#Q#"
+    "QQ ",
+    " Q ",
+    " # "
   ],
   "key": {
     "#": {
-      "item": "minecraft:wheat"
+      "item": "starless:obsidian_handle"
     },
     "Q": {
       "item": "starless:corrupted_lapis"
     }
   },
   "result": {
-    "item": "starless:corrupted_bread"
+    "id": "starless:corrupted_dagger"
   }
 }

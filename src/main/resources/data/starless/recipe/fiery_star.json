@@ -8,14 +8,13 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:lapis_block"
+      "item": "starless:corrupted_lapis"
     },
     "Q": {
-      "item": "minecraft:dragon_breath"
+      "item": "minecraft:blaze_powder"
     }
   },
   "result": {
-    "count": 8,
-    "item": "starless:corrupted_lapis_block"
+    "id": "starless:fiery_star"
   }
 }

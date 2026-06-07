@@ -2,16 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "###",
-    "###",
-    "###"
+    "#Q#"
   ],
   "key": {
     "#": {
-      "item": "starless:corrupted_lapis"
+      "item": "minecraft:stick"
+    },
+    "Q": {
+      "item": "minecraft:obsidian"
     }
   },
   "result": {
-    "item": "starless:corrupted_lapis_block"
+    "id": "starless:obsidian_handle"
   }
 }

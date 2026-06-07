@@ -6,13 +6,13 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:stick"
+      "item": "minecraft:wheat"
     },
     "Q": {
-      "item": "minecraft:obsidian"
+      "item": "starless:corrupted_lapis"
     }
   },
   "result": {
-    "item": "starless:obsidian_handle"
+    "id": "starless:corrupted_bread"
   }
 }
