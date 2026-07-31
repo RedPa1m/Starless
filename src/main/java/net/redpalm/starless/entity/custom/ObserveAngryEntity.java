@@ -28,6 +28,11 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
     private boolean runTask = true; // thing for if he can start chase (so it doesn't duplicate)
     private boolean deathMessage = true;
     private boolean goalState = false;
+    private int randomNumberForTexture;
+
+    public int getRandomNumberForTexture() {
+        return randomNumberForTexture;
+    }
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -48,7 +53,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
 
     private PlayState predicate(AnimationState<ObserveAngryEntity> observeAngryEntityAnimationState) {
         observeAngryEntityAnimationState.getController().setAnimation(RawAnimation.begin().then(
-                "observe_idle", Animation.LoopType.LOOP));
+                "observe_angry_idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -90,6 +95,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
+        if (timeAlive == 0) randomNumberForTexture = random.nextInt(2);
         timeAlive++;
 
         if (timeAlive == 1) {
@@ -147,6 +153,7 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
         pCompound.putInt("TimeAlive", this.timeAlive);
         pCompound.putBoolean("runTask", this.runTask);
         pCompound.putBoolean("goalState", this.goalState);
+        pCompound.putInt("randomNumberForTexture", this.randomNumberForTexture);
     }
 
     @Override
@@ -160,6 +167,9 @@ public class ObserveAngryEntity extends Monster implements GeoEntity {
         }
         if (pCompound.contains("goalState")) {
             this.goalState = pCompound.getBoolean("goalState");
+        }
+        if (pCompound.contains("randomNumberForTexture")) {
+            this.randomNumberForTexture = pCompound.getInt("randomNumberForTexture");
         }
     }
 

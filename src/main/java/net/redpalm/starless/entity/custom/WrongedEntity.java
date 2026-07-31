@@ -22,6 +22,21 @@ public class WrongedEntity extends Mob implements GeoEntity {
     private int timeAlive = 0;
     public static boolean canChat = false;
     private int chancePhrase = 3;
+    private int randomNumberForTexture;
+    private boolean isNighttime;
+    private boolean isPastFirstDay;
+
+    public int getTimeAlive () {
+        return timeAlive;
+    }
+
+    public int getRandomNumberForTexture() {
+        return randomNumberForTexture;
+    }
+
+    public boolean getIsNighttime () {
+        return isNighttime;
+    }
 
     public boolean getCanGiveItem() {
         return this.canGiveItem;
@@ -69,6 +84,11 @@ public class WrongedEntity extends Mob implements GeoEntity {
     // Set his lifetime to 2400 ticks
     @Override
     public void tick() {
+        if (this.timeAlive == 0 && level().isClientSide) {
+            randomNumberForTexture = random.nextInt(20);
+            isNighttime = this.level().getDayTime() < 24000 && this.level().getDayTime() > 13000;
+            isPastFirstDay = this.level().getGameTime() > 24000;
+        }
         this.timeAlive++;
         if (this.timeAlive == 1) {
             this.canGiveItem = true;
@@ -134,6 +154,9 @@ public class WrongedEntity extends Mob implements GeoEntity {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("canGiveItem", this.canGiveItem);
         pCompound.putInt("TimeAlive", this.timeAlive);
+        pCompound.putInt("randomNumberForTexture", this.randomNumberForTexture);
+        pCompound.putBoolean("isNighttime", this.isNighttime);
+        pCompound.putBoolean("isPastFirstDay", this.isPastFirstDay);
     }
 
     @Override
@@ -144,6 +167,15 @@ public class WrongedEntity extends Mob implements GeoEntity {
         }
         if (pCompound.contains("TimeAlive")) {
             this.timeAlive = pCompound.getInt("TimeAlive");
+        }
+        if (pCompound.contains("randomNumberForTexture")) {
+            this.randomNumberForTexture = pCompound.getInt("randomNumberForTexture");
+        }
+        if (pCompound.contains("isNighttime")) {
+            this.isNighttime = pCompound.getBoolean("isNighttime");
+        }
+        if (pCompound.contains("isPastFirstDay")) {
+            this.isPastFirstDay = pCompound.getBoolean("isPastFirstDay");
         }
     }
 

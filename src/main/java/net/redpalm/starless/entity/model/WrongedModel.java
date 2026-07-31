@@ -1,33 +1,34 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.redpalm.starless.Starless;
-import net.redpalm.starless.entity.custom.CitaseEntity;
+import net.redpalm.starless.entity.custom.WrongedEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-public class CitaseModel extends GeoModel<CitaseEntity> {
+public class WrongedModel extends GeoModel<WrongedEntity> {
     @Override
-    public ResourceLocation getModelResource(CitaseEntity citaseEntity) {
-        return new ResourceLocation(Starless.MODID, "geo/citase.geo.json");
+    public ResourceLocation getModelResource(WrongedEntity wrongedEntity) {
+        return new ResourceLocation(Starless.MODID, "geo/wronged.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(CitaseEntity citaseEntity) {
-        return new ResourceLocation(Starless.MODID, "textures/entity/citase.png");
+    public ResourceLocation getTextureResource(WrongedEntity wrongedEntity) {
+        return new ResourceLocation(Starless.MODID, "textures/entity/wronged.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(CitaseEntity citaseEntity) {
-        return new ResourceLocation(Starless.MODID, "animations/citase.animation.json");
+    public ResourceLocation getAnimationResource(WrongedEntity wrongedEntity) {
+        return new ResourceLocation(Starless.MODID, "animations/wronged.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(CitaseEntity animatable, long instanceId, AnimationState<CitaseEntity> animationState) {
+    public void setCustomAnimations(WrongedEntity animatable, long instanceId,
+                                    AnimationState<WrongedEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

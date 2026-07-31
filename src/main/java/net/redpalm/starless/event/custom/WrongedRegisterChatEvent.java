@@ -27,8 +27,6 @@ public class WrongedRegisterChatEvent extends Event {
                     "I'm happy to hear that. But don't get too used to me.");
             eventMethod(event, "thank you", "<Wrong.ed> You're always welcome.");
             eventMethod(event, "you look emo", "<Wrong.ed> ...Is this a good thing?");
-            eventMethod(event, "why do you help me", "<Wrong.ed> " +
-                    "Because I don't want you to die like others.");
             eventMethod(event, "items", "<Wrong.ed> " +
                     "Most of them are from people that are no longer with us.");
             eventMethod(event, "meep", "<Wrong.ed> It's silly.");
@@ -40,12 +38,11 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "are you scared", "<Wrong.ed> Maybe.");
             eventMethod(event, "how are you", "<Wrong.ed> I feel numb.");
             eventMethod(event, "daybreak", "<Wrong.ed> Creature born from a star similar to our Sun.");
-            eventMethod(event, "transitioned", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "cassiopea", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "cassie", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "red palm", "<...> Hey, no breaking the fourth wall!");
-            eventMethod(event, "what happened", "<Wrong.ed> I forgot so much. " +
-                    "A lot of time have passed.");
+            eventMethod(event, "what happened", "<Wrong.ed> I've seen too many of my friends die through" +
+                    " my life. It's heartbreaking.");
             eventMethodHello(event, "<Wrong.ed> Hello.");
             eventMethod(event, "citase", "<Wrong.ed> She seems to be looking for help and food. " +
                     "But mainly food.");
@@ -65,6 +62,7 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "you're beautiful", "<Wrong.ed> Thank you. I appreciate.");
             eventMethod(event, "you're cool", "<Wrong.ed> Thank you. I appreciate.");
             eventMethod(event, "you're cute", "<Wrong.ed> Thank you. I appreciate.");
+            eventMethod(event, "you're handsome", "<Wrong.ed> Thank you. I appreciate.");
             eventMethodSmiler(event, "<Wrong.ed> Did you... Really believe that free diamonds thing?.." +
                     " Please tell me you at least don't click on suspicious discord links from strangers... Anyways," +
                             " he spawns at night and tries to attack you. If you hit him good, he will run away.",

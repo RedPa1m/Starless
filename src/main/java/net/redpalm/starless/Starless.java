@@ -16,7 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 import net.redpalm.starless.block.ModBlocks;
 import net.redpalm.starless.entity.ModEntities;
-import net.redpalm.starless.entity.client.*;
+import net.redpalm.starless.entity.renderer.*;
 import net.redpalm.starless.event.EntitySpawnEventHandler;
 import net.redpalm.starless.event.EventHandler;
 import net.redpalm.starless.event.RandomEventHandler;

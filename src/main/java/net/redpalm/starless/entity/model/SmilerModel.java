@@ -1,34 +1,33 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.redpalm.starless.Starless;
-import net.redpalm.starless.entity.custom.WrongedEntity;
+import net.redpalm.starless.entity.custom.SmilerEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-public class WrongedModel extends GeoModel<WrongedEntity> {
+public class SmilerModel extends GeoModel<SmilerEntity> {
     @Override
-    public ResourceLocation getModelResource(WrongedEntity wrongedEntity) {
-        return new ResourceLocation(Starless.MODID, "geo/wronged.geo.json");
+    public ResourceLocation getModelResource(SmilerEntity smilerEntity) {
+        return new ResourceLocation(Starless.MODID, "geo/smiler.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(WrongedEntity wrongedEntity) {
-        return new ResourceLocation(Starless.MODID, "textures/entity/wronged.png");
+    public ResourceLocation getTextureResource(SmilerEntity smilerEntity) {
+        return new ResourceLocation(Starless.MODID, "textures/entity/smiler.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(WrongedEntity wrongedEntity) {
-        return new ResourceLocation(Starless.MODID, "animations/wronged.animation.json");
+    public ResourceLocation getAnimationResource(SmilerEntity smilerEntity) {
+        return new ResourceLocation(Starless.MODID, "animations/smiler.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(WrongedEntity animatable, long instanceId,
-                                    AnimationState<WrongedEntity> animationState) {
+    public void setCustomAnimations(SmilerEntity animatable, long instanceId, AnimationState<SmilerEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

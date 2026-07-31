@@ -1,33 +1,34 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.redpalm.starless.Starless;
-import net.redpalm.starless.entity.custom.SmilerEntity;
+import net.redpalm.starless.entity.custom.SeekerEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-public class SmilerModel extends GeoModel<SmilerEntity> {
+public class SeekerModel extends GeoModel<SeekerEntity> {
     @Override
-    public ResourceLocation getModelResource(SmilerEntity smilerEntity) {
-        return new ResourceLocation(Starless.MODID, "geo/smiler.geo.json");
+    public ResourceLocation getModelResource(SeekerEntity seekerEntity) {
+        return new ResourceLocation(Starless.MODID, "geo/seeker.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(SmilerEntity smilerEntity) {
-        return new ResourceLocation(Starless.MODID, "textures/entity/smiler.png");
+    public ResourceLocation getTextureResource(SeekerEntity seekerEntity) {
+        return new ResourceLocation(Starless.MODID, "textures/entity/seeker.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(SmilerEntity smilerEntity) {
-        return new ResourceLocation(Starless.MODID, "animations/smiler.animation.json");
+    public ResourceLocation getAnimationResource(SeekerEntity seekerEntity) {
+        return new ResourceLocation(Starless.MODID, "animations/seeker.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(SmilerEntity animatable, long instanceId, AnimationState<SmilerEntity> animationState) {
+    public void setCustomAnimations(SeekerEntity animatable, long instanceId,
+                                    AnimationState<SeekerEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

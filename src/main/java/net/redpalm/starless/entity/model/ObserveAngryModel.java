@@ -1,4 +1,4 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -13,7 +13,7 @@ import software.bernie.geckolib.model.data.EntityModelData;
 public class ObserveAngryModel extends GeoModel<ObserveAngryEntity>  {
     @Override
     public ResourceLocation getModelResource(ObserveAngryEntity observeAngryEntity) {
-        return new ResourceLocation(Starless.MODID, "geo/observe_angry.geo.json");
+        return new ResourceLocation(Starless.MODID, "geo/observe.geo.json");
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ObserveAngryModel extends GeoModel<ObserveAngryEntity>  {
 
     @Override
     public ResourceLocation getAnimationResource(ObserveAngryEntity observeAngryEntity) {
-        return new ResourceLocation(Starless.MODID, "animations/observe_angry.animations.json");
+        return new ResourceLocation(Starless.MODID, "animations/observe.animation.json");
     }
 
     @Override
