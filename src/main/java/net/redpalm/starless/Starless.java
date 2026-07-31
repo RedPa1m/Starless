@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.redpalm.starless.block.ModBlocks;
 import net.redpalm.starless.entity.ModEntities;
-import net.redpalm.starless.entity.client.*;
+import net.redpalm.starless.entity.renderer.*;
 import net.redpalm.starless.event.EntitySpawnEventHandler;
 import net.redpalm.starless.event.EventHandler;
 import net.redpalm.starless.event.RandomEventHandler;

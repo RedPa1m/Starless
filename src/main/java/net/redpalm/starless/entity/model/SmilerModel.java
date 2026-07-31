@@ -1,4 +1,4 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;

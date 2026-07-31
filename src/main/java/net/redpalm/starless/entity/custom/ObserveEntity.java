@@ -1,6 +1,7 @@
 package net.redpalm.starless.entity.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -24,6 +25,11 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 
 public class ObserveEntity extends Monster implements GeoEntity {
     private int timeAlive = 0;
+    private int randomNumberForTexture;
+
+    public int getRandomNumberForTexture() {
+        return randomNumberForTexture;
+    }
 
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
@@ -59,10 +65,6 @@ public class ObserveEntity extends Monster implements GeoEntity {
         return cache;
     }
 
-    public static boolean canSpawn (EntityType<ObserveEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        return Monster.checkAnyLightMonsterSpawnRules(entityType, level, spawnType, position, random);
-    }
-
     @Override
     public boolean shouldDropExperience() {
         return false;
@@ -70,6 +72,7 @@ public class ObserveEntity extends Monster implements GeoEntity {
     // Set his lifetime to 600 ticks and make him look at player
     @Override
     public void tick() {
+        if (timeAlive == 0) randomNumberForTexture = random.nextInt(2);
         timeAlive++;
         if (timeAlive == 600) {
             this.remove(RemovalReason.KILLED);
@@ -97,5 +100,19 @@ public class ObserveEntity extends Monster implements GeoEntity {
     @Override
     protected boolean shouldDespawnInPeaceful() {
         return false;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("randomNumberForTexture", this.randomNumberForTexture);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        if (pCompound.contains("randomNumberForTexture")) {
+            this.randomNumberForTexture = pCompound.getInt("randomNumberForTexture");
+        }
     }
 }

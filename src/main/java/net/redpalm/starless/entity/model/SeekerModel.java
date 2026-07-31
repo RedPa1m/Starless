@@ -1,32 +1,32 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.redpalm.starless.entity.custom.WrongedEntity;
+import net.redpalm.starless.entity.custom.SeekerEntity;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-public class WrongedModel extends GeoModel<WrongedEntity> {
+public class SeekerModel extends GeoModel<SeekerEntity> {
     @Override
-    public ResourceLocation getModelResource(WrongedEntity wrongedEntity) {
-        return ResourceLocation.parse("starless:geo/wronged.geo.json");
+    public ResourceLocation getModelResource(SeekerEntity seekerEntity) {
+        return ResourceLocation.parse("starless:geo/seeker.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(WrongedEntity wrongedEntity) {
-        return ResourceLocation.parse("starless:textures/entity/wronged.png");
+    public ResourceLocation getTextureResource(SeekerEntity seekerEntity) {
+        return ResourceLocation.parse("starless:textures/entity/seeker.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(WrongedEntity wrongedEntity) {
-        return ResourceLocation.parse("starless:animations/wronged.animation.json");
+    public ResourceLocation getAnimationResource(SeekerEntity seekerEntity) {
+        return ResourceLocation.parse("starless:animations/seeker.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(WrongedEntity animatable, long instanceId, AnimationState<WrongedEntity> animationState) {
+    public void setCustomAnimations(SeekerEntity animatable, long instanceId, AnimationState<SeekerEntity> animationState) {
         GeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

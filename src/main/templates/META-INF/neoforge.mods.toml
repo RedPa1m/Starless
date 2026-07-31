@@ -24,7 +24,7 @@ license="All Rights Reserved"
 modId="starless" #mandatory
 
 # The version number of the mod
-version="0.3.1" #mandatory
+version="0.3.2" #mandatory
 
 # A display name for the mod
 displayName="Starless" #mandatory

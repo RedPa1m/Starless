@@ -1,32 +1,32 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.redpalm.starless.entity.custom.SeekerEntity;
+import net.redpalm.starless.entity.custom.CitaseEntity;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-public class SeekerModel extends GeoModel<SeekerEntity> {
+public class CitaseModel extends GeoModel<CitaseEntity> {
     @Override
-    public ResourceLocation getModelResource(SeekerEntity seekerEntity) {
-        return ResourceLocation.parse("starless:geo/seeker.geo.json");
+    public ResourceLocation getModelResource(CitaseEntity citaseEntity) {
+        return ResourceLocation.parse("starless:geo/citase.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureResource(SeekerEntity seekerEntity) {
-        return ResourceLocation.parse("starless:textures/entity/seeker.png");
+    public ResourceLocation getTextureResource(CitaseEntity citaseEntity) {
+        return ResourceLocation.parse("starless:textures/entity/citase.png");
     }
 
     @Override
-    public ResourceLocation getAnimationResource(SeekerEntity seekerEntity) {
-        return ResourceLocation.parse("starless:animations/seeker.animation.json");
+    public ResourceLocation getAnimationResource(CitaseEntity citaseEntity) {
+        return ResourceLocation.parse("starless:animations/citase.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(SeekerEntity animatable, long instanceId, AnimationState<SeekerEntity> animationState) {
+    public void setCustomAnimations(CitaseEntity animatable, long instanceId, AnimationState<CitaseEntity> animationState) {
         GeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

@@ -1,4 +1,4 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.redpalm.starless.entity.custom.FireServantEntity;
+import net.redpalm.starless.entity.model.FireServantModel;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;

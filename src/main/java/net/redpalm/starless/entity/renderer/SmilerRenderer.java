@@ -1,8 +1,9 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.renderer;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.redpalm.starless.entity.custom.SmilerEntity;
+import net.redpalm.starless.entity.model.SmilerModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class SmilerRenderer extends GeoEntityRenderer<SmilerEntity> {

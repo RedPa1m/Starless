@@ -16,7 +16,7 @@ public class ModEntities {
 
     public static final Supplier<EntityType<ObserveEntity>> OBSERVE =
             ENTITY_TYPES.register("observe", () -> EntityType.Builder.of(ObserveEntity::new, MobCategory.CREATURE)
-                    .sized(1f, 1.5f).build("observe"));
+                    .sized(0.75f, 2.25f).build("observe"));
 
     public static final Supplier<EntityType<WrongedEntity>> WRONGED =
             ENTITY_TYPES.register("wronged", () -> EntityType.Builder.of(WrongedEntity::new, MobCategory.CREATURE)
@@ -24,7 +24,7 @@ public class ModEntities {
 
     public static final Supplier<EntityType<ObserveAngryEntity>> OBSERVE_ANGRY =
             ENTITY_TYPES.register("observe_angry", () -> EntityType.Builder.of(ObserveAngryEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 1.5f).build("observe_angry"));
+                    .sized(0.75f, 2.25f).build("observe_angry"));
 
     public static final Supplier<EntityType<FireServantEntity>> FIRE_SERVANT =
             ENTITY_TYPES.register("fire_servant", () -> EntityType.Builder.of(FireServantEntity::new, MobCategory.CREATURE)

@@ -1,4 +1,4 @@
-package net.redpalm.starless.entity.client;
+package net.redpalm.starless.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
 import net.redpalm.starless.entity.custom.ObserveEntity;
@@ -17,7 +17,7 @@ public class ObserveModel extends GeoModel<ObserveEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(ObserveEntity observeEntity) {
-        return ResourceLocation.parse("starless:animations/observe.idle.json");
+        return ResourceLocation.parse("starless:animations/observe.animation.json");
     }
 
 }
