@@ -23,7 +23,7 @@ public class ModItems {
             ("corrupted_bread", () -> new Item(new Item.Properties().food(ModFood.CORRUPTED_BREAD)));
 
     public static final RegistryObject<Item> CORRUPTED_DAGGER = ITEMS.register
-            ("corrupted_dagger", () -> new SwordItem(Tiers.NETHERITE, 6, 3,
+            ("corrupted_dagger", () -> new SwordItem(Tiers.NETHERITE, 3, 3,
                     new Item.Properties()));
 
     public static final RegistryObject<Item> OBSIDIAN_HANDLE = ITEMS.register

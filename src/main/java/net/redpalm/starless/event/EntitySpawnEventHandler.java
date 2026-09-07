@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -312,8 +313,22 @@ public class EntitySpawnEventHandler extends Event {
         }
     }
 
-    // credits to Chaaze for handling and explaining this particular part for me. used to have different thing that wasn't as good
     private static void spawnEntity(int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
+        for (int q = 0; q < 6; q++) {
+            setEntityPos(i, entity, player, event);
+            if (!entity.getBlockStateOn().is(Blocks.WATER) && !entity.getBlockStateOn().is(Blocks.LAVA)) {
+                event.level.addFreshEntity(entity);
+                break;
+            }
+            else if (q == 5) {
+                event.level.addFreshEntity(entity);
+                break;
+            }
+        }
+    }
+
+    // credits to Chaaze for handling and explaining this particular part for me. used to have different thing that wasn't as good
+    private static void setEntityPos (int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
         double angle = event.level.random.nextDouble() * Math.PI * 2;
         double radius = 15 + event.level.random.nextInt(20) + i;
 
@@ -321,7 +336,6 @@ public class EntitySpawnEventHandler extends Event {
         double entityZ = player.getZ() + Math.sin(angle) * radius;
         entity.setPos(entityX, (event.level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (int)entityX, (int)entityZ) + 1), entityZ);
-        event.level.addFreshEntity(entity);
     }
 
     public static void terminalReset(TickEvent.LevelTickEvent tick) {

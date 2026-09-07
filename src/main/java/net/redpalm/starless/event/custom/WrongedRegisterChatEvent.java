@@ -20,7 +20,7 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "do you like", "<Wrong.ed> Sure.");
             eventMethod(event, "observe", "<Wrong.ed> " +
                     "You should avoid him when his eyes are wide open.");
-            eventMethod(event, "no_light", "<Wrong.ed> He doesn't show up in the world, but he can " +
+            eventMethod(event, "no light", "<Wrong.ed> He rarely shows up in the world, but he can " +
                     "help you sometimes.");
             eventMethod(event, "fuck you", "<Wrong.ed> ...Do you really have to be rude?");
             eventMethod(event, "love you", "<Wrong.ed> " +
@@ -38,7 +38,7 @@ public class WrongedRegisterChatEvent extends Event {
             eventMethod(event, "are you scared", "<Wrong.ed> Maybe.");
             eventMethod(event, "how are you", "<Wrong.ed> I feel numb.");
             eventMethod(event, "daybreak", "<Wrong.ed> Creature born from a star similar to our Sun.");
-            eventMethod(event, "cassiopea", "<Wrong.ed> Corrupted constellation.");
+            eventMethod(event, "cassiopeia", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "cassie", "<Wrong.ed> Corrupted constellation.");
             eventMethod(event, "red palm", "<...> Hey, no breaking the fourth wall!");
             eventMethod(event, "what happened", "<Wrong.ed> I've seen too many of my friends die through" +

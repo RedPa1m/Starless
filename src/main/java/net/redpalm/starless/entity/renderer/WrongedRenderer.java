@@ -31,15 +31,15 @@ public class WrongedRenderer extends GeoEntityRenderer<WrongedEntity> {
     public ResourceLocation pickWrongedTexture (WrongedEntity entity) {
         randomNumber = entity.getRandomNumberForTexture();
         isNighttime = entity.getIsNighttime();
-        if (entity.level().getGameTime() > 24000) {
-            for (int i = 0; i < 3; i++) {
+        if (entity.level().getGameTime() > 24000 || entity.getPastFirstDay()) {
+            for (int i = 1; i < 4; i++) {
                 if (randomNumber == i) {
-                    if (isNighttime)
+                    if (isNighttime || entity.level().isNight() || entity.level().getDayTime() > 13000)
                         return new ResourceLocation(Starless.MODID, "textures/entity/wronged_fedora_night.png");
                     else return new ResourceLocation(Starless.MODID, "textures/entity/wronged_fedora.png");
-                } else if (i == 2) {
-                    if (randomNumber == 3 || randomNumber == 4)
-                        if (isNighttime)
+                } else if (i == 3) {
+                    if (randomNumber == 4 || randomNumber == 5)
+                        if (isNighttime || entity.level().isNight() || entity.level().getDayTime() > 13000)
                             return new ResourceLocation(Starless.MODID, "textures/entity/wronged_emo_night.png");
                         else return new ResourceLocation(Starless.MODID, "textures/entity/wronged_emo.png");
                 }
@@ -49,7 +49,7 @@ public class WrongedRenderer extends GeoEntityRenderer<WrongedEntity> {
     }
 
     public ResourceLocation pickDefaultTexture (WrongedEntity entity) {
-        if (isNighttime) {
+        if (isNighttime || entity.level().isNight() || entity.level().getDayTime() > 13000) {
             return new ResourceLocation(Starless.MODID, "textures/entity/wronged_night.png");
         }
         else

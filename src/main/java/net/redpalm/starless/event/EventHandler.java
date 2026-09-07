@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -57,7 +58,7 @@ public class EventHandler extends Event {
         if (event.getLevel().isClientSide) return;
         Player player = event.getEntity();
         if (event.getTarget() instanceof CitaseEntity && event.getHand() == InteractionHand.MAIN_HAND) {
-            if (event.getItemStack().isEdible() && (
+            if ((event.getItemStack().isEdible() || event.getItemStack().getItem() == Items.CAKE) && (
                     (event.getItemStack().getItem() != Items.ROTTEN_FLESH) &&
                     (event.getItemStack().getItem() != Items.SPIDER_EYE) &&
                     (event.getItemStack().getItem() != Items.SUSPICIOUS_STEW) &&
@@ -164,6 +165,16 @@ public class EventHandler extends Event {
         if (level.getServer().getPlayerList().getPlayers().isEmpty()) return;
         level.getServer().getPlayerList().broadcastSystemMessage
                 (Component.literal(isFamiliarString() + speech), false);
+    }
+
+    @SubscribeEvent
+    public static void noBoating (EntityMountEvent event) {
+        if (event.getEntity() instanceof CassieEntity || event.getEntity() instanceof CitaseEntity ||
+                event.getEntity() instanceof FireServantEntity || event.getEntity() instanceof ObserveAngryEntity ||
+                event.getEntity() instanceof SeekerEntity || event.getEntity() instanceof SmilerEntity ||
+                event.getEntity() instanceof ObserveEntity || event.getEntity() instanceof WrongedEntity) {
+            event.setCanceled(true);
+        }
     }
 }
 

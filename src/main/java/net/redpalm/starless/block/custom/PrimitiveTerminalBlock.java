@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static net.redpalm.starless.Starless.queueServerWork;
 import static net.redpalm.starless.event.EntitySpawnEventHandler.dailyTerminalUsage;
+import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 
 public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -60,7 +61,7 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
 
     public void randomSpeech(Level level, Player player) {
         if (dailyTerminalUsage) {
-            int x = level.getRandom().nextInt(13);
+            int x = level.getRandom().nextInt(14);
             int y = level.getRandom().nextInt(3);
             level.getServer().getPlayerList().broadcastSystemMessage(Component.literal
                     ("Loading..."), false);
@@ -73,46 +74,46 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
                         ("§kLoading..."), false);
             });
             queueServerWork(120, () -> {
-                if (level.getRandom().nextInt(10) != 0) {
+                if (level.getRandom().nextInt(14) != 0) {
                     switch (x) {
-                        case 0:
-                            speech(level, "<UNKNOWN_SOURCE>", "Hello? Who's that? I am busy with my bread! Please contact me later, beep-beep."); // citase
-                            break;
                         case 1:
-                            speech(level, "<UNKNOWN_SOURCE>", "Hello, Player. Hope you're doing alright. Wish you the best of luck."); // wronged
+                            speech(level, isFamiliarString(), "Hello? Who's that? I am busy with my bread! Please contact me later, beep-beep."); // citase
                             break;
                         case 2:
-                            speech(level, "<UNKNOWN_SOURCE>", "Mesmerizing! I realized I can just use slices of cheese instead of brioche buns. Oh I'm so smart I'd kiss myself."); // citase
+                            speech(level, "<UNKNOWN_SOURCE>", "Hello, Player. Hope you're doing alright. Wish you the best of luck."); // wronged
                             break;
                         case 3:
-                            speech(level, "<UNKNOWN_SOURCE>", "I know who you are."); // observe edgy mf
+                            speech(level, isFamiliarString(), "Mesmerizing! I realized I can just use slices of cheese instead of brioche buns. Oh I'm so smart I'd kiss myself."); // citase
                             break;
                         case 4:
-                            speech(level, "<UNKNOWN_SOURCE>", "Don't get consumed by your own sins."); // observe
+                            speech(level, "<UNKNOWN_SOURCE>", "I know who you are."); // observe edgy mf
                             break;
                         case 5:
-                            speech(level, "<UNKNOWN_SOURCE>", "Hello? Sorry, if you need something, I'm unable to help you in any way right now. But I will try later. Stay safe."); // no_light
+                            speech(level, "<UNKNOWN_SOURCE>", "Don't get consumed by your own sins."); // observe
                             break;
                         case 6:
-                            speech(level, "<UNKNOWN_SOURCE>", "Huh? Hello. Can you send me a porkchop through this thing? Thanks in advance."); // seeker
+                            speech(level, "<UNKNOWN_SOURCE>", "Hello? Sorry, if you need something, I'm unable to help you in any way right now. But I will try later. Stay safe."); // no light
                             break;
                         case 7:
-                            speech(level, "<UNKNOWN_SOURCE>", "This mod changes Minecraft forever... This mod controls everything... Do you think I can be a good horror Minecraft youtuber?"); // citase
+                            speech(level, "<UNKNOWN_SOURCE>", "Huh? Hello. Can you send me a porkchop through this thing? Thanks in advance."); // seeker
                             break;
                         case 8:
-                            speech(level, "<UNKNOWN_SOURCE>", "If you hear this message, you're cool, strong, handsome and funny. And also very smart!"); // citase
+                            speech(level, isFamiliarString(), "This mod changes Minecraft forever... This mod controls everything... Do you think I can be a good horror Minecraft youtuber?"); // citase
                             break;
                         case 9:
-                            speech(level, "<UNKNOWN_SOURCE>", "I know it will sound embarassing, but I start forgetting multiplication table..."); // citase
+                            speech(level, isFamiliarString(), "If you hear this message, you're cool, strong, handsome and funny. And also very smart!"); // citase
                             break;
                         case 10:
-                            speech(level, "<UNKNOWN_SOURCE>", "I am aware of your presence. I will find you."); // observe
+                            speech(level, isFamiliarString(), "I know it will sound embarassing, but I start forgetting multiplication table..."); // citase
                             break;
                         case 11:
-                            speech(level, "<UNKNOWN_SOURCE>", "Once I drank about two bottles of wine, and I woke up with such insane headache... But the next day after that I was feeling so great! I think healing properties of alcohol only start being noticeable at the second day..."); //citase
+                            speech(level, "<UNKNOWN_SOURCE>", "I am aware of your presence. I will find you."); // observe
                             break;
                         case 12:
-                            speech(level, "<UNKNOWN_SOURCE>", "If you get the Ender Dragon's breath and gather a bunch of Lapis, you can craft Corrupted Lapis that lets you craft some useful stuff. Hope that helps."); // no_light
+                            speech(level, isFamiliarString(), "Once I drank about two bottles of wine, and I woke up with such insane headache... But the next day after that I was feeling so great! I think healing properties of alcohol only start being noticeable at the second day..."); //citase
+                            break;
+                        case 13:
+                            speech(level, "<UNKNOWN_SOURCE>", "If you get the Ender Dragon's breath and gather a bunch of Lapis, you can craft Corrupted Lapis that lets you craft some useful stuff. Hope that helps."); // no light
                             break;
                     }
                 } else {
@@ -143,6 +144,12 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
     }
     public void cassieSpeech(Level level, String answer) {
         level.getServer().getPlayerList().broadcastSystemMessage(Component.literal
-                ("§4<" + "§kThe Transitioned" + "§4> " + answer), false);
+                ("§4<" + "§kCassiopeia" + "§4> " + answer), false);
     }
+
+    private String isFamiliarString () {
+        if (isFamiliar) return "<Citase>";
+        else return "<UNKNOWN_SOURCE>";
+    }
+
 }

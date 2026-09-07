@@ -149,7 +149,7 @@ public class CitaseEntity extends Mob implements GeoEntity {
                 level().getServer().getPlayerList().broadcastSystemMessage
                         (Component.literal("<Citase> My name is Citase."), false);
             }
-            if (specialTimer == 260) {
+            if (specialTimer > 260) {
                 if (level().isClientSide) return;
                 if (level().getServer().getPlayerList().getPlayers().isEmpty()) return;
                 level().getServer().getPlayerList().broadcastSystemMessage
