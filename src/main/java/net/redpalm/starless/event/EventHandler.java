@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.redpalm.starless.Starless;
@@ -57,7 +58,7 @@ public class EventHandler extends Event {
         if (event.getLevel().isClientSide) return;
         Player player = event.getEntity();
         if (event.getTarget() instanceof CitaseEntity && event.getHand() == InteractionHand.MAIN_HAND) {
-            if (event.getItemStack().getFoodProperties(player) != null && (
+            if ((event.getItemStack().getFoodProperties(player) != null || event.getItemStack().getItem() == Items.CAKE) && (
                     (event.getItemStack().getItem() != Items.ROTTEN_FLESH) &&
                     (event.getItemStack().getItem() != Items.SPIDER_EYE) &&
                     (event.getItemStack().getItem() != Items.SUSPICIOUS_STEW) &&
@@ -164,6 +165,16 @@ public class EventHandler extends Event {
         if (level.getServer().getPlayerList().getPlayers().isEmpty()) return;
         level.getServer().getPlayerList().broadcastSystemMessage
                 (Component.literal(isFamiliarString() + speech), false);
+    }
+
+    @SubscribeEvent
+    public static void noBoating (EntityMountEvent event) {
+        if (event.getEntity() instanceof CassieEntity || event.getEntity() instanceof CitaseEntity ||
+                event.getEntity() instanceof FireServantEntity || event.getEntity() instanceof ObserveAngryEntity ||
+                event.getEntity() instanceof SeekerEntity || event.getEntity() instanceof SmilerEntity ||
+                event.getEntity() instanceof ObserveEntity || event.getEntity() instanceof WrongedEntity) {
+            event.setCanceled(true);
+        }
     }
 }
 

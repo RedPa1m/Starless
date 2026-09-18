@@ -18,5 +18,6 @@ public class ModEventBusEvents {
         event.put(ModEntities.CITASE.get(), CitaseEntity.createAttributes().build());
         event.put(ModEntities.SEEKER.get(), SeekerEntity.createAttributes().build());
         event.put(ModEntities.SMILER.get(), SmilerEntity.createAttributes().build());
+        event.put(ModEntities.CASSIE.get(), CassieEntity.createAttributes().build());
     }
 }

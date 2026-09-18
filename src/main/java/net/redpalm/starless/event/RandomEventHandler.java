@@ -20,6 +20,7 @@ import net.redpalm.starless.entity.custom.ObserveAngryEntity;
 import java.util.Random;
 
 import static net.redpalm.starless.event.EntitySpawnEventHandler.eventType;
+import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
 import static net.redpalm.starless.misc.CitaseItemList.citaseItemList;
 
 @EventBusSubscriber(modid = Starless.MODID, bus = EventBusSubscriber.Bus.GAME)
@@ -48,14 +49,14 @@ public class RandomEventHandler extends Event {
                 int x = random.nextInt(4);
                 switch (x) {
                     case 0:
-                        saySpeech("§kMama mia, this terminal is shit!!!!", tick.getLevel());
+                        saySpeech("§k<Citase> Mama mia, this terminal is shit!!!!", tick.getLevel());
                         break;
                     case 1:
                         saySpeech(".... . .-.. .-.. --- -.-.-- / -.. --- / -.-- --- ..- / .... . .- .-. / -- . ..--.. / --- .... / -- -.-- / --. --- -.. .-.-.-", tick.getLevel());
                         break;
                         default:
                 tick.getLevel().getServer().getPlayerList().broadcastSystemMessage(Component.literal
-                                ("<UNKNOWN_SOURCE> Hello? Does anybody hear me? Crap, this thing... " +
+                                (isFamiliarString() + "Hello? Does anybody hear me? Crap, this thing... " +
                                         "§kDoesn't freaking work!"),
                         false);
             }
@@ -77,7 +78,7 @@ public class RandomEventHandler extends Event {
     private static void citaseRandomEvent(LevelTickEvent.Post tick) {
             int size = tick.getLevel().getServer().getPlayerList().getPlayers().size();
             tick.getLevel().getServer().getPlayerList().broadcastSystemMessage
-                    (Component.literal("<UNKNOWN_SOURCE> " +
+                    (Component.literal(isFamiliarString() +
                             "Hello? Oh, this thing barely works. Do you hear me? You doing good over here? " +
                                     "Take this while I'm at it! Might help you just a bit. It's crap for me, but" +
                                     " hey, may be useful for you!"),
@@ -106,5 +107,10 @@ public class RandomEventHandler extends Event {
                     (Component.literal("<UNKNOWN_SOURCE> Hello? I saw you struggle here. I hope that will help a little bit."), false);
             noLightSpeechStart = false;
         }
+    }
+
+    private static String isFamiliarString () {
+        if (isFamiliar) return "<Citase> ";
+        else return "<UNKNOWN_SOURCE> ";
     }
 }

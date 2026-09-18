@@ -2,6 +2,8 @@ package net.redpalm.starless.entity.custom;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.redpalm.starless.event.custom.WrongedChatEvent;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -20,6 +23,9 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 
+import static net.redpalm.starless.Starless.queueServerWork;
+import static net.redpalm.starless.event.custom.WrongedRegisterChatEvent.fireAnswer;
+
 public class WrongedEntity extends Mob implements GeoEntity {
     private boolean canGiveItem;
     private int timeAlive = 0;
@@ -28,6 +34,12 @@ public class WrongedEntity extends Mob implements GeoEntity {
     private int randomNumberForTexture;
     private boolean isNighttime;
     private boolean isPastFirstDay;
+    public static boolean callbackWronged;
+    private boolean calculatedRandomNumber;
+
+    public boolean getPastFirstDay () {
+        return isPastFirstDay;
+    }
 
     public int getTimeAlive () {
         return timeAlive;
@@ -87,10 +99,21 @@ public class WrongedEntity extends Mob implements GeoEntity {
     // Set his lifetime to 2400 ticks
     @Override
     public void tick() {
-        if (this.timeAlive == 0 && level().isClientSide) {
-            randomNumberForTexture = random.nextInt(20);
-            isNighttime = this.level().getDayTime() < 24000 && this.level().getDayTime() > 13000;
+        if (!calculatedRandomNumber) {
+            randomNumberForTexture = level().random.nextInt(20);
+            calculatedRandomNumber = true;
+        }
+        if (this.timeAlive == 0 && !level().isClientSide) {
+            isNighttime = level().getDayTime() > 13000 || level().isNight();
             isPastFirstDay = this.level().getGameTime() > 24000;
+        }
+
+        if (callbackWronged && !level().isClientSide) {
+            WrongedChatEvent.wrongedResponse = "<Wrong.ed> I will make a noise for you.";
+            if (canChat == true) fireAnswer = true;
+            queueServerWork(40, () -> level().playSound(null, this.blockPosition(),
+                    SoundEvents.PLAYER_LEVELUP, SoundSource.NEUTRAL, 4f, 1f));
+            callbackWronged = false;
         }
 
         this.timeAlive++;
@@ -146,11 +169,10 @@ public class WrongedEntity extends Mob implements GeoEntity {
     // Make it so he takes no damage unless falls out of the world or /kill applied
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (pSource != damageSources().genericKill() || pSource != damageSources().fellOutOfWorld()) {
-            return false; }
-        else {
+        if (pSource == damageSources().genericKill() || pSource == damageSources().fellOutOfWorld()) {
             return super.hurt(pSource, pAmount);
         }
+        else return false;
     }
 
     @Override

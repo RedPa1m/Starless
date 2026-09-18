@@ -7,6 +7,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 
 import static net.redpalm.starless.event.EntitySpawnEventHandler.*;
 import static net.redpalm.starless.event.custom.CitaseEventsAndReputation.isFamiliar;
+import static net.redpalm.starless.entity.custom.CassieEntity.cassieFirstSpawn;
 
 public class StarlessSavedData extends SavedData {
     private boolean isFamiliarSD = false;
@@ -18,6 +19,7 @@ public class StarlessSavedData extends SavedData {
     private boolean dailySeekerSpawnSD = true;
     private boolean canSmilerSpawnSD = false;
     private boolean dailySmilerSpawnSD = true;
+    private boolean cassieFirstSpawnSD = true;
 
     public static StarlessSavedData create() {
         return new StarlessSavedData();
@@ -34,6 +36,7 @@ public class StarlessSavedData extends SavedData {
         data.dailySeekerSpawnSD = tag.getBoolean("dailySeekerSpawn");
         data.canSmilerSpawnSD = tag.getBoolean("canSmilerSpawn");
         data.dailySmilerSpawnSD = tag.getBoolean("dailySmilerSpawn");
+        data.cassieFirstSpawnSD = tag.getBoolean("cassieFirstSpawn");
         return data;
     }
 
@@ -48,6 +51,7 @@ public class StarlessSavedData extends SavedData {
         compoundTag.putBoolean("dailySeekerSpawn", dailySeekerSpawnSD);
         compoundTag.putBoolean("canSmilerSpawn", canSmilerSpawnSD);
         compoundTag.putBoolean("dailySmilerSpawn", dailySmilerSpawnSD);
+        compoundTag.putBoolean("cassieFirstSpawn", cassieFirstSpawnSD);
         return compoundTag;
     }
 
@@ -72,6 +76,7 @@ public class StarlessSavedData extends SavedData {
             data.dailySeekerSpawnSD = dailySeekerSpawn;
             data.canSmilerSpawnSD = canSmilerSpawn;
             data.dailySmilerSpawnSD = dailySmilerSpawn;
+            data.cassieFirstSpawnSD = cassieFirstSpawn;
             data.save();
     }
 
@@ -86,5 +91,6 @@ public class StarlessSavedData extends SavedData {
             dailySeekerSpawn = data.dailySeekerSpawnSD;
             canSmilerSpawn = data.canSmilerSpawnSD;
             dailySmilerSpawn = data.dailySmilerSpawnSD;
+            cassieFirstSpawn = data.cassieFirstSpawnSD;
     }
 }

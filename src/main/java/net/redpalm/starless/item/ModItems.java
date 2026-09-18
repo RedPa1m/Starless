@@ -23,7 +23,7 @@ public class ModItems {
 
     public static final DeferredItem<Item> CORRUPTED_DAGGER = ITEMS.register
             ("corrupted_dagger", () -> new SwordItem(Tiers.NETHERITE, new Item.Properties().attributes
-                    (SwordItem.createAttributes(Tiers.NETHERITE, 6, 3))));
+                    (SwordItem.createAttributes(Tiers.NETHERITE, 3, 3))));
 
     public static final DeferredItem<Item> OBSIDIAN_HANDLE = ITEMS.register
             ("obsidian_handle", () -> new Item(new Item.Properties()));
