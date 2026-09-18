@@ -119,7 +119,7 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
                 } else {
                     switch (y) {
                         case 0:
-                            cassieSpeech(level, "Lovely. Hello there, little guy.");
+                            cassieSpeech(level, "Lovely. Hello there, little creature.");
                             break;
                         case 1:
                             cassieSpeech(level, "How peculiar. Do you like using this little terminal?");

@@ -19,12 +19,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.redpalm.starless.util.StarlessSavedData;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 public class CassieEntity extends PathfinderMob implements GeoEntity {
     private int timeAlive = 0;
@@ -33,7 +35,7 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
     private int tickCountCheckHealth = 0;
     private int tickCountGoalStateCheck = 0;
     private int moodValue = -1;
-    private int maxTimeAlive = 20*120;
+    private int maxTimeAlive = 20*90;
     private int moodVariant;
     private boolean startedFollowingPlayer = false;
     private boolean setTimeAlive = false;
@@ -45,6 +47,8 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
     private boolean saidMessageOnDying = false;
     private boolean stopFollowingPlayer = false;
     private boolean canGiveEffectOrGift = false;
+    private boolean startedSitting = false;
+    private boolean hasWaved;
     public static boolean cassieFirstSpawn = true;
     private Player playerToChoose;
 
@@ -58,14 +62,20 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Walk/Run/Idle", state -> {
+        controllers.add(new AnimationController<>(this, "Walk/Idle", state -> {
             if (state.isMoving())
-                return state.setAndContinue(CassieEntity.this.isSprinting() ?
-                        RawAnimation.begin().then("run", Animation.LoopType.LOOP)
-                        : RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
-
-            return state.setAndContinue(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+                return state.setAndContinue(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+            else return state.setAndContinue(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         }));
+        controllers.add(new AnimationController<>(this, "blink",
+                animationState -> PlayState.CONTINUE).triggerableAnim("blink",
+                RawAnimation.begin().then("blink", Animation.LoopType.PLAY_ONCE)));
+        controllers.add(new AnimationController<>(this, "sit",
+                animationState -> PlayState.CONTINUE).triggerableAnim("sit",
+                RawAnimation.begin().then("sit", Animation.LoopType.HOLD_ON_LAST_FRAME)));
+        controllers.add(new AnimationController<>(this, "wave",
+                animationState -> PlayState.CONTINUE).triggerableAnim("wave",
+                RawAnimation.begin().then("wave", Animation.LoopType.PLAY_ONCE)));
     }
 
     @Override
@@ -121,7 +131,8 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
     public void tick() {
         super.tick();
         if (timeAlive == 0) {
-            moodValue = level().random.nextInt(4);
+            if (level().random.nextInt(4) != 0) moodValue = level().random.nextInt(3);
+            else moodValue = 3;
         }
         timeAlive++;
 
@@ -134,6 +145,8 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
             else cassieFirstSpawnSequence(this);
             checkHealth();
         }
+        if (timeAlive > 20*120) this.discard();
+        if (timeAlive % 100 == 0) triggerAnim("blink", "blink");
     }
 
     @Override
@@ -162,7 +175,7 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
         choosePlayer(entity);
         cassieFirstSpawnSequenceOn = true;
         if (!setTimeAlive) {
-            maxTimeAlive = 20*35;
+            maxTimeAlive = 20*60;
             setTimeAlive = true;
         }
         if (playerToChoose != null) {
@@ -179,6 +192,11 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
                 cassieFirstSpawn = false;
                 StarlessSavedData.save(entity.getServer());
             }
+            if (playerToChoose.hasLineOfSight(entity) && !hasWaved) {
+                triggerAnim("wave", "wave");
+                hasWaved = true;
+            }
+
         }
     }
 
@@ -188,16 +206,6 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
             this.getNavigation().moveTo(player, speedMod);
             tickCountCassie = 0;
         }
-    }
-
-    public boolean isLookingAtMe (Player pPlayer) {
-        Vec3 vec3 = pPlayer.getViewVector(1.0F).normalize();
-        Vec3 vec31 = new Vec3(this.getX() - pPlayer.getX(), this.getEyeY() - pPlayer.getEyeY(),
-                this.getZ() - pPlayer.getZ());
-        double d0 = vec31.length();
-        vec31 = vec31.normalize();
-        double d1 = vec3.dot(vec31);
-        return d1 > (double)1.0F - 0.025 / d0 ? pPlayer.hasLineOfSight(this) : false;
     }
 
     public void cassieRandomMood (CassieEntity entity) {
@@ -210,8 +218,9 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
     public void cassieBoredMood (CassieEntity entity) {
         choosePlayer(entity);
         checkGoal(entity);
+        cassieHelloSpeech(entity, "I'm just in the mood to look around this place. Don't mind me.");
         if (!setTimeAlive) {
-            maxTimeAlive = 20*60;
+            maxTimeAlive = 20*50;
             setTimeAlive = true;
         }
         if (playerToChoose != null) {
@@ -226,14 +235,18 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
 
     public void cassieCalmMood (CassieEntity entity) {
         choosePlayer(entity);
+        cassieHelloSpeech(entity, "Just felt like sitting here for a bit.");
         if (!setTimeAlive) {
-            maxTimeAlive = 20*60;
+            maxTimeAlive = 20*80;
             setTimeAlive = true;
         }
-        if (playerToChoose != null) {
-            for (int i = 0; i < 140; i++) {
+        if (playerToChoose != null && !startedSitting) {
+            for (int i = 0; i < 160; i++) {
                 entity.lookControl.setLookAt(playerToChoose);
-                //if (i == 130)
+                if (i == 140) {
+                    startedSitting = true;
+                    triggerAnim("sit", "sit");
+                }
             }
         }
     }
@@ -249,18 +262,26 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
             if (moodVariant == 0) {
                 cassiePlayfulFirstVariant(entity);
                 chosePlayfulMoodVariant = true;
+                cassieHelloSpeech(entity, "Would be nice if you had something like a piece of cooked meat. " +
+                        "Or maybe a bread. Cake would be good too.");
             }
             else {
                 cassiePlayfulSecondVariant(entity);
                 chosePlayfulMoodVariant = true;
+                cassieHelloSpeech(entity, "Do you wanna see a magic trick?");
             }
         }
     }
 
     public void cassieCuriousMood (CassieEntity entity) {
         choosePlayer(entity);
+        if (!setTimeAlive) {
+            maxTimeAlive = 60*20;
+            setTimeAlive = true;
+        }
         if (playerToChoose != null) {
-            cassieFollowPlayer(entity, 0.55f, false, true);
+            cassieFollowPlayer(entity, 0.85f, false, true);
+            cassieHelloSpeech(entity, "You look so silly. So interesting. I'm curious.");
         }
     }
 
@@ -366,6 +387,7 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
                 playerToChoose.getInventory().removeItem(i, 1);
                 hasStolenFood = true;
                 stopFollowingPlayer = true;
+                cassieSpeech(entity.level(), "That's much better.");
             }
         }
     }
@@ -395,6 +417,7 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
             }
             canGiveEffectOrGift = false;
             stopFollowingPlayer = true;
+            cassieSpeech(entity.level(), "There you go, silly.");
         }
     }
 
@@ -412,6 +435,12 @@ public class CassieEntity extends PathfinderMob implements GeoEntity {
                         stack.getItem() == Items.RABBIT_STEW || stack.getItem() == Items.PUMPKIN_PIE ||
                         stack.getItem() == Items.BEETROOT_SOUP || stack.getItem() == Items.COOKIE ||
                         stack.getItem() == Items.GOLDEN_CARROT || stack.getItem() == Items.CAKE));
+    }
+
+    private void cassieHelloSpeech (CassieEntity entity, String speech) {
+        if (level().isClientSide) return;
+        if (timeAlive == 40) cassieSpeech(entity.level(), "Hello.");
+        if (timeAlive == 100) cassieSpeech(entity.level(), speech);
     }
 
 }

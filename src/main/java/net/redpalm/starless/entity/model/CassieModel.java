@@ -13,17 +13,17 @@ import software.bernie.geckolib.model.data.EntityModelData;
 public class CassieModel extends GeoModel<CassieEntity> {
     @Override
     public ResourceLocation getModelResource(CassieEntity cassieEntity) {
-        return new ResourceLocation(Starless.MODID, "geo/citase.geo.json");
+        return new ResourceLocation(Starless.MODID, "geo/cassie.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(CassieEntity cassieEntity) {
-        return new ResourceLocation(Starless.MODID, "textures/entity/citase.png");
+        return new ResourceLocation(Starless.MODID, "textures/entity/cassie.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(CassieEntity cassieEntity) {
-        return new ResourceLocation(Starless.MODID, "animations/citase.animation.json");
+        return new ResourceLocation(Starless.MODID, "animations/cassie.animation.json");
     }
 
     @Override

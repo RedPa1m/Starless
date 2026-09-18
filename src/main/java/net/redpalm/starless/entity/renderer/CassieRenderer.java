@@ -14,6 +14,6 @@ public class CassieRenderer extends GeoEntityRenderer<CassieEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(CassieEntity animatable) {
-        return new ResourceLocation(Starless.MODID, "textures/entity/citase.png");
+        return new ResourceLocation(Starless.MODID, "textures/entity/cassie.png");
     }
 }

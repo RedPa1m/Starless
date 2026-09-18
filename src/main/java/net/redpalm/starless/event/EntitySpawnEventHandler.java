@@ -159,6 +159,11 @@ public class EntitySpawnEventHandler extends Event {
         int observeCalmSpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int citaseSpawnTime = 12500;
+        int cassieSpawnTime = 4000;
+
+        if (random.nextInt(10) == 0) {
+            spawnCassie(50, tick, cassieSpawnTime, true, "cassie");
+        }
 
         spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
 
@@ -174,6 +179,11 @@ public class EntitySpawnEventHandler extends Event {
         int observeRiskySpawnChance = 10;
         int wrongedSpawnTime = 18000;
         int seekerSpawnTime = 5000;
+        int cassieSpawnTime = 4000;
+
+        if (random.nextInt(10) == 0) {
+            spawnCassie(50, tick, cassieSpawnTime, true, "cassie");
+        }
 
         if (random.nextInt(2) == 0) {
             spawnPresetEntity(0, tick, wrongedSpawnTime, dailyWrongedSpawn, "wronged");
@@ -272,6 +282,10 @@ public class EntitySpawnEventHandler extends Event {
         }
         else if (entityType.equals("smiler")) {
             SmilerEntity entity = ModEntities.SMILER.get().create(tick.level);
+            return entity;
+        }
+        else if (entityType.equals("cassie")) {
+            CassieEntity entity = ModEntities.CASSIE.get().create(tick.level);
             return entity;
         }
         else return null;
@@ -412,5 +426,47 @@ public class EntitySpawnEventHandler extends Event {
             dailySmilerSpawn = false;
             StarlessSavedData.save(tick.level.getServer());
         }
+    }
+
+    private static void spawnCassie (int i, TickEvent.LevelTickEvent tick, int spawnTime, boolean dailyEntitySpawn,
+                                          String entityType) {
+        if (tick.level.getGameTime() % 24000 == spawnTime && dailyEntitySpawn) {
+            LivingEntity entity = entityCreate(tick, entityType);
+            if (entity == null) return;
+            Player player = tick.level.getServer().getPlayerList().getPlayers().get
+                    (tick.level.getRandom().nextInt(tick.level.getServer().getPlayerList().getPlayers().size()));
+            if (player.getY() < 35 && !player.level().canSeeSky(player.blockPosition())) return;
+            spawnEntityCassie(i, entity, player, tick);
+
+            if (!entityType.equals("wronged")) {
+                eventCount++;
+            }
+            StarlessSavedData.save(tick.level.getServer());
+        }
+    }
+
+    private static void spawnEntityCassie (int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
+        for (int q = 0; q < 6; q++) {
+            setEntityPosCassie(i, entity, player, event);
+            if (!entity.getBlockStateOn().is(Blocks.WATER) && !entity.getBlockStateOn().is(Blocks.LAVA)) {
+                event.level.addFreshEntity(entity);
+                break;
+            }
+            else if (q == 5) {
+                event.level.addFreshEntity(entity);
+                break;
+            }
+        }
+    }
+
+    // credits to Chaaze for handling and explaining this particular part for me. used to have different thing that wasn't as good
+    private static void setEntityPosCassie (int i, LivingEntity entity, Player player, TickEvent.LevelTickEvent event) {
+        double angle = event.level.random.nextDouble() * Math.PI * 2;
+        double radius = event.level.random.nextInt(20) + i;
+
+        double entityX = player.getX() + Math.cos(angle) * radius;
+        double entityZ = player.getZ() + Math.sin(angle) * radius;
+        entity.setPos(entityX, (event.level.getHeight(Heightmap.Types.WORLD_SURFACE,
+                (int)entityX, (int)entityZ) + 3), entityZ);
     }
 }
