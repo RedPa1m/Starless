@@ -74,8 +74,11 @@ public class PrimitiveTerminalBlock extends HorizontalDirectionalBlock {
                         ("§kLoading..."), false);
             });
             queueServerWork(120, () -> {
-                if (level.getRandom().nextInt(14) != 0) {
+                if (level.getRandom().nextInt(10) != 0) {
                     switch (x) {
+                        case 0:
+                            speech(level, isFamiliarString(), "Should I curse in Russian occasionally? For the funny?");
+                            break;
                         case 1:
                             speech(level, isFamiliarString(), "Hello? Who's that? I am busy with my bread! Please contact me later, beep-beep."); // citase
                             break;
